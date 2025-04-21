@@ -1,6 +1,6 @@
 ﻿namespace F21Party.Views
 {
-    partial class frm_RegisterUser
+    partial class frm_CreateUser
     {
         /// <summary>
         /// Required designer variable.

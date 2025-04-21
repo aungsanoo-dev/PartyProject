@@ -64,32 +64,32 @@ namespace F21Party.Controllers
             DataTable DTAccessPage = new DataTable();
 
             // Reuse the same login form
-            frm_LogIn obj_frmLogIn = new frm_LogIn();
+            frm_LogIn frmLogIn = new frm_LogIn();
             bool focusPasswordNextTime = false;
 
             // Handle focus once when shown
-            obj_frmLogIn.Shown += (s, e) =>
+            frmLogIn.Shown += (s, e) =>
             {
-                obj_frmLogIn.BeginInvoke(new Action(() =>
+                frmLogIn.BeginInvoke(new Action(() =>
                 {
                     if (focusPasswordNextTime)
-                        obj_frmLogIn.txtPassword.Focus();
+                        frmLogIn.txtPassword.Focus();
                     else
-                        obj_frmLogIn.txtUserName.Focus();
+                        frmLogIn.txtUserName.Focus();
                 }));
             };
 
             while (true)
             {
-                var result = obj_frmLogIn.ShowDialog();
+                var result = frmLogIn.ShowDialog();
 
                 if (result != DialogResult.OK)
                 {
                     break; // Cancelled
                 }
 
-                string UserName = obj_frmLogIn.txtUserName.Text.Trim();
-                string Password = obj_frmLogIn.txtPassword.Text.Trim();
+                string UserName = frmLogIn.txtUserName.Text.Trim();
+                string Password = frmLogIn.txtPassword.Text.Trim();
 
                 if (string.IsNullOrWhiteSpace(UserName))
                 {
@@ -194,20 +194,20 @@ namespace F21Party.Controllers
 
         public void EyeToggle()
         {
-            frm_LogIn obj_frmLogIn = new frm_LogIn();
+            frm_LogIn frmLogIn = new frm_LogIn();
 
             // Set initial icon and masking state
-            obj_frmLogIn.btnEye.Text = "👁️";
-            obj_frmLogIn.txtPassword.UseSystemPasswordChar = true;
+            frmLogIn.btnEye.Text = "👁️";
+            frmLogIn.txtPassword.UseSystemPasswordChar = true;
 
             // Attach the toggle event
-            obj_frmLogIn.btnEye.Click += (s, e) =>
+            frmLogIn.btnEye.Click += (s, e) =>
             {
                 isPasswordShown = !isPasswordShown;
 
-                obj_frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
+                frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
 
-                obj_frmLogIn.btnEye.Text = isPasswordShown ? "🙈" : "👁️";
+                frmLogIn.btnEye.Text = isPasswordShown ? "🙈" : "👁️";
             };
         }
 

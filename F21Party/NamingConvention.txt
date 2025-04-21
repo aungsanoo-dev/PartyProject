@@ -1,0 +1,32 @@
+// CamelCase
+public SqlConnection con;			// good
+class Name							// bad Should be Pascal
+frmMain = mainForm; // Create the View
+ctrlFrmMain ctrlFrmMain; // Declare the controller
+ctrlFrmMain = new ctrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
+bool focusPasswordNextTime = false; // function variable	// good
+
+
+// PascalCase
+DataSet DS = new DataSet();	// change variable name
+	SqlDataAdapter Adpt = new SqlDataAdapter(SPString, con);  // change variable name
+function name ShowMenu("");  // good
+string UserName = frmLogIn.txtUserName.Text.Trim();  // global variable is good
+	string Password = frmLogIn.txtPassword.Text.Trim(); // 
+	string SPString			
+List<string> WriteAccessPages = new List<string>();
+
+
+// PascalSnakeCase
+string[] Arr_AccessLevel = AccessLevel.Split(',');
+
+
+// SnakeCase
+clsMainDB obj_clsMainDB = new clsMainDB(); //DBA creating object name
+
+
+// empty_SnakeCase
+public int _AccountID = 0;
+        public int _UserID = 0;
+        public bool _IsEdit = false;
+

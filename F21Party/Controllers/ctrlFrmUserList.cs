@@ -46,7 +46,7 @@ namespace F21Party.Controllers
             }
             else
             {
-                frm_RegisterUser frm = new frm_RegisterUser();
+                frm_CreateUser frm = new frm_CreateUser();
                 
                 frm._UserID = Convert.ToInt32(frm_UserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value);
                 frm.txtFullName.Text = frm_UserList.dgvUserSetting.CurrentRow.Cells["FullName"].Value.ToString();
@@ -105,7 +105,7 @@ namespace F21Party.Controllers
         
         public void TsbNew()
         {
-            frm_RegisterUser frm_RegisterUser = new frm_RegisterUser();
+            frm_CreateUser frm_RegisterUser = new frm_CreateUser();
             frm_RegisterUser.ShowDialog();
             ShowData();
         }
