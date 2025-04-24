@@ -14,12 +14,12 @@ namespace F21Party.Views
 {
     public partial class frm_AccountList : Form
     {
-        ctrlFrmAccountList ctrlFrmAccountList; // Declare the controller
+        CtrlFrmAccountList ctrlFrmAccountList; // Declare the controller
         UserGridToggle userGridToggle; // Declare new DGV
         public frm_AccountList()
         {
             InitializeComponent();
-            ctrlFrmAccountList = new ctrlFrmAccountList(this); // Create the controller and pass itself to ctrlFrmMain()
+            ctrlFrmAccountList = new CtrlFrmAccountList(this); // Create the controller and pass itself to ctrlFrmMain()
             userGridToggle = new UserGridToggle(this,dgvUserSetting);
             this.dgvUserSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvUserSetting_DataBindingComplete);
         }

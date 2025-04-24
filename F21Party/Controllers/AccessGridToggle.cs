@@ -11,13 +11,13 @@ namespace F21Party.Controllers
 {
     internal class AccessGridToggle
     {
-        public frm_AccountList parentForm;
+        public frm_AccountList frmAccountList;
         private DataGridView originalGrid;
         private DataGridView extraAccessGrid;
 
         public AccessGridToggle(frm_AccountList accountForm, DataGridView originalGrid)
         {
-            this.parentForm = accountForm;
+            this.frmAccountList = accountForm;
             this.originalGrid = originalGrid;
         }
 
@@ -25,7 +25,7 @@ namespace F21Party.Controllers
         {
             // If extraGrid does not exist or is not currently added to the form,
             // add it and adjust the layout.
-            if (extraAccessGrid == null || !parentForm.Controls.Contains(extraAccessGrid))
+            if (extraAccessGrid == null || !frmAccountList.Controls.Contains(extraAccessGrid))
             {
                 if (extraAccessGrid == null)
                 {
@@ -36,13 +36,13 @@ namespace F21Party.Controllers
 
                 // Set the original grid's docking to Top and give it half the form's height.
                 originalGrid.Dock = DockStyle.Top;
-                originalGrid.Height = parentForm.ClientSize.Height / 2;
+                originalGrid.Height = frmAccountList.ClientSize.Height / 2;
 
                 // Set the extra grid to fill the remaining space.
                 extraAccessGrid.Dock = DockStyle.Fill;
 
                 // Add the extra grid to the form.
-                parentForm.Controls.Add(extraAccessGrid);
+                frmAccountList.Controls.Add(extraAccessGrid);
                 // Ensure the extra grid appears below the original grid.
                 extraAccessGrid.BringToFront();
 
@@ -71,7 +71,7 @@ namespace F21Party.Controllers
             }
             else // If the extra grid is already added, remove it and reset the layout.
             {
-                parentForm.Controls.Remove(extraAccessGrid);
+                frmAccountList.Controls.Remove(extraAccessGrid);
                 originalGrid.Dock = DockStyle.Fill;
             }
         }

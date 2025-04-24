@@ -13,11 +13,11 @@ using F21Party.Views;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlFrmMain
+    internal class CtrlFrmMain
     {
-        public Views.frmMain frmMain; // Declare the View
+        public Views.frm_Main frmMain; // Declare the View
         
-        public ctrlFrmMain(Views.frmMain mainForm)
+        public CtrlFrmMain(Views.frm_Main mainForm)
         {
             frmMain = mainForm; // Create the View
         }

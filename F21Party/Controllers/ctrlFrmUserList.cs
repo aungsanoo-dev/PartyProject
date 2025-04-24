@@ -11,10 +11,10 @@ using System.Windows.Forms;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlFrmUserList
+    internal class CtrlFrmUserList
     {
         public frm_UserList frm_UserList; // Declare the View
-        public ctrlFrmUserList(frm_UserList userForm)
+        public CtrlFrmUserList(frm_UserList userForm)
         {
             frm_UserList = userForm; // Create the View
         }

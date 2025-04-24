@@ -14,13 +14,13 @@ using System.Text.RegularExpressions;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlFrmCreateAccount
+    internal class CtrlFrmCreateAccount
     {
         public frm_CreateAccount frm_CreateAccount;// Declare the View
         public bool _IsEnabled = true;
         public bool _LocalIsEnabled;
 
-        public ctrlFrmCreateAccount(frm_CreateAccount createAccountForm)
+        public CtrlFrmCreateAccount(frm_CreateAccount createAccountForm)
         {
             frm_CreateAccount = createAccountForm; // Create the View
         }

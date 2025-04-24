@@ -13,10 +13,10 @@ using System.Text.RegularExpressions;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlFrmCreateUser
+    internal class CtrlFrmCreateUser
     {
         public frm_CreateUser frm_CreateUser;// Declare the View
-        public ctrlFrmCreateUser(frm_CreateUser createUserForm)
+        public CtrlFrmCreateUser(frm_CreateUser createUserForm)
         {
             frm_CreateUser = createUserForm; // Create the View
         }

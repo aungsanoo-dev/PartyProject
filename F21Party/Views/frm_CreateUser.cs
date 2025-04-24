@@ -14,14 +14,14 @@ namespace F21Party.Views
 {
     public partial class frm_CreateUser : Form
     {
-        ctrlFrmCreateUser ctrlFrmRegisterUser;
+        CtrlFrmCreateUser ctrlFrmRegisterUser;
         public int _AccountID = 0;
         public int _UserID = 0;
         public bool _IsEdit = false;
         public frm_CreateUser()
         {
             InitializeComponent();
-            ctrlFrmRegisterUser = new ctrlFrmCreateUser(this);
+            ctrlFrmRegisterUser = new CtrlFrmCreateUser(this);
         }
 
         private void frm_CreateAccount_Load(object sender, EventArgs e)

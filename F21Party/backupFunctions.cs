@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace F21Party
 {
-    internal class backupFunctions
+    internal class BackupFunctions
     {
         public void LoginAccount()
         {

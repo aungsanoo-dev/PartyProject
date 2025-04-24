@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlTest
+    internal class CtrlTest
     {
         //public void LoginAccount()
         //{

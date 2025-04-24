@@ -1,6 +1,6 @@
 ﻿namespace F21Party.Views
 {
-    partial class frmMain
+    partial class frm_Main
     {
         /// <summary>
         /// Required designer variable.

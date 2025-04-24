@@ -14,13 +14,13 @@ using System.Windows.Forms;
 
 namespace F21Party.Views
 {
-    public partial class frmMain : Form
+    public partial class frm_Main : Form
     {
-        ctrlFrmMain ctrlFrmMain; // Declare the controller
-        public frmMain()
+        CtrlFrmMain ctrlFrmMain; // Declare the controller
+        public frm_Main()
         {
             InitializeComponent();
-            ctrlFrmMain = new ctrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
+            ctrlFrmMain = new CtrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
         }
         
 

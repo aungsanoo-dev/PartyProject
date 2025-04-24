@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace F21Party.Controllers
 {
-    internal class ctrlFrmLogIn
+    internal class CtrlFrmLogIn
     {
         public Views.frm_LogIn obj_frmLogIn; // Declare the View
 
-        public ctrlFrmLogIn(Views.frm_LogIn _LogIn)
+        public CtrlFrmLogIn(Views.frm_LogIn _LogIn)
         {
             obj_frmLogIn = _LogIn; // Create the View
         }

@@ -14,12 +14,12 @@ namespace F21Party.Views
 {
     public partial class frm_UserList : Form
     {
-        ctrlFrmUserList ctrlFrmUserList; // Declare the controller
+        CtrlFrmUserList ctrlFrmUserList; // Declare the controller
         
         public frm_UserList()
         {
             InitializeComponent();
-            ctrlFrmUserList = new ctrlFrmUserList(this); // Create the controller and pass itself to ctrlFrmMain()
+            ctrlFrmUserList = new CtrlFrmUserList(this); // Create the controller and pass itself to ctrlFrmMain()
         }
 
 

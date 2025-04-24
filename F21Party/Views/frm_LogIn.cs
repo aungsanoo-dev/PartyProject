@@ -13,12 +13,12 @@ namespace F21Party.Views
 {
     public partial class frm_LogIn : Form
     {
-        ctrlFrmLogIn ctrlFrmLogIn;
+        CtrlFrmLogIn ctrlFrmLogIn;
 
         public frm_LogIn()
         {
             InitializeComponent();
-            ctrlFrmLogIn = new ctrlFrmLogIn(this);
+            ctrlFrmLogIn = new CtrlFrmLogIn(this);
             
         }
 
