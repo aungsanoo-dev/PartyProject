@@ -212,7 +212,7 @@
             this.btnEye.TabIndex = 42;
             this.btnEye.UseVisualStyleBackColor = true;
             // 
-            // frm_CreateAccount
+            // frmCreateAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

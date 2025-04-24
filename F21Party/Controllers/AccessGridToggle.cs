@@ -11,13 +11,13 @@ namespace F21Party.Controllers
 {
     internal class AccessGridToggle
     {
-        public frm_AccountList frmAccountList;
+        private frm_AccountList frmAccountList;
         private DataGridView originalGrid;
         private DataGridView extraAccessGrid;
 
         public AccessGridToggle(frm_AccountList accountForm, DataGridView originalGrid)
         {
-            this.frmAccountList = accountForm;
+            frmAccountList = accountForm;
             this.originalGrid = originalGrid;
         }
 
@@ -50,9 +50,9 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
                 // Set the DataSource of the extra grid.
-                extraAccessGrid.DataSource = dbaConnection.SelectData(SPString);
+                extraAccessGrid.DataSource = dbaConnection.SelectData(spString);
                 // Configure the extra grid's appearance.
                 extraAccessGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 

@@ -51,9 +51,9 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(SPString);
+                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
                 // Configure the extra grid's appearance.
                 extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -109,9 +109,9 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(SPString);
+                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
                 // Configure the extra grid's appearance.
                 extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
@@ -162,9 +162,9 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(SPString);
+                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
 
                 // Assume extraUserGrid.DataSource is a DataTable.
                 DataTable originalTable = ((DataTable)extraUserGrid.DataSource).Copy();

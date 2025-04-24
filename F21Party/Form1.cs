@@ -32,8 +32,8 @@ namespace F21Party
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
         {
             
-                string SPString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
-                DT = dbaConnection.SelectData(SPString);
+                string spString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
+                DT = dbaConnection.SelectData(spString);
                 if (DT.Rows.Count > 0)
                 {
                     for (int i = 0; i < DT.Rows.Count; i++)

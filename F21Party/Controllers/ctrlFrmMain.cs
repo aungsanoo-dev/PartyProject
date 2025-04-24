@@ -105,10 +105,10 @@ namespace F21Party.Controllers
                     continue;
                 }
 
-                string SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
+                string spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
                     UserName, Password, "", "1");
 
-                DT = dbaConnection.SelectData(SPString);
+                DT = dbaConnection.SelectData(spString);
 
                 if (DT.Rows.Count == 0)
                 {

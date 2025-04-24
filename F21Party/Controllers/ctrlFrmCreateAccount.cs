@@ -16,13 +16,13 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateAccount
     {
-        public frm_CreateAccount frm_CreateAccount;// Declare the View
+        public frm_CreateAccount frmCreateAccount;// Declare the View
         public bool _IsEnabled = true;
         public bool _LocalIsEnabled;
 
         public CtrlFrmCreateAccount(frm_CreateAccount createAccountForm)
         {
-            frm_CreateAccount = createAccountForm; // Create the View
+            frmCreateAccount = createAccountForm; // Create the View
         }
 
         DbaConnection dbaConnection = new DbaConnection();
@@ -37,10 +37,10 @@ namespace F21Party.Controllers
 
         public void AccessComboChange(bool _IsEdit)
         {
-            string SPString;
-            SPString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            string spString;
+            spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
             DataTable DT = new DataTable();
-            DT = dbaConnection.SelectData(SPString);
+            DT = dbaConnection.SelectData(spString);
             List<string> FalseLogIn = new List<string>();
 
             for (int i = 0; i < DT.Rows.Count; i++)
@@ -58,26 +58,26 @@ namespace F21Party.Controllers
             {
                 if (FalseLogIn != null)
                 {
-                    if (FalseLogIn.Contains(frm_CreateAccount.cboAccessLevel.Text))
+                    if (FalseLogIn.Contains(frmCreateAccount.cboAccessLevel.Text))
                     {
-                        frm_CreateAccount.txtUserName.Enabled = false;
-                        frm_CreateAccount.txtPassword.Enabled = false;
-                        frm_CreateAccount.txtConfirmPassword.Enabled = false;
+                        frmCreateAccount.txtUserName.Enabled = false;
+                        frmCreateAccount.txtPassword.Enabled = false;
+                        frmCreateAccount.txtConfirmPassword.Enabled = false;
                         _IsEnabled = false;
                         _LocalIsEnabled = _IsEnabled;
                     }
                     else
                     {
-                        frm_CreateAccount.txtUserName.Enabled = true;
-                        frm_CreateAccount.txtPassword.Enabled = true;
-                        frm_CreateAccount.txtConfirmPassword.Enabled = true;
+                        frmCreateAccount.txtUserName.Enabled = true;
+                        frmCreateAccount.txtPassword.Enabled = true;
+                        frmCreateAccount.txtConfirmPassword.Enabled = true;
                         _IsEnabled = true;
                         _LocalIsEnabled = _IsEnabled;
                     }
                 }
             }
-            //MessageBox.Show(frm_CreateAccount.cboAccessLevel.DisplayMember);
-            //frm_CreateAccount.cboAccessLevel.SelectedValue = "1003";
+            //MessageBox.Show(frmCreateAccount.cboAccessLevel.DisplayMember);
+            //frmCreateAccount.cboAccessLevel.SelectedValue = "1003";
 
 
 
@@ -89,58 +89,58 @@ namespace F21Party.Controllers
         {
             //frmMain obj_frmMain = new frmMain();
             DataTable DT = new DataTable();
-            string SPString = "";
-            _IsEdit = frm_CreateAccount._IsEdit;
-            _AccountID = frm_CreateAccount._AccountID;
-            _UserID = frm_CreateAccount._UserID;
+            string spString = "";
+            _IsEdit = frmCreateAccount._IsEdit;
+            _AccountID = frmCreateAccount._AccountID;
+            _UserID = frmCreateAccount._UserID;
 
-            if (frm_CreateAccount.txtFullName.Text.Trim().ToString() == string.Empty)
+            if (frmCreateAccount.txtFullName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type FullName");
-                frm_CreateAccount.txtFullName.Focus();
+                frmCreateAccount.txtFullName.Focus();
             }
-            else if (frm_CreateAccount.txtAddress.Text.Trim().ToString() == string.Empty)
+            else if (frmCreateAccount.txtAddress.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Address");
-                frm_CreateAccount.txtAddress.Focus();
+                frmCreateAccount.txtAddress.Focus();
             }
-            else if (frm_CreateAccount.txtPhone.Text.Trim().ToString() == string.Empty)
+            else if (frmCreateAccount.txtPhone.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Phone");
-                frm_CreateAccount.txtPhone.Focus();
+                frmCreateAccount.txtPhone.Focus();
             }
-            else if (frm_CreateAccount.cboPosition.SelectedValue.ToString() == "0")
+            else if (frmCreateAccount.cboPosition.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Position");
-                frm_CreateAccount.cboPosition.Focus();
+                frmCreateAccount.cboPosition.Focus();
             }
-            else if (frm_CreateAccount.cboAccessLevel.SelectedValue.ToString() == "0")
+            else if (frmCreateAccount.cboAccessLevel.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose AccessLevel");
-                frm_CreateAccount.cboAccessLevel.Focus();
+                frmCreateAccount.cboAccessLevel.Focus();
             }
             else if (_LocalIsEnabled)
             {
-                if (frm_CreateAccount.txtUserName.Text.Trim().ToString() == string.Empty)
+                if (frmCreateAccount.txtUserName.Text.Trim().ToString() == string.Empty)
                 {
                     MessageBox.Show("Please Type UserName");
-                    frm_CreateAccount.txtUserName.Focus();
+                    frmCreateAccount.txtUserName.Focus();
                 }
-                else if (frm_CreateAccount.txtPassword.Text.Trim().ToString() == string.Empty)
+                else if (frmCreateAccount.txtPassword.Text.Trim().ToString() == string.Empty)
                 {
                     MessageBox.Show("Please Type Password");
-                    frm_CreateAccount.txtPassword.Focus();
+                    frmCreateAccount.txtPassword.Focus();
                 }
-                else if (frm_CreateAccount.txtConfirmPassword.Text.Trim().ToString() == string.Empty)
+                else if (frmCreateAccount.txtConfirmPassword.Text.Trim().ToString() == string.Empty)
                 {
                     MessageBox.Show("Please Type ConfirmPassword");
-                    frm_CreateAccount.txtConfirmPassword.Focus();
+                    frmCreateAccount.txtConfirmPassword.Focus();
                 }
-                else if (frm_CreateAccount.txtPassword.Text.Trim().ToString() != frm_CreateAccount.txtConfirmPassword.Text.Trim().ToString())
+                else if (frmCreateAccount.txtPassword.Text.Trim().ToString() != frmCreateAccount.txtConfirmPassword.Text.Trim().ToString())
                 {
                     MessageBox.Show("Password And Confirm Password Should Be Same");
-                    frm_CreateAccount.txtConfirmPassword.Focus();
-                    frm_CreateAccount.txtConfirmPassword.SelectAll();
+                    frmCreateAccount.txtConfirmPassword.Focus();
+                    frmCreateAccount.txtConfirmPassword.SelectAll();
                 }
                 else
                 {
@@ -155,46 +155,46 @@ namespace F21Party.Controllers
                 if (_IsEnabled)
                 {
                     // For Users
-                    SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
-                    Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
+                    spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmCreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
+                    Regex.Replace(frmCreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                    DT = dbaConnection.SelectData(SPString);
+                    DT = dbaConnection.SelectData(spString);
                     if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
                     {
                         
                         MessageBox.Show("This User is Already Exist");
-                        frm_CreateAccount.txtFullName.Focus();
-                        frm_CreateAccount.txtFullName.SelectAll();
+                        frmCreateAccount.txtFullName.Focus();
+                        frmCreateAccount.txtFullName.SelectAll();
                     } 
                     else
                     {
                         // For Accounts
-                        SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtUserName.Text.Trim(), @"\s+", " "),
+                        spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmCreateAccount.txtUserName.Text.Trim(), @"\s+", " "),
                         "0", "0", "4");
 
-                        DT = dbaConnection.SelectData(SPString);
+                        DT = dbaConnection.SelectData(spString);
                         if (DT.Rows.Count > 0 && _AccountID != Convert.ToInt32(DT.Rows[0]["AccountID"]))
                         {
                             
                             MessageBox.Show("This Account is Already Exist");
-                            frm_CreateAccount.txtUserName.Focus();
-                            frm_CreateAccount.txtUserName.SelectAll();
+                            frmCreateAccount.txtUserName.Focus();
+                            frmCreateAccount.txtUserName.SelectAll();
                         }
                         else
                         {
                             // For User
                             dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                            dbaUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
-                            dbaUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
-                            dbaUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
-                            dbaUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
+                            dbaUserSetting.FNAME = Regex.Replace(frmCreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.ADDRESS = Regex.Replace(frmCreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.PHONE = Regex.Replace(frmCreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.PID = Convert.ToInt32(frmCreateAccount.cboPosition.SelectedValue);
 
                             // For Account
                             dbaAccountSetting.AccountID = Convert.ToInt32(_AccountID);
 
-                            dbaAccountSetting.UNAME = Regex.Replace(frm_CreateAccount.txtUserName.Text.Trim(), @"\s+", " ");
-                            dbaAccountSetting.PASS = Regex.Replace(frm_CreateAccount.txtPassword.Text.Trim(), @"\s+", " ");
-                            dbaAccountSetting.ACCESSID = Convert.ToInt32(frm_CreateAccount.cboAccessLevel.SelectedValue);
+                            dbaAccountSetting.UNAME = Regex.Replace(frmCreateAccount.txtUserName.Text.Trim(), @"\s+", " ");
+                            dbaAccountSetting.PASS = Regex.Replace(frmCreateAccount.txtPassword.Text.Trim(), @"\s+", " ");
+                            dbaAccountSetting.ACCESSID = Convert.ToInt32(frmCreateAccount.cboAccessLevel.SelectedValue);
 
 
                             if (_IsEdit)
@@ -205,10 +205,10 @@ namespace F21Party.Controllers
                                 dbaAccountSetting.USERID = Convert.ToInt32(_UserID);
                                 if (dbaAccountSetting.USERID == Program.UserID)
                                 {
-                                    SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserID.ToString(),
+                                    spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserID.ToString(),
                                         "0", "0", "6");
 
-                                    DT = dbaConnection.SelectData(SPString);
+                                    DT = dbaConnection.SelectData(spString);
 
                                     if(dbaAccountSetting.ACCESSID != Convert.ToInt32(DT.Rows[0]["AccessID"]))
                                     {
@@ -220,7 +220,7 @@ namespace F21Party.Controllers
                                         dbaAccountSetting.SaveData();
 
                                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                                        frm_CreateAccount.Close();
+                                        frmCreateAccount.Close();
                                     }
 
                                     
@@ -232,7 +232,7 @@ namespace F21Party.Controllers
                                     dbaAccountSetting.SaveData();
 
                                     MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                                    frm_CreateAccount.Close();
+                                    frmCreateAccount.Close();
                                 }
                                 else
                                 {
@@ -247,17 +247,17 @@ namespace F21Party.Controllers
                                 dbaUserSetting.ACTION = 0;
                                 dbaUserSetting.SaveData();
 
-                                SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
-                                    Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " "), "1");
+                                spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmCreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
+                                    Regex.Replace(frmCreateAccount.txtAddress.Text.Trim(), @"\s+", " "), Regex.Replace(frmCreateAccount.txtPhone.Text.Trim(), @"\s+", " "), "1");
 
-                                DT = dbaConnection.SelectData(SPString);
+                                DT = dbaConnection.SelectData(spString);
                                 dbaAccountSetting.USERID = Convert.ToInt32(DT.Rows[0]["UserID"]);
 
                                 dbaAccountSetting.ACTION = 0;
                                 dbaAccountSetting.SaveData();
 
                                 MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                                frm_CreateAccount.Close();
+                                frmCreateAccount.Close();
                             }
                         }
                     }
@@ -267,23 +267,23 @@ namespace F21Party.Controllers
                 else
                 {
                     // For Users
-                    SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
-                    Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
+                    spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmCreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
+                    Regex.Replace(frmCreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                    DT = dbaConnection.SelectData(SPString);
+                    DT = dbaConnection.SelectData(spString);
                     if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
                     {
                         MessageBox.Show("This User is Already Exist");
-                        frm_CreateAccount.txtFullName.Focus();
-                        frm_CreateAccount.txtFullName.SelectAll();
+                        frmCreateAccount.txtFullName.Focus();
+                        frmCreateAccount.txtFullName.SelectAll();
                     }
                     else
                     {
                         dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                        dbaUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
+                        dbaUserSetting.FNAME = Regex.Replace(frmCreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.ADDRESS = Regex.Replace(frmCreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.PHONE = Regex.Replace(frmCreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.PID = Convert.ToInt32(frmCreateAccount.cboPosition.SelectedValue);
 
 
                         if (_IsEdit)
@@ -293,21 +293,21 @@ namespace F21Party.Controllers
                             dbaUserSetting.SaveData();
 
                             MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                            frm_CreateAccount.Close();
+                            frmCreateAccount.Close();
                         }
                         else
                         {
                             dbaUserSetting.ACTION = 0;
                             dbaUserSetting.SaveData();
                             MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                            frm_CreateAccount.Close();
+                            frmCreateAccount.Close();
                         }
                     }
                 }
             }
         }
 
-        public void AddCombo(ComboBox cboCombo, string SPString, string Display, string Value, bool _IsEdit)
+        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value, bool _IsEdit)
         {
             DataTable DTAC = new DataTable();
             DataTable DTCombo = new DataTable();
@@ -325,7 +325,7 @@ namespace F21Party.Controllers
             try
             {
                 dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, dbaConnection.con);
+                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
                 Adpt.Fill(DTAC);
                 for (int i = 0; i < DTAC.Rows.Count; i++)
                 {
@@ -367,30 +367,30 @@ namespace F21Party.Controllers
         {
             string _AccessLevelDisplay = "";
             string _PositionDisplay = "";
-            string SPString;
-            _AccessLevelDisplay = frm_CreateAccount.cboAccessLevel.DisplayMember;
+            string spString;
+            _AccessLevelDisplay = frmCreateAccount.cboAccessLevel.DisplayMember;
             if (_AccessLevelDisplay == string.Empty)
                 _AccessLevelDisplay = "0";
-            _PositionDisplay = frm_CreateAccount.cboPosition.DisplayMember;
+            _PositionDisplay = frmCreateAccount.cboPosition.DisplayMember;
             if (_PositionDisplay == string.Empty)
                 _PositionDisplay = "0";
 
 
             // For Access Combobox
-            SPString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frm_CreateAccount.cboAccessLevel, SPString, "AccessLevel", "AccessID", _IsEdit);
+            AddCombo(frmCreateAccount.cboAccessLevel, spString, "AccessLevel", "AccessID", _IsEdit);
 
-            frm_CreateAccount.cboAccessLevel.SelectedValue = Convert.ToInt32(_AccessLevelDisplay); //This is in the box value you see
-            accesslevelindex = frm_CreateAccount.cboAccessLevel.SelectedIndex;
+            frmCreateAccount.cboAccessLevel.SelectedValue = Convert.ToInt32(_AccessLevelDisplay); //This is in the box value you see
+            accesslevelindex = frmCreateAccount.cboAccessLevel.SelectedIndex;
 
             // For Position Combobox
-            SPString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frm_CreateAccount.cboPosition, SPString, "PositionName", "PositionID", _IsEdit);
+            AddCombo(frmCreateAccount.cboPosition, spString, "PositionName", "PositionID", _IsEdit);
 
-            frm_CreateAccount.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
-            positionlevelindex = frm_CreateAccount.cboPosition.SelectedIndex;
+            frmCreateAccount.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
+            positionlevelindex = frmCreateAccount.cboPosition.SelectedIndex;
 
         }
 
@@ -399,18 +399,18 @@ namespace F21Party.Controllers
         public void EyeToggle()
         {
             // Set initial state
-            frm_CreateAccount.btnEye.Text = "👁️";
-            frm_CreateAccount.txtPassword.UseSystemPasswordChar = true;
+            frmCreateAccount.btnEye.Text = "👁️";
+            frmCreateAccount.txtPassword.UseSystemPasswordChar = true;
 
             // Attach click event
-            frm_CreateAccount.btnEye.Click += (s, e) =>
+            frmCreateAccount.btnEye.Click += (s, e) =>
             {
                 isPasswordShown = !isPasswordShown;
 
-                frm_CreateAccount.txtPassword.UseSystemPasswordChar = !isPasswordShown;
+                frmCreateAccount.txtPassword.UseSystemPasswordChar = !isPasswordShown;
 
                 // Toggle emoji on the button
-                frm_CreateAccount.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
+                frmCreateAccount.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
             };
         }
 

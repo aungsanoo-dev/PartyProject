@@ -27,53 +27,53 @@ namespace F21Party.Controllers
 
 
         //    clsMainDB obj_clsMainDB = new clsMainDB();
-        //    frm_LogIn obj_frmLogIn = new frm_LogIn();
+        //    frm_LogIn frmLogIn = new frm_LogIn();
         //    DataTable DT = new DataTable();
         //    DataTable DTPage = new DataTable();
         //    String UserName = "";
         //    String Password = "";
 
         //    // Attach a Shown event handler in the controller
-        //    obj_frmLogIn.Shown += (s, e) =>
+        //    frmLogIn.Shown += (s, e) =>
         //    {
-        //        obj_frmLogIn.BeginInvoke(new Action(() =>
+        //        frmLogIn.BeginInvoke(new Action(() =>
         //        {
-        //            obj_frmLogIn.txtUserName.Focus();
+        //            frmLogIn.txtUserName.Focus();
         //        }));
         //    };
 
         //Start:
-        //    obj_frmLogIn.txtUserName.Text = UserName;
-        //    obj_frmLogIn.txtPassword.Text = Password;
-        //    if (obj_frmLogIn.ShowDialog() == DialogResult.OK)
+        //    frmLogIn.txtUserName.Text = UserName;
+        //    frmLogIn.txtPassword.Text = Password;
+        //    if (frmLogIn.ShowDialog() == DialogResult.OK)
         //    {
         //        // Username Validation
-        //        if (obj_frmLogIn.txtUserName.Text.Trim().ToString() == string.Empty)
+        //        if (frmLogIn.txtUserName.Text.Trim().ToString() == string.Empty)
         //        {
         //            MessageBox.Show("Please Type User Name");
 
-        //            if (obj_frmLogIn.txtUserName.IsHandleCreated)
+        //            if (frmLogIn.txtUserName.IsHandleCreated)
         //            {
-        //                obj_frmLogIn.BeginInvoke(new Action(() =>
+        //                frmLogIn.BeginInvoke(new Action(() =>
         //                {
-        //                    obj_frmLogIn.txtUserName.Focus();
+        //                    frmLogIn.txtUserName.Focus();
         //                }));
         //            }
 
         //            goto Start;
         //        }
-        //        UserName = obj_frmLogIn.txtUserName.Text;
+        //        UserName = frmLogIn.txtUserName.Text;
 
         //        // Password Validation
-        //        if (obj_frmLogIn.txtPassword.Text.Trim().ToString() == string.Empty)
+        //        if (frmLogIn.txtPassword.Text.Trim().ToString() == string.Empty)
         //        {
         //            MessageBox.Show("Please Type Password");
 
-        //            if (obj_frmLogIn.txtPassword.IsHandleCreated)
+        //            if (frmLogIn.txtPassword.IsHandleCreated)
         //            {
-        //                obj_frmLogIn.BeginInvoke(new Action(() =>
+        //                frmLogIn.BeginInvoke(new Action(() =>
         //                {
-        //                    obj_frmLogIn.txtPassword.Focus();
+        //                    frmLogIn.txtPassword.Focus();
         //                }));
         //            }
 
@@ -81,15 +81,15 @@ namespace F21Party.Controllers
         //            goto Start;
         //        }
 
-        //        Password = obj_frmLogIn.txtPassword.Text;
+        //        Password = frmLogIn.txtPassword.Text;
 
         //        // For Select Procedure
-        //        string SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
-        //        obj_frmLogIn.txtUserName.Text.Trim().ToString(),
-        //        obj_frmLogIn.txtPassword.Text.Trim().ToString(), "", "1");
+        //        string spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
+        //        frmLogIn.txtUserName.Text.Trim().ToString(),
+        //        frmLogIn.txtPassword.Text.Trim().ToString(), "", "1");
 
         //        // Pass it to DT to check the UserLevel
-        //        DT = obj_clsMainDB.SelectData(SPString);
+        //        DT = obj_clsMainDB.SelectData(spString);
 
         //        // For Pages
         //        string SPpage = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);

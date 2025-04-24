@@ -31,13 +31,13 @@ namespace F21Party.DBA
             }
         }
 
-        public DataTable SelectData(string SPString)
+        public DataTable SelectData(string spString)
         {
             DataTable DT = new DataTable();
             try
             {
                 DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, con);
+                SqlDataAdapter Adpt = new SqlDataAdapter(spString, con);
                 Adpt.Fill(DT);
             }
             catch (Exception ex)
@@ -51,14 +51,14 @@ namespace F21Party.DBA
             return DT;
         }
 
-        public void ToolStripTextBoxData(ToolStripTextBox tstToolStrip, string SPString, string FieldName)
+        public void ToolStripTextBoxData(ToolStripTextBox tstToolStrip, string spString, string FieldName)
         {
             DataTable DT = new DataTable();
             AutoCompleteStringCollection Source = new AutoCompleteStringCollection();
             try
             {
                 DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, con);
+                SqlDataAdapter Adpt = new SqlDataAdapter(spString, con);
                 Adpt.Fill(DT);
                 if (DT.Rows.Count > 0)
                 {

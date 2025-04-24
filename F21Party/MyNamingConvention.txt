@@ -1,0 +1,10 @@
+Class Name = Pascal Case
+
+
+
+Variable Name = Camel Case
+Object Variable Name = Camel Case
+
+
+
+Form Name = Camel Snake Case

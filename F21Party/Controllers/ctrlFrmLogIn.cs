@@ -9,11 +9,11 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmLogIn
     {
-        public Views.frm_LogIn obj_frmLogIn; // Declare the View
+        public Views.frm_LogIn frmLogIn; // Declare the View
 
-        public CtrlFrmLogIn(Views.frm_LogIn _LogIn)
+        public CtrlFrmLogIn(Views.frm_LogIn logInForm)
         {
-            obj_frmLogIn = _LogIn; // Create the View
+            frmLogIn = logInForm; // Create the View
         }
 
         bool isPasswordShown = false;
@@ -21,17 +21,17 @@ namespace F21Party.Controllers
         public void EyeToggle()
         {
             // Set initial icon and masking state
-            obj_frmLogIn.btnEye.Text = "👁️";
-            obj_frmLogIn.txtPassword.UseSystemPasswordChar = true;
+            frmLogIn.btnEye.Text = "👁️";
+            frmLogIn.txtPassword.UseSystemPasswordChar = true;
 
             // Attach the toggle event
-            obj_frmLogIn.btnEye.Click += (s, e) =>
+            frmLogIn.btnEye.Click += (s, e) =>
             {
                 isPasswordShown = !isPasswordShown;
 
-                obj_frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
+                frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
 
-                obj_frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
+                frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
             };
         }
     }

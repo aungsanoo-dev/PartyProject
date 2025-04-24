@@ -9,11 +9,11 @@ bool focusPasswordNextTime = false; // function variable	// good
 
 // PascalCase
 DataSet DS = new DataSet();	// change variable name
-	SqlDataAdapter Adpt = new SqlDataAdapter(SPString, con);  // change variable name
+	SqlDataAdapter Adpt = new SqlDataAdapter(spString, con);  // change variable name
 function name ShowMenu("");  // good
 string UserName = frmLogIn.txtUserName.Text.Trim();  // global variable is good
 	string Password = frmLogIn.txtPassword.Text.Trim(); // 
-	string SPString			
+	string spString			
 List<string> WriteAccessPages = new List<string>();
 
 
