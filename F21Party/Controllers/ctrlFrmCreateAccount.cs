@@ -25,9 +25,9 @@ namespace F21Party.Controllers
             frm_CreateAccount = createAccountForm; // Create the View
         }
 
-        clsMainDB obj_clsMainDB = new clsMainDB();
-        clsAccountSetting obj_clsAccountSetting = new clsAccountSetting();
-        clsUserSetting obj_clsUserSetting = new clsUserSetting();
+        DbaConnection dbaConnection = new DbaConnection();
+        DbaAccountSetting dbaAccountSetting = new DbaAccountSetting();
+        DbaUserSetting dbaUserSetting = new DbaUserSetting();
 
         public int accesslevelindex;
         public int positionlevelindex;
@@ -40,7 +40,7 @@ namespace F21Party.Controllers
             string SPString;
             SPString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
             DataTable DT = new DataTable();
-            DT = obj_clsMainDB.SelectData(SPString);
+            DT = dbaConnection.SelectData(SPString);
             List<string> FalseLogIn = new List<string>();
 
             for (int i = 0; i < DT.Rows.Count; i++)
@@ -158,7 +158,7 @@ namespace F21Party.Controllers
                     SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
                     Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                    DT = obj_clsMainDB.SelectData(SPString);
+                    DT = dbaConnection.SelectData(SPString);
                     if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
                     {
                         
@@ -172,7 +172,7 @@ namespace F21Party.Controllers
                         SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtUserName.Text.Trim(), @"\s+", " "),
                         "0", "0", "4");
 
-                        DT = obj_clsMainDB.SelectData(SPString);
+                        DT = dbaConnection.SelectData(SPString);
                         if (DT.Rows.Count > 0 && _AccountID != Convert.ToInt32(DT.Rows[0]["AccountID"]))
                         {
                             
@@ -183,41 +183,41 @@ namespace F21Party.Controllers
                         else
                         {
                             // For User
-                            obj_clsUserSetting.UID = Convert.ToInt32(_UserID);
-                            obj_clsUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
-                            obj_clsUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
-                            obj_clsUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
-                            obj_clsUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
+                            dbaUserSetting.UID = Convert.ToInt32(_UserID);
+                            dbaUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
+                            dbaUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
 
                             // For Account
-                            obj_clsAccountSetting.AccountID = Convert.ToInt32(_AccountID);
+                            dbaAccountSetting.AccountID = Convert.ToInt32(_AccountID);
 
-                            obj_clsAccountSetting.UNAME = Regex.Replace(frm_CreateAccount.txtUserName.Text.Trim(), @"\s+", " ");
-                            obj_clsAccountSetting.PASS = Regex.Replace(frm_CreateAccount.txtPassword.Text.Trim(), @"\s+", " ");
-                            obj_clsAccountSetting.ACCESSID = Convert.ToInt32(frm_CreateAccount.cboAccessLevel.SelectedValue);
+                            dbaAccountSetting.UNAME = Regex.Replace(frm_CreateAccount.txtUserName.Text.Trim(), @"\s+", " ");
+                            dbaAccountSetting.PASS = Regex.Replace(frm_CreateAccount.txtPassword.Text.Trim(), @"\s+", " ");
+                            dbaAccountSetting.ACCESSID = Convert.ToInt32(frm_CreateAccount.cboAccessLevel.SelectedValue);
 
 
                             if (_IsEdit)
                             {
-                                //obj_clsUserSetting.ACTION = 1;
-                                //obj_clsUserSetting.SaveData();
+                                //dbaUserSetting.ACTION = 1;
+                                //dbaUserSetting.SaveData();
                     
-                                obj_clsAccountSetting.USERID = Convert.ToInt32(_UserID);
-                                if (obj_clsAccountSetting.USERID == Program.UserID)
+                                dbaAccountSetting.USERID = Convert.ToInt32(_UserID);
+                                if (dbaAccountSetting.USERID == Program.UserID)
                                 {
                                     SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserID.ToString(),
                                         "0", "0", "6");
 
-                                    DT = obj_clsMainDB.SelectData(SPString);
+                                    DT = dbaConnection.SelectData(SPString);
 
-                                    if(obj_clsAccountSetting.ACCESSID != Convert.ToInt32(DT.Rows[0]["AccessID"]))
+                                    if(dbaAccountSetting.ACCESSID != Convert.ToInt32(DT.Rows[0]["AccessID"]))
                                     {
                                         MessageBox.Show("You cannot change your own account's access");
                                     }
                                     else
                                     {
-                                        obj_clsAccountSetting.ACTION = 1;
-                                        obj_clsAccountSetting.SaveData();
+                                        dbaAccountSetting.ACTION = 1;
+                                        dbaAccountSetting.SaveData();
 
                                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                                         frm_CreateAccount.Close();
@@ -228,8 +228,8 @@ namespace F21Party.Controllers
                                 else if (Program.UserAccessLevel == "Admin" || Program.UserAccessLevel == "Admin VIP")
                                 {
 
-                                    obj_clsAccountSetting.ACTION = 1;
-                                    obj_clsAccountSetting.SaveData();
+                                    dbaAccountSetting.ACTION = 1;
+                                    dbaAccountSetting.SaveData();
 
                                     MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                                     frm_CreateAccount.Close();
@@ -244,17 +244,17 @@ namespace F21Party.Controllers
 
                             else
                             {
-                                obj_clsUserSetting.ACTION = 0;
-                                obj_clsUserSetting.SaveData();
+                                dbaUserSetting.ACTION = 0;
+                                dbaUserSetting.SaveData();
 
                                 SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
                                     Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " "), "1");
 
-                                DT = obj_clsMainDB.SelectData(SPString);
-                                obj_clsAccountSetting.USERID = Convert.ToInt32(DT.Rows[0]["UserID"]);
+                                DT = dbaConnection.SelectData(SPString);
+                                dbaAccountSetting.USERID = Convert.ToInt32(DT.Rows[0]["UserID"]);
 
-                                obj_clsAccountSetting.ACTION = 0;
-                                obj_clsAccountSetting.SaveData();
+                                dbaAccountSetting.ACTION = 0;
+                                dbaAccountSetting.SaveData();
 
                                 MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
                                 frm_CreateAccount.Close();
@@ -270,7 +270,7 @@ namespace F21Party.Controllers
                     SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " "),
                     Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                    DT = obj_clsMainDB.SelectData(SPString);
+                    DT = dbaConnection.SelectData(SPString);
                     if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
                     {
                         MessageBox.Show("This User is Already Exist");
@@ -279,26 +279,26 @@ namespace F21Party.Controllers
                     }
                     else
                     {
-                        obj_clsUserSetting.UID = Convert.ToInt32(_UserID);
-                        obj_clsUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
-                        obj_clsUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
-                        obj_clsUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
-                        obj_clsUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
+                        dbaUserSetting.UID = Convert.ToInt32(_UserID);
+                        dbaUserSetting.FNAME = Regex.Replace(frm_CreateAccount.txtFullName.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.ADDRESS = Regex.Replace(frm_CreateAccount.txtAddress.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.PHONE = Regex.Replace(frm_CreateAccount.txtPhone.Text.Trim(), @"\s+", " ");
+                        dbaUserSetting.PID = Convert.ToInt32(frm_CreateAccount.cboPosition.SelectedValue);
 
 
                         if (_IsEdit)
                         {
-                            obj_clsUserSetting.UID = Convert.ToInt32(_UserID);
-                            obj_clsUserSetting.ACTION = 1;
-                            obj_clsUserSetting.SaveData();
+                            dbaUserSetting.UID = Convert.ToInt32(_UserID);
+                            dbaUserSetting.ACTION = 1;
+                            dbaUserSetting.SaveData();
 
                             MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                             frm_CreateAccount.Close();
                         }
                         else
                         {
-                            obj_clsUserSetting.ACTION = 0;
-                            obj_clsUserSetting.SaveData();
+                            dbaUserSetting.ACTION = 0;
+                            dbaUserSetting.SaveData();
                             MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
                             frm_CreateAccount.Close();
                         }
@@ -324,8 +324,8 @@ namespace F21Party.Controllers
 
             try
             {
-                obj_clsMainDB.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, obj_clsMainDB.con);
+                dbaConnection.DataBaseConn();
+                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, dbaConnection.con);
                 Adpt.Fill(DTAC);
                 for (int i = 0; i < DTAC.Rows.Count; i++)
                 {
@@ -359,7 +359,7 @@ namespace F21Party.Controllers
 
             finally
             {
-                obj_clsMainDB.con.Close();
+                dbaConnection.con.Close();
             }
         }
 

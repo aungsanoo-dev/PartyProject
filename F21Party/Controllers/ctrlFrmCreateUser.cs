@@ -20,9 +20,9 @@ namespace F21Party.Controllers
         {
             frm_CreateUser = createUserForm; // Create the View
         }
-        clsMainDB obj_clsMainDB = new clsMainDB();
-        clsUserSetting obj_clsUserSetting = new clsUserSetting();
-        public int positionlevelindex;
+        DbaConnection dbaConnection = new DbaConnection();
+        DbaUserSetting dbaUserSetting = new DbaUserSetting();
+        public int positionLevelIndex;
         public bool _IsEdit;
         public int _UserID;
 
@@ -43,8 +43,8 @@ namespace F21Party.Controllers
 
             try
             {
-                obj_clsMainDB.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, obj_clsMainDB.con);
+                dbaConnection.DataBaseConn();
+                SqlDataAdapter Adpt = new SqlDataAdapter(SPString, dbaConnection.con);
                 Adpt.Fill(DTAC);
                 for (int i = 0; i < DTAC.Rows.Count; i++)
                 {
@@ -66,7 +66,7 @@ namespace F21Party.Controllers
 
             finally
             {
-                obj_clsMainDB.con.Close();
+                dbaConnection.con.Close();
             }
         }
 
@@ -84,7 +84,7 @@ namespace F21Party.Controllers
             AddCombo(frm_CreateUser.cboPosition, SPString, "PositionName", "PositionID");
 
             frm_CreateUser.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
-            positionlevelindex = frm_CreateUser.cboPosition.SelectedIndex;
+            positionLevelIndex = frm_CreateUser.cboPosition.SelectedIndex;
 
         }
 
@@ -124,7 +124,7 @@ namespace F21Party.Controllers
                 SPString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frm_CreateUser.txtFullName.Text.Trim(), @"\s+", " "),
                 Regex.Replace(frm_CreateUser.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                DT = obj_clsMainDB.SelectData(SPString);
+                DT = dbaConnection.SelectData(SPString);
                 if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
                 {
                     MessageBox.Show("This User is Already Exist");
@@ -133,26 +133,26 @@ namespace F21Party.Controllers
                 }
                 else
                 {
-                    obj_clsUserSetting.UID = Convert.ToInt32(_UserID);
-                    obj_clsUserSetting.FNAME = Regex.Replace(frm_CreateUser.txtFullName.Text.Trim(), @"\s+", " ");
-                    obj_clsUserSetting.ADDRESS = Regex.Replace(frm_CreateUser.txtAddress.Text.Trim(), @"\s+", " ");
-                    obj_clsUserSetting.PHONE = Regex.Replace(frm_CreateUser.txtPhone.Text.Trim(), @"\s+", " ");
-                    obj_clsUserSetting.PID = Convert.ToInt32(frm_CreateUser.cboPosition.SelectedValue);
+                    dbaUserSetting.UID = Convert.ToInt32(_UserID);
+                    dbaUserSetting.FNAME = Regex.Replace(frm_CreateUser.txtFullName.Text.Trim(), @"\s+", " ");
+                    dbaUserSetting.ADDRESS = Regex.Replace(frm_CreateUser.txtAddress.Text.Trim(), @"\s+", " ");
+                    dbaUserSetting.PHONE = Regex.Replace(frm_CreateUser.txtPhone.Text.Trim(), @"\s+", " ");
+                    dbaUserSetting.PID = Convert.ToInt32(frm_CreateUser.cboPosition.SelectedValue);
 
 
                     if (_IsEdit)
                     {
-                        obj_clsUserSetting.UID = Convert.ToInt32(_UserID);
-                        obj_clsUserSetting.ACTION = 1;
-                        obj_clsUserSetting.SaveData();
+                        dbaUserSetting.UID = Convert.ToInt32(_UserID);
+                        dbaUserSetting.ACTION = 1;
+                        dbaUserSetting.SaveData();
 
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                         frm_CreateUser.Close();
                     }
                     else
                     {
-                        obj_clsUserSetting.ACTION = 0;
-                        obj_clsUserSetting.SaveData();
+                        dbaUserSetting.ACTION = 0;
+                        dbaUserSetting.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
                         frm_CreateUser.Close();
                     }

@@ -19,12 +19,12 @@ namespace F21Party.Controllers
             frm_AccountList = accountForm; // Create the View
         }
         string SPString = "";
-        clsMainDB obj_clsMainDB = new clsMainDB();
+        DbaConnection dbaConnection = new DbaConnection();
 
         public void ShowData()
         {
             SPString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "5");
-            frm_AccountList.dgvUserSetting.DataSource = obj_clsMainDB.SelectData(SPString);
+            frm_AccountList.dgvUserSetting.DataSource = dbaConnection.SelectData(SPString);
             frm_AccountList.dgvUserSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             frm_AccountList.dgvUserSetting.Columns[0].FillWeight = 10;
@@ -35,7 +35,7 @@ namespace F21Party.Controllers
             frm_AccountList.dgvUserSetting.Columns[5].FillWeight = 10;
             frm_AccountList.dgvUserSetting.Columns[6].FillWeight = 22;
 
-            obj_clsMainDB.ToolStripTextBoxData(frm_AccountList.tstSearchWith, SPString, "UserName");
+            dbaConnection.ToolStripTextBoxData(frm_AccountList.tstSearchWith, SPString, "UserName");
         }
 
         public void ShowEntry()
@@ -57,7 +57,7 @@ namespace F21Party.Controllers
 
                 SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frm._UserID, "0", "0", "6");
                 DataTable DT = new DataTable();
-                DT = obj_clsMainDB.SelectData(SPString);
+                DT = dbaConnection.SelectData(SPString);
 
                 
 
@@ -80,7 +80,7 @@ namespace F21Party.Controllers
         }
         public void TsbDelete()
         {
-            clsAccountSetting clsAccountSetting = new clsAccountSetting();
+            DbaAccountSetting dbaAccountSetting = new DbaAccountSetting();
             if (frm_AccountList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
@@ -96,9 +96,9 @@ namespace F21Party.Controllers
                     }
                     else
                     {
-                        clsAccountSetting.USERID = Convert.ToInt32(frm_AccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
-                        clsAccountSetting.ACTION = 2;
-                        clsAccountSetting.SaveData();
+                        dbaAccountSetting.USERID = Convert.ToInt32(frm_AccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
+                        dbaAccountSetting.ACTION = 2;
+                        dbaAccountSetting.SaveData();
                         MessageBox.Show("Successfully Delete");
                         ShowData();
                     }  
@@ -108,7 +108,7 @@ namespace F21Party.Controllers
         public void TsbSearch()
         {
             SPString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", frm_AccountList.tstSearchWith.Text.Trim().ToString(), "0", "0", "2");
-            frm_AccountList.dgvUserSetting.DataSource = obj_clsMainDB.SelectData(SPString);
+            frm_AccountList.dgvUserSetting.DataSource = dbaConnection.SelectData(SPString);
         }
         public void HoverToolTip()
         {

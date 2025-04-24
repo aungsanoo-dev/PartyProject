@@ -178,7 +178,7 @@ namespace F21Party.Views
             this.Controls.Add(this.dgvUserSetting);
             this.Controls.Add(this.toolStrip1);
             this.Name = "frm_UserList";
-            this.Text = "Account List";
+            this.Text = "User List";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frm_AccountList_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).EndInit();

@@ -11,7 +11,7 @@ using F21Party;
 
 namespace F21Party.DBA
 {
-    class clsMainDB
+    class DbaConnection
     {
         public SqlConnection con;
         DataSet DS = new DataSet();

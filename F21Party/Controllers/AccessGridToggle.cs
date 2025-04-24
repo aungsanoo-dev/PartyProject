@@ -48,11 +48,11 @@ namespace F21Party.Controllers
 
                 // Fill extraGrid with data:
                 // Instantiate your data access object.
-                clsMainDB obj_clsMainDB = new clsMainDB();
+                DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
                 string SPString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
                 // Set the DataSource of the extra grid.
-                extraAccessGrid.DataSource = obj_clsMainDB.SelectData(SPString);
+                extraAccessGrid.DataSource = dbaConnection.SelectData(SPString);
                 // Configure the extra grid's appearance.
                 extraAccessGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 

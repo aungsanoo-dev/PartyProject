@@ -20,7 +20,7 @@ namespace F21Party
         }
 
         DataTable DT = new DataTable();
-        clsMainDB obj_clsMainDB = new clsMainDB();
+        DbaConnection dbaConnection = new DbaConnection();
         List<String> pagename = new List<String>();
 
 
@@ -33,7 +33,7 @@ namespace F21Party
         {
             
                 string SPString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
-                DT = obj_clsMainDB.SelectData(SPString);
+                DT = dbaConnection.SelectData(SPString);
                 if (DT.Rows.Count > 0)
                 {
                     for (int i = 0; i < DT.Rows.Count; i++)

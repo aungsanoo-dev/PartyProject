@@ -9,7 +9,7 @@ using System.Data.SqlClient;
 
 namespace F21Party.DBA
 {
-    class clsAccountSetting
+    class DbaAccountSetting
     {
         public int AccountID { get; set; }
         public int USERID { get; set; }
@@ -18,14 +18,14 @@ namespace F21Party.DBA
         public int ACCESSID { get; set; }
         public int ACTION { get; set; }
 
-        clsMainDB obj_clsMainDB = new clsMainDB();
+        DbaConnection dbaConnection = new DbaConnection();
 
         public void SaveData()
         {
             try
             {
-                obj_clsMainDB.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_Insert_Accounts", obj_clsMainDB.con);
+                dbaConnection.DataBaseConn();
+                SqlCommand sql = new SqlCommand("SP_Insert_Accounts", dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
                 sql.Parameters.AddWithValue("@AccountID", USERID);
                 sql.Parameters.AddWithValue("@UserID", USERID);
@@ -41,7 +41,7 @@ namespace F21Party.DBA
             }
             finally
             {
-                obj_clsMainDB.con.Close();
+                dbaConnection.con.Close();
             }
         }
     }

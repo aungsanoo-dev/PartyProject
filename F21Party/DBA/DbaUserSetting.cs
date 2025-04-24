@@ -10,7 +10,7 @@ using System.Security.Cryptography;
 
 namespace F21Party.DBA
 {
-    internal class clsUserSetting
+    internal class DbaUserSetting
     {
         public int UID { get; set; }
         public string FNAME { get; set; }
@@ -19,14 +19,14 @@ namespace F21Party.DBA
         public int PID { get; set; }
         public int ACTION { get; set; }
 
-        clsMainDB obj_clsMainDB = new clsMainDB();
+        DbaConnection dbaConnection = new DbaConnection();
 
         public void SaveData()
         {
             try
             {
-                obj_clsMainDB.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_insert_Users", obj_clsMainDB.con);
+                dbaConnection.DataBaseConn();
+                SqlCommand sql = new SqlCommand("SP_insert_Users", dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
                 sql.Parameters.AddWithValue("@UserID", UID);
                 sql.Parameters.AddWithValue("@FullName", FNAME);
@@ -42,7 +42,7 @@ namespace F21Party.DBA
             }
             finally
             {
-                obj_clsMainDB.con.Close();
+                dbaConnection.con.Close();
             }
         }
     }

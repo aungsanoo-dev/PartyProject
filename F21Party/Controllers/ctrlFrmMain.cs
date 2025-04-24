@@ -57,7 +57,7 @@ namespace F21Party.Controllers
                 return;
             }
 
-            clsMainDB obj_clsMainDB = new clsMainDB();
+            DbaConnection dbaConnection = new DbaConnection();
             DataTable DT = new DataTable();
             DataTable DTPage = new DataTable();
             DataTable DTAccess = new DataTable();
@@ -108,7 +108,7 @@ namespace F21Party.Controllers
                 string SPString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
                     UserName, Password, "", "1");
 
-                DT = obj_clsMainDB.SelectData(SPString);
+                DT = dbaConnection.SelectData(SPString);
 
                 if (DT.Rows.Count == 0)
                 {
@@ -124,13 +124,13 @@ namespace F21Party.Controllers
                 // For AccessLevel
                 string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
                     "", 1);
-                DTAccess = obj_clsMainDB.SelectData(SPAccess);
+                DTAccess = dbaConnection.SelectData(SPAccess);
                 Program.UserAccessLevel = DTAccess.Rows[0]["AccessLevel"].ToString();
 
                 // For Pages
                 string SPpage = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
                 //string SPpage = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
-                DTPage = obj_clsMainDB.SelectData(SPpage);
+                DTPage = dbaConnection.SelectData(SPpage);
 
                 // To Check Read and Write Value
                 List<string> ReadWrite = new List<string>();
@@ -154,7 +154,7 @@ namespace F21Party.Controllers
                     string SPLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", 
                         Program.UserAccessID, row["PageName"].ToString(), "Write", 3);
 
-                    DTAccessPage = obj_clsMainDB.SelectData(SPLevel);
+                    DTAccessPage = dbaConnection.SelectData(SPLevel);
                     if (DTAccessPage == null || DTAccessPage.Rows.Count == 0)
                     {
                         continue;
@@ -173,7 +173,7 @@ namespace F21Party.Controllers
                     string SPLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'",
                         Program.UserAccessID, row["PageName"].ToString(), "Read", 3);
 
-                    DTAccessPage = obj_clsMainDB.SelectData(SPLevel);
+                    DTAccessPage = dbaConnection.SelectData(SPLevel);
                     if (DTAccessPage == null || DTAccessPage.Rows.Count == 0)
                     {
                         continue;

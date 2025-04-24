@@ -73,9 +73,9 @@
     <Compile Include="Controllers\AccessGridToggle.cs" />
     <Compile Include="Controllers\UserGridToggle.cs" />
     <Compile Include="Controllers\testdel.cs" />
-    <Compile Include="DBA\clsMainDB.cs" />
-    <Compile Include="DBA\clsAccountSetting.cs" />
-    <Compile Include="DBA\clsUserSetting.cs" />
+    <Compile Include="DBA\DbaConnection.cs" />
+    <Compile Include="DBA\DbaAccountSetting.cs" />
+    <Compile Include="DBA\DbaUserSetting.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
