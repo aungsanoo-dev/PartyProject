@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using F21Party.DBA;
-using F21Party.Views;
+//using F21Party.Views;
 using System.Data.SqlClient;
 using System.Data;
 using System.Windows.Forms;

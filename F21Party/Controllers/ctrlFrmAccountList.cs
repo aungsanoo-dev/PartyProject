@@ -13,7 +13,7 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmAccountList
     {
-        public frm_AccountList frmAccountList; // Declare the View
+        frm_AccountList frmAccountList; // Declare the View
         public CtrlFrmAccountList(frm_AccountList accountForm)
         {
             frmAccountList = accountForm; // Create the View
@@ -40,14 +40,23 @@ namespace F21Party.Controllers
 
         public void ShowEntry()
         {
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvUserSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+                    "", 1);
+            DataTable DTAccess = dbaConnection.SelectData(SPAccess);
+
             if (frmAccountList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
+            // Not Allowed to change SuperAdmin
+            else if (DTAccess.Rows[0]["AccessLevel"].ToString().Trim().ToUpper() == "SUPERADMIN")
+            {
+                MessageBox.Show("You cannont change SuperAdmin account!");
+            }
             else
             {
                 frm_CreateAccount frmCreateAccount = new frm_CreateAccount();
-                
+
                 frmCreateAccount._UserID = Convert.ToInt32(frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
                 frmCreateAccount.txtUserName.Text = frmAccountList.dgvUserSetting.CurrentRow.Cells["UserName"].Value.ToString();
                 frmCreateAccount.txtPassword.Text = frmAccountList.dgvUserSetting.CurrentRow.Cells["Password"].Value.ToString();
@@ -58,8 +67,6 @@ namespace F21Party.Controllers
                 spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmCreateAccount._UserID, "0", "0", "6");
                 DataTable DT = new DataTable();
                 DT = dbaConnection.SelectData(spString);
-
-                
 
                 frmCreateAccount.txtFullName.Text = DT.Rows[0]["FullName"].ToString();
                 frmCreateAccount.txtFullName.Enabled = false;
@@ -73,6 +80,11 @@ namespace F21Party.Controllers
                 frmCreateAccount.cboPosition.DisplayMember = DT.Rows[0]["PositionID"].ToString();
                 frmCreateAccount.cboPosition.Enabled = false;
 
+                if (Program.UserAccessLevel.Trim().ToUpper() == "SUPERADMIN")
+                {
+                    frmCreateAccount.cboAccessLevel.Enabled = false;
+                }
+
                 frmCreateAccount._IsEdit = true;
                 frmCreateAccount.ShowDialog();
                 ShowData();
@@ -81,16 +93,23 @@ namespace F21Party.Controllers
         public void TsbDelete()
         {
             DbaAccountSetting dbaAccountSetting = new DbaAccountSetting();
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvUserSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+                    "", 1);
+            DataTable DTAccess = dbaConnection.SelectData(SPAccess);
             if (frmAccountList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
+            }
+            else if (DTAccess.Rows[0]["AccessLevel"].ToString().Trim().ToUpper() == "SUPERADMIN")
+            {
+                MessageBox.Show("You cannont delete SuperAdmin account.");
             }
             else
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
                  MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if(frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
+                    if (frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
                     {
                         MessageBox.Show("You cannot delete your own account!");
                     }
@@ -101,7 +120,7 @@ namespace F21Party.Controllers
                         dbaAccountSetting.SaveData();
                         MessageBox.Show("Successfully Delete");
                         ShowData();
-                    }  
+                    }
                 }
             }
         }

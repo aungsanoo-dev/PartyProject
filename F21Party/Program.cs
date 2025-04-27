@@ -14,7 +14,7 @@ namespace F21Party
         public static int UserID;
         public static int UserAccessID;
         public static string UserAccessLevel;
-        public static string TestingMessage;
+        //public static string TestingMessage;
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

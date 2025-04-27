@@ -14,7 +14,7 @@ namespace F21Party.Views
 {
     public partial class frm_CreateUser : Form
     {
-        CtrlFrmCreateUser ctrlFrmRegisterUser;
+        private CtrlFrmCreateUser ctrlFrmRegisterUser;
         public int _AccountID = 0;
         public int _UserID = 0;
         public bool _IsEdit = false;

@@ -16,9 +16,9 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateAccount
     {
-        public frm_CreateAccount frmCreateAccount;// Declare the View
-        public bool _IsEnabled = true;
-        public bool _LocalIsEnabled;
+        frm_CreateAccount frmCreateAccount;// Declare the View
+        private bool _IsEnabled = true;
+        private bool _LocalIsEnabled;
 
         public CtrlFrmCreateAccount(frm_CreateAccount createAccountForm)
         {
@@ -29,11 +29,11 @@ namespace F21Party.Controllers
         DbaAccountSetting dbaAccountSetting = new DbaAccountSetting();
         DbaUserSetting dbaUserSetting = new DbaUserSetting();
 
-        public int accesslevelindex;
-        public int positionlevelindex;
-        public bool _IsEdit;
-        public int _UserID;
-        public int _AccountID;
+        int accesslevelindex;
+        int positionlevelindex;
+        bool _IsEdit;
+        int _UserID;
+        int _AccountID;
 
         public void AccessComboChange(bool _IsEdit)
         {
@@ -225,7 +225,7 @@ namespace F21Party.Controllers
 
                                     
                                 }
-                                else if (Program.UserAccessLevel == "Admin" || Program.UserAccessLevel == "Admin VIP")
+                                else if (Program.UserAccessLevel == "Admin" || Program.UserAccessLevel == "SuperAdmin")
                                 {
 
                                     dbaAccountSetting.ACTION = 1;
@@ -236,7 +236,7 @@ namespace F21Party.Controllers
                                 }
                                 else
                                 {
-                                    MessageBox.Show("Only Admin and Admin VIP can change the access level!");
+                                    MessageBox.Show("Only Admin and SuperAdmin can change the access level!");
                                 }
 
                                 
@@ -332,17 +332,21 @@ namespace F21Party.Controllers
                     Dr = DTCombo.NewRow();
                     if (_IsEdit != true)
                     {
+                        
                         if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "ADMIN")
                         {
                             continue;
                         }
                     }
-                    
 
-                    if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "ADMIN VIP")
+                    if (Program.UserAccessLevel.Trim().ToUpper() != "SUPERADMIN")
                     {
-                        continue;
+                        if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "SUPERADMIN")
+                        {
+                            continue;
+                        }
                     }
+                    
                     Dr[Display] = DTAC.Rows[i][Display];
                     Dr[Value] = DTAC.Rows[i][Value];
                     DTCombo.Rows.Add(Dr);
