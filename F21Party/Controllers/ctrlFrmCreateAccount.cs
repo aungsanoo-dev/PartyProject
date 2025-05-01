@@ -45,7 +45,7 @@ namespace F21Party.Controllers
 
             for (int i = 0; i < DT.Rows.Count; i++)
             {
-                if (DT.Rows[i]["LogIn"].ToString() == "False")
+                if (DT.Rows[i]["LogInAccess"].ToString() == "False")
                 {
                     FalseLogIn.Add(DT.Rows[i]["AccessLevel"].ToString());
                 }
@@ -201,7 +201,17 @@ namespace F21Party.Controllers
                             {
                                 //dbaUserSetting.ACTION = 1;
                                 //dbaUserSetting.SaveData();
-                    
+
+
+                                //string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "",
+                                //    "", 0);
+                                //DataTable DTAccess = dbaConnection.SelectData(SPAccess);
+
+                                //for(int i = 0; i <=  DTAccess.Rows.Count; i++)
+                                //{
+                                //    MessageBox.Show(DTAccess);
+                                //}
+
                                 dbaAccountSetting.USERID = Convert.ToInt32(_UserID);
                                 if (dbaAccountSetting.USERID == Program.UserID)
                                 {
@@ -225,18 +235,15 @@ namespace F21Party.Controllers
 
                                     
                                 }
-                                else if (Program.UserAccessLevel == "Admin" || Program.UserAccessLevel == "SuperAdmin")
+                                else
                                 {
+                                    //MessageBox.Show("Only Admin and SuperAdmin can change the access level!");
 
                                     dbaAccountSetting.ACTION = 1;
                                     dbaAccountSetting.SaveData();
 
                                     MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                                     frmCreateAccount.Close();
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Only Admin and SuperAdmin can change the access level!");
                                 }
 
                                 
@@ -329,24 +336,78 @@ namespace F21Party.Controllers
                 Adpt.Fill(DTAC);
                 for (int i = 0; i < DTAC.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
-                    if (_IsEdit != true)
+                    Dr = DTCombo.NewRow(); 
+
+                    if(Program.UserAccessID == 1 && Display == "AccessLevel")
                     {
-                        
-                        if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "ADMIN")
+                        // SuperAdmin Access is only visible when it is edited by SuperAdmin to itself
+                        if(_IsEdit && Convert.ToInt32(frmCreateAccount.cboAccessLevel.DisplayMember) == Program.UserAccessID)
                         {
-                            continue;
+                            
+                        }
+                        else
+                        {
+                            if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin.
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    if(_IsEdit)
+                    {
+                        if (Program.UserAccessID != 1 && Display == "AccessLevel")
+                        {
+                            if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin.
+                            {
+                                continue;
+                            }
+                        }
+                        if (Display == "AccessLevel" && Convert.ToInt32(frmCreateAccount.cboAccessLevel.DisplayMember) >= Program.UserAccessID)
+                        {
+                            if (Convert.ToInt32(DTAC.Rows[i][Value]) < Program.UserAccessID) // AccessID comparison
+                            {
+                                continue; // Remove Specific Accesslevel from Combo box.
+                            }
+                        }
+                        
+                    }
+                    else
+                    {
+                        if (Program.UserAccessID != 0 && Display == "AccessLevel")
+                        {
+                            if (Convert.ToInt32(DTAC.Rows[i][Value]) < Program.UserAccessID) // AccessID comparison
+                            {
+                                continue; // Remove Specific Accesslevel from Combo box.
+                            }
+                        }
+
+                        if (Program.UserAccessID == 0 && Display == "AccessLevel")
+                        {
+                            if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1 || Convert.ToInt32(DTAC.Rows[i][Value]) == 2) // 1 is SuperAdmin. 2 is Admin.
+                            {
+                                continue;
+                            }
                         }
                     }
 
-                    if (Program.UserAccessLevel.Trim().ToUpper() != "SUPERADMIN")
-                    {
-                        if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "SUPERADMIN")
-                        {
-                            continue;
-                        }
-                    }
-                    
+
+                        //if (_IsEdit != true)
+                        //{
+
+                        //    if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "ADMIN")
+                        //    {
+                        //        continue;
+                        //    }
+                        //}
+
+                        //if (Program.UserAccessLevel.Trim().ToUpper() != "SUPERADMIN")
+                        //{
+                        //    if (DTAC.Rows[i][Display].ToString().Trim().ToUpper() == "SUPERADMIN")
+                        //    {
+                        //        continue;
+                        //    }
+                        //}
+
                     Dr[Display] = DTAC.Rows[i][Display];
                     Dr[Value] = DTAC.Rows[i][Value];
                     DTCombo.Rows.Add(Dr);

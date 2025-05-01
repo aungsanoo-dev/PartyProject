@@ -21,35 +21,36 @@ namespace F21Party.Controllers
         string spString = "";
         DbaConnection dbaConnection = new DbaConnection();
 
+        
         public void ShowData()
         {
             spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "5");
-            frmAccountList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
-            frmAccountList.dgvUserSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            frmAccountList.dgvAccountSetting.DataSource = dbaConnection.SelectData(spString);
+            frmAccountList.dgvAccountSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            frmAccountList.dgvUserSetting.Columns[0].FillWeight = 10;
-            frmAccountList.dgvUserSetting.Columns[1].Visible = false;
-            frmAccountList.dgvUserSetting.Columns[2].FillWeight = 10;
-            frmAccountList.dgvUserSetting.Columns[3].FillWeight = 24;
-            frmAccountList.dgvUserSetting.Columns[4].FillWeight = 24;
-            frmAccountList.dgvUserSetting.Columns[5].FillWeight = 10;
-            frmAccountList.dgvUserSetting.Columns[6].FillWeight = 22;
+            frmAccountList.dgvAccountSetting.Columns[0].FillWeight = 10;
+            frmAccountList.dgvAccountSetting.Columns[1].Visible = false;
+            frmAccountList.dgvAccountSetting.Columns[2].FillWeight = 10;
+            frmAccountList.dgvAccountSetting.Columns[3].FillWeight = 24;
+            frmAccountList.dgvAccountSetting.Columns[4].FillWeight = 24;
+            frmAccountList.dgvAccountSetting.Columns[5].FillWeight = 10;
+            frmAccountList.dgvAccountSetting.Columns[6].FillWeight = 22;
 
             dbaConnection.ToolStripTextBoxData(frmAccountList.tstSearchWith, spString, "UserName");
         }
-
+        
         public void ShowEntry()
         {
-            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvUserSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
                     "", 1);
             DataTable DTAccess = dbaConnection.SelectData(SPAccess);
 
-            if (frmAccountList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (frmAccountList.dgvAccountSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
             // Not Allowed to change SuperAdmin
-            else if (DTAccess.Rows[0]["AccessLevel"].ToString().Trim().ToUpper() == "SUPERADMIN")
+            else if (Convert.ToInt32(DTAccess.Rows[0]["AccessID"]) == 1 && Program.UserID != 1) // AccessID 1 is SuperAdmin
             {
                 MessageBox.Show("You cannont change SuperAdmin account!");
             }
@@ -57,12 +58,12 @@ namespace F21Party.Controllers
             {
                 frm_CreateAccount frmCreateAccount = new frm_CreateAccount();
 
-                frmCreateAccount._UserID = Convert.ToInt32(frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
-                frmCreateAccount.txtUserName.Text = frmAccountList.dgvUserSetting.CurrentRow.Cells["UserName"].Value.ToString();
-                frmCreateAccount.txtPassword.Text = frmAccountList.dgvUserSetting.CurrentRow.Cells["Password"].Value.ToString();
-                frmCreateAccount.txtConfirmPassword.Text = frmAccountList.dgvUserSetting.CurrentRow.Cells["Password"].Value.ToString();
-                frmCreateAccount.cboAccessLevel.DisplayMember = frmAccountList.dgvUserSetting.CurrentRow.Cells["AccessID"].Value.ToString();
-                frmCreateAccount._AccountID = Convert.ToInt32(frmAccountList.dgvUserSetting.CurrentRow.Cells["AccountID"].Value);
+                frmCreateAccount._UserID = Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString());
+                frmCreateAccount.txtUserName.Text = frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserName"].Value.ToString();
+                frmCreateAccount.txtPassword.Text = frmAccountList.dgvAccountSetting.CurrentRow.Cells["Password"].Value.ToString();
+                frmCreateAccount.txtConfirmPassword.Text = frmAccountList.dgvAccountSetting.CurrentRow.Cells["Password"].Value.ToString();
+                frmCreateAccount.cboAccessLevel.DisplayMember = frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccessID"].Value.ToString();
+                frmCreateAccount._AccountID = Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccountID"].Value);
 
                 spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmCreateAccount._UserID, "0", "0", "6");
                 DataTable DT = new DataTable();
@@ -80,12 +81,21 @@ namespace F21Party.Controllers
                 frmCreateAccount.cboPosition.DisplayMember = DT.Rows[0]["PositionID"].ToString();
                 frmCreateAccount.cboPosition.Enabled = false;
 
-                if (Program.UserAccessLevel.Trim().ToUpper() == "SUPERADMIN")
+                //if (Program.UserAccessID == 1) // AccessID 1 is SuperAdmin
+                //{
+                //    frmCreateAccount.cboAccessLevel.Enabled = false;
+                //}
+                if (Program.UserAccessID >= Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccessID"].Value))
                 {
                     frmCreateAccount.cboAccessLevel.Enabled = false;
                 }
-
+                if(Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value) == Program.UserID)
+                {
+                    frmCreateAccount.cboAccessLevel.Enabled = false;
+                }
+                
                 frmCreateAccount._IsEdit = true;
+                frmCreateAccount.btnCreate.Text = "Save";
                 frmCreateAccount.ShowDialog();
                 ShowData();
             }
@@ -93,14 +103,14 @@ namespace F21Party.Controllers
         public void TsbDelete()
         {
             DbaAccountSetting dbaAccountSetting = new DbaAccountSetting();
-            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvUserSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
                     "", 1);
             DataTable DTAccess = dbaConnection.SelectData(SPAccess);
-            if (frmAccountList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (frmAccountList.dgvAccountSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
-            else if (DTAccess.Rows[0]["AccessLevel"].ToString().Trim().ToUpper() == "SUPERADMIN")
+            else if (Convert.ToInt32(DTAccess.Rows[0]["AccessID"]) == 1) // AccessID 1 is SuperAdmin
             {
                 MessageBox.Show("You cannont delete SuperAdmin account.");
             }
@@ -109,13 +119,13 @@ namespace F21Party.Controllers
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
                  MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    if (frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
+                    if (frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
                     {
                         MessageBox.Show("You cannot delete your own account!");
                     }
                     else
                     {
-                        dbaAccountSetting.USERID = Convert.ToInt32(frmAccountList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
+                        dbaAccountSetting.USERID = Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString());
                         dbaAccountSetting.ACTION = 2;
                         dbaAccountSetting.SaveData();
                         MessageBox.Show("Successfully Delete");
@@ -127,13 +137,13 @@ namespace F21Party.Controllers
         public void TsbSearch()
         {
             spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", frmAccountList.tstSearchWith.Text.Trim().ToString(), "0", "0", "2");
-            frmAccountList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
+            frmAccountList.dgvAccountSetting.DataSource = dbaConnection.SelectData(spString);
         }
         public void HoverToolTip()
         {
-            frmAccountList.dgvUserSetting.ShowCellToolTips = true;
+            frmAccountList.dgvAccountSetting.ShowCellToolTips = true;
 
-            foreach (DataGridViewRow row in frmAccountList.dgvUserSetting.Rows)
+            foreach (DataGridViewRow row in frmAccountList.dgvAccountSetting.Rows)
             {
                 if (!row.IsNewRow)
                 {

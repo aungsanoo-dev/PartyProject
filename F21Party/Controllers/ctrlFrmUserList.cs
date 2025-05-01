@@ -21,19 +21,34 @@ namespace F21Party.Controllers
         string spString = "";
         DbaConnection dbaConnection = new DbaConnection();
 
+       
+
         public void ShowData()
         {
-            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
             frmUserList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
             frmUserList.dgvUserSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            frmUserList.dgvUserSetting.Columns[0].FillWeight = 10;
-            frmUserList.dgvUserSetting.Columns[1].Visible = false;
-            frmUserList.dgvUserSetting.Columns[2].FillWeight = 10;
-            frmUserList.dgvUserSetting.Columns[3].FillWeight = 35;
-            frmUserList.dgvUserSetting.Columns[4].FillWeight = 35;
-            frmUserList.dgvUserSetting.Columns[5].FillWeight = 10;
+            frmUserList.dgvUserSetting.Columns[0].FillWeight = 6;
+            frmUserList.dgvUserSetting.Columns[1].FillWeight = 6;
+            frmUserList.dgvUserSetting.Columns[2].FillWeight = 16;
+            frmUserList.dgvUserSetting.Columns[3].FillWeight = 25;
+            frmUserList.dgvUserSetting.Columns[4].FillWeight = 25;
+            frmUserList.dgvUserSetting.Columns[5].Visible = false;
+            frmUserList.dgvUserSetting.Columns[6].FillWeight = 6;
+            frmUserList.dgvUserSetting.Columns[7].FillWeight = 16;
+
             //frmAccountList.dgvUserSetting.Columns[6].FillWeight = 22;
+
+            //if (!frmUserList.dgvUserSetting.Columns.Contains("HasAccount"))
+            //{
+            //    hasAccount.HeaderText = "Has Account";
+            //    hasAccount.Name = "HasAccount";
+            //    hasAccount.FillWeight = 16;
+
+            //    frmUserList.dgvUserSetting.Columns.Add(hasAccount);
+            //}
+
 
             dbaConnection.ToolStripTextBoxData(frmUserList.tstSearchWith, spString, "FullName");
         }
@@ -55,6 +70,7 @@ namespace F21Party.Controllers
                 frmCreateUser.cboPosition.DisplayMember = frmUserList.dgvUserSetting.CurrentRow.Cells["PositionID"].Value.ToString();
 
                 frmCreateUser._IsEdit = true;
+                frmCreateUser.btnCreate.Text = "Save";
                 frmCreateUser.ShowDialog();
                 ShowData();
             }
@@ -102,7 +118,23 @@ namespace F21Party.Controllers
             spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmUserList.tstSearchWith.Text.Trim().ToString(), "0", "0", "2");
             frmUserList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
         }
-        
+
+        public void HoverToolTip()
+        {
+            frmUserList.dgvUserSetting.ShowCellToolTips = true;
+
+            foreach (DataGridViewRow row in frmUserList.dgvUserSetting.Rows)
+            {
+                if (!row.IsNewRow)
+                {
+                    foreach (DataGridViewCell cell in row.Cells)
+                    {
+                        cell.ToolTipText = "Double-click to see the User's Account!";
+                    }
+                }
+            }
+        }
+
         public void TsbNew()
         {
             frm_CreateUser frmCreateUser = new frm_CreateUser();

@@ -1,7 +1,6 @@
-﻿
-namespace F21Party.Views
+﻿namespace F21Party.Views
 {
-    partial class frm_AccountList
+    partial class frm_AccessList
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +28,8 @@ namespace F21Party.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_AccountList));
-            this.dgvAccountSetting = new System.Windows.Forms.DataGridView();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_AccessList));
+            this.dgvAccessSetting = new System.Windows.Forms.DataGridView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -40,31 +39,26 @@ namespace F21Party.Views
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
             this.tstSearchWith = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbUser = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountSetting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccessSetting)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // dgvAccountSetting
+            // dgvAccessSetting
             // 
-            this.dgvAccountSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvAccountSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvAccountSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvAccountSetting.Location = new System.Drawing.Point(0, 33);
-            this.dgvAccountSetting.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvAccountSetting.MultiSelect = false;
-            this.dgvAccountSetting.Name = "dgvAccountSetting";
-            this.dgvAccountSetting.RowHeadersWidth = 62;
-            this.dgvAccountSetting.RowTemplate.Height = 28;
-            this.dgvAccountSetting.Size = new System.Drawing.Size(710, 259);
-            this.dgvAccountSetting.TabIndex = 3;
-            this.dgvAccountSetting.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvAccountSetting_CellFormatting);
-            this.dgvAccountSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAccountSetting_DataBindingComplete);
-            this.dgvAccountSetting.DoubleClick += new System.EventHandler(this.dgvUserSetting_DoubleClick);
+            this.dgvAccessSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvAccessSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvAccessSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvAccessSetting.Location = new System.Drawing.Point(0, 33);
+            this.dgvAccessSetting.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvAccessSetting.MultiSelect = false;
+            this.dgvAccessSetting.Name = "dgvAccessSetting";
+            this.dgvAccessSetting.RowHeadersWidth = 62;
+            this.dgvAccessSetting.RowTemplate.Height = 28;
+            this.dgvAccessSetting.Size = new System.Drawing.Size(800, 417);
+            this.dgvAccessSetting.TabIndex = 5;
             // 
             // toolStrip1
             // 
@@ -78,15 +72,13 @@ namespace F21Party.Views
             this.toolStripSeparator3,
             this.toolStripLabel1,
             this.tstSearchWith,
-            this.toolStripSeparator4,
-            this.tsbUser,
             this.toolStripSeparator5,
             this.tsbExit,
             this.toolStripSeparator7});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(710, 33);
-            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Size = new System.Drawing.Size(800, 33);
+            this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // tsbNew
@@ -143,7 +135,7 @@ namespace F21Party.Views
             this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripLabel1.Name = "toolStripLabel1";
             this.toolStripLabel1.Size = new System.Drawing.Size(100, 30);
-            this.toolStripLabel1.Text = "User Name:";
+            this.toolStripLabel1.Text = "AccessLevel:";
             this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tstSearchWith
@@ -154,23 +146,6 @@ namespace F21Party.Views
             this.tstSearchWith.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstSearchWith.Name = "tstSearchWith";
             this.tstSearchWith.Size = new System.Drawing.Size(134, 33);
-            this.tstSearchWith.TextChanged += new System.EventHandler(this.tstSearchWith_TextChanged);
-            // 
-            // toolStripSeparator4
-            // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 33);
-            // 
-            // tsbUser
-            // 
-            this.tsbUser.AutoSize = false;
-            this.tsbUser.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbUser.Image = ((System.Drawing.Image)(resources.GetObject("tsbUser.Image")));
-            this.tsbUser.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbUser.Name = "tsbUser";
-            this.tsbUser.Size = new System.Drawing.Size(60, 30);
-            this.tsbUser.Text = "Users";
-            this.tsbUser.Click += new System.EventHandler(this.tsbUser_Click);
             // 
             // toolStripSeparator5
             // 
@@ -193,19 +168,17 @@ namespace F21Party.Views
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 33);
             // 
-            // frm_AccountList
+            // frm_AccessList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(710, 292);
-            this.Controls.Add(this.dgvAccountSetting);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dgvAccessSetting);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "frm_AccountList";
-            this.Text = "Account List";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.frm_AccountList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvAccountSetting)).EndInit();
+            this.Name = "frm_AccessList";
+            this.Text = "Access List";
+            this.Load += new System.EventHandler(this.frm_AccessList_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvAccessSetting)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -214,6 +187,8 @@ namespace F21Party.Views
         }
 
         #endregion
+
+        public System.Windows.Forms.DataGridView dgvAccessSetting;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -222,12 +197,9 @@ namespace F21Party.Views
         private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        public System.Windows.Forms.DataGridView dgvAccountSetting;
         public System.Windows.Forms.ToolStripTextBox tstSearchWith;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        public System.Windows.Forms.ToolStripButton tsbUser;
     }
 }

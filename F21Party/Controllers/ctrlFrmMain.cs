@@ -52,6 +52,9 @@ namespace F21Party.Controllers
                 if (MessageBox.Show("Are You Sure You Want To Logout", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
                     frmMain.mnuLogIn.Text = "LogIn";
+                    Program.UserID = 0;
+                    Program.UserAccessID = 0;
+                    Program.UserAccessLevel = "";
                     ShowMenu("");
                 }
                 return;
@@ -207,7 +210,7 @@ namespace F21Party.Controllers
 
                 frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
 
-                frmLogIn.btnEye.Text = isPasswordShown ? "🙈" : "👁️";
+                frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
             };
         }
 

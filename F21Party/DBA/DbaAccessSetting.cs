@@ -7,16 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace F21Party.DBA
 {
-    internal class DbaUserSetting
+    internal class DbaAccessSetting
     {
-        public int UID { get; set; }
-        public string FNAME { get; set; }
-        public string ADDRESS { get; set; }
-        public string PHONE { get; set; }
-        public int PID { get; set; }
+        public int AID { get; set; }
+        public string ALEVEL { get; set; }
+        public string LIACCESS { get; set; }
         public int ACTION { get; set; }
 
         DbaConnection dbaConnection = new DbaConnection();
@@ -26,13 +25,11 @@ namespace F21Party.DBA
             try
             {
                 dbaConnection.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_Insert_Users", dbaConnection.con);
+                SqlCommand sql = new SqlCommand("SP_Insert_Access", dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
-                sql.Parameters.AddWithValue("@UserID", UID);
-                sql.Parameters.AddWithValue("@FullName", FNAME);
-                sql.Parameters.AddWithValue("@Address", ADDRESS);
-                sql.Parameters.AddWithValue("@Phone", PHONE);
-                sql.Parameters.AddWithValue("@PositionID", PID);
+                sql.Parameters.AddWithValue("@AccessID", AID);
+                sql.Parameters.AddWithValue("@AccessLevel", ALEVEL);
+                sql.Parameters.AddWithValue("@LogInAccess", LIACCESS);
                 sql.Parameters.AddWithValue("@action", ACTION);
                 sql.ExecuteNonQuery();
             }

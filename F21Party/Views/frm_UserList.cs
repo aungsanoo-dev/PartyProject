@@ -14,12 +14,14 @@ namespace F21Party.Views
 {
     public partial class frm_UserList : Form
     {
-        CtrlFrmUserList ctrlFrmUserList; // Declare the controller
-        
+        private CtrlFrmUserList ctrlFrmUserList; // Declare the controller
+        private AccountGridToggle accountGridToggle; // Declare new DGV
         public frm_UserList()
         {
             InitializeComponent();
             ctrlFrmUserList = new CtrlFrmUserList(this); // Create the controller and pass itself to ctrlFrmMain()
+            accountGridToggle = new AccountGridToggle(this, dgvUserSetting);
+            this.dgvUserSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvUserSetting_DataBindingComplete);
         }
 
 
@@ -35,7 +37,7 @@ namespace F21Party.Views
 
         private void dgvUserSetting_DoubleClick(object sender, EventArgs e)
         {
-            ctrlFrmUserList.ShowEntry();
+            accountGridToggle.DoubleToggleExtraGrid();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
@@ -58,6 +60,16 @@ namespace F21Party.Views
         private void tsbExit_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void dgvUserSetting_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            ctrlFrmUserList.HoverToolTip();
+        }
+
+        private void tsbAccount_Click(object sender, EventArgs e)
+        {
+            accountGridToggle.ToggleExtraGrid();
         }
     }
 }

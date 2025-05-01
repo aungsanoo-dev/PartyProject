@@ -14,14 +14,14 @@ namespace F21Party.Views
 {
     public partial class frm_AccountList : Form
     {
-        CtrlFrmAccountList ctrlFrmAccountList; // Declare the controller
-        UserGridToggle userGridToggle; // Declare new DGV
+        private CtrlFrmAccountList ctrlFrmAccountList; // Declare the controller
+        private UserGridToggle userGridToggle; // Declare new DGV
         public frm_AccountList()
         {
             InitializeComponent();
             ctrlFrmAccountList = new CtrlFrmAccountList(this); // Create the controller and pass itself to ctrlFrmMain()
-            userGridToggle = new UserGridToggle(this,dgvUserSetting);
-            this.dgvUserSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvUserSetting_DataBindingComplete);
+            userGridToggle = new UserGridToggle(this,dgvAccountSetting);
+            this.dgvAccountSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAccountSetting_DataBindingComplete);
         }
 
 
@@ -65,10 +65,20 @@ namespace F21Party.Views
         {
             this.Close();
         }
-
-        private void dgvUserSetting_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        private void dgvAccountSetting_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
             ctrlFrmAccountList.HoverToolTip();
+        }
+
+        private void dgvAccountSetting_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.ColumnIndex == 4)
+            {
+                if (e.Value != null)
+                {
+                    e.Value = new string('*', e.Value.ToString().Length); // Display asterisks
+                }
+            }
         }
     }
 }

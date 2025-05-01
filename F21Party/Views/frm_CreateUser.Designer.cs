@@ -43,24 +43,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(128, 35);
+            this.label1.Location = new System.Drawing.Point(85, 23);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(84, 20);
+            this.label1.Size = new System.Drawing.Size(57, 13);
             this.label1.TabIndex = 9;
             this.label1.Text = "Full Name:";
             // 
             // txtFullName
             // 
-            this.txtFullName.Location = new System.Drawing.Point(277, 32);
+            this.txtFullName.Location = new System.Drawing.Point(185, 21);
+            this.txtFullName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtFullName.Name = "txtFullName";
-            this.txtFullName.Size = new System.Drawing.Size(329, 26);
+            this.txtFullName.Size = new System.Drawing.Size(221, 20);
             this.txtFullName.TabIndex = 10;
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(465, 380);
+            this.btnClose.Location = new System.Drawing.Point(310, 247);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(104, 35);
+            this.btnClose.Size = new System.Drawing.Size(69, 23);
             this.btnClose.TabIndex = 31;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -68,9 +71,10 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(277, 380);
+            this.btnCreate.Location = new System.Drawing.Point(185, 247);
+            this.btnCreate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(104, 35);
+            this.btnCreate.Size = new System.Drawing.Size(69, 23);
             this.btnCreate.TabIndex = 30;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
@@ -78,34 +82,38 @@
             // 
             // txtAddress
             // 
-            this.txtAddress.Location = new System.Drawing.Point(277, 88);
+            this.txtAddress.Location = new System.Drawing.Point(185, 57);
+            this.txtAddress.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtAddress.Multiline = true;
             this.txtAddress.Name = "txtAddress";
-            this.txtAddress.Size = new System.Drawing.Size(329, 112);
+            this.txtAddress.Size = new System.Drawing.Size(221, 74);
             this.txtAddress.TabIndex = 29;
             // 
             // txtPhone
             // 
-            this.txtPhone.Location = new System.Drawing.Point(277, 229);
+            this.txtPhone.Location = new System.Drawing.Point(185, 149);
+            this.txtPhone.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPhone.Name = "txtPhone";
-            this.txtPhone.Size = new System.Drawing.Size(329, 26);
+            this.txtPhone.Size = new System.Drawing.Size(221, 20);
             this.txtPhone.TabIndex = 28;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(129, 88);
+            this.label3.Location = new System.Drawing.Point(86, 57);
+            this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(72, 20);
+            this.label3.Size = new System.Drawing.Size(48, 13);
             this.label3.TabIndex = 27;
             this.label3.Text = "Address:";
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(142, 232);
+            this.label2.Location = new System.Drawing.Point(95, 151);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 20);
+            this.label2.Size = new System.Drawing.Size(41, 13);
             this.label2.TabIndex = 26;
             this.label2.Text = "Phone:";
             // 
@@ -113,25 +121,27 @@
             // 
             this.cboPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cboPosition.FormattingEnabled = true;
-            this.cboPosition.Location = new System.Drawing.Point(277, 285);
+            this.cboPosition.Location = new System.Drawing.Point(185, 185);
+            this.cboPosition.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.cboPosition.Name = "cboPosition";
-            this.cboPosition.Size = new System.Drawing.Size(329, 28);
+            this.cboPosition.Size = new System.Drawing.Size(221, 21);
             this.cboPosition.TabIndex = 34;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(132, 288);
+            this.label5.Location = new System.Drawing.Point(88, 187);
+            this.label5.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(69, 20);
+            this.label5.Size = new System.Drawing.Size(47, 13);
             this.label5.TabIndex = 35;
             this.label5.Text = "Position:";
             // 
-            // frm_RegisterAccount
+            // frm_CreateUser
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(798, 456);
+            this.ClientSize = new System.Drawing.Size(532, 296);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.cboPosition);
             this.Controls.Add(this.btnClose);
@@ -142,7 +152,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.txtFullName);
             this.Controls.Add(this.label1);
-            this.Name = "frm_RegisterAccount";
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Name = "frm_CreateUser";
             this.Text = "Create An Account";
             this.Load += new System.EventHandler(this.frm_CreateAccount_Load);
             this.ResumeLayout(false);
@@ -154,12 +165,12 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox txtFullName;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnCreate;
         public System.Windows.Forms.TextBox txtAddress;
         public System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
         public System.Windows.Forms.ComboBox cboPosition;
         private System.Windows.Forms.Label label5;
+        public System.Windows.Forms.Button btnCreate;
     }
 }

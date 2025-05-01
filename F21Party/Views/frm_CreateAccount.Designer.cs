@@ -248,7 +248,7 @@
         private System.Windows.Forms.Label label1;
         public System.Windows.Forms.TextBox txtFullName;
         private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnCreate;
+        public System.Windows.Forms.Button btnCreate;
         public System.Windows.Forms.TextBox txtAddress;
         public System.Windows.Forms.TextBox txtPhone;
         private System.Windows.Forms.Label label3;
