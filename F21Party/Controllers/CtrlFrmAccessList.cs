@@ -2,6 +2,7 @@
 using F21Party.Views;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -59,6 +60,53 @@ namespace F21Party.Controllers
             frm_CreateAccess frmCreateAccess = new frm_CreateAccess();
             frmCreateAccess.ShowDialog();
             ShowData();
+        }
+
+        public void TsbSearch()
+        {
+            spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", frmAccessList.tstSearchWith.Text.Trim().ToString(), "0", "4");
+            frmAccessList.dgvAccessSetting.DataSource = dbaConnection.SelectData(spString);
+        }
+        public void TsbDelete()
+        {
+            DbaAccessSetting dbaAccessSetting = new DbaAccessSetting();
+            if (frmAccessList.dgvAccessSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            {
+                MessageBox.Show("There Is No Data");
+            }
+            else
+            {
+                if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
+                 MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "3");
+                    DataTable DT = new DataTable();
+                    DT = dbaConnection.SelectData(spString);
+
+                    int selectedRowIndex = frmAccessList.dgvAccessSetting.CurrentRow.Index;
+                    int lastDataRowIndex = frmAccessList.dgvAccessSetting.Rows.Count - 2; // exclude empty new row
+
+                    if (selectedRowIndex != lastDataRowIndex)
+                    {
+                        MessageBox.Show("You can only delete the last row!");
+                        return;
+                    }
+                    else if (DT.Rows.Count > 0)
+                    {
+                        MessageBox.Show("You cannont delete the Access which is currently used by the User's Account!");
+                    }
+                    else
+                    {
+                        dbaAccessSetting.AID = Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString());
+                        dbaAccessSetting.ACTION = 2;
+                        dbaAccessSetting.SaveData();
+                        MessageBox.Show("Successfully Delete");
+                        ShowData();
+                    }
+
+
+                }
+            }
         }
     }
 }

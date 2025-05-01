@@ -45,11 +45,6 @@ namespace F21Party.Views
             frm.ShowDialog();
         }
 
-        private void mnuPartyItem_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void mnuRegister_Click(object sender, EventArgs e)
         {
             frm_CreateAccount frm = new frm_CreateAccount();
@@ -59,6 +54,12 @@ namespace F21Party.Views
         private void mnuEmployee_Click(object sender, EventArgs e)
         {
             frm_UserList frm = new frm_UserList();
+            frm.ShowDialog();
+        }
+
+        private void mnuAccess_Click(object sender, EventArgs e)
+        {
+            frm_AccessList frm = new frm_AccessList();
             frm.ShowDialog();
         }
     }

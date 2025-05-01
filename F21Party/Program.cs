@@ -23,7 +23,7 @@ namespace F21Party
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_AccessList());
+            Application.Run(new frm_Main());
         }
     }
 }

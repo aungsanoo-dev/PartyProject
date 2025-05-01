@@ -1,4 +1,5 @@
 ﻿using F21Party.Controllers;
+using F21Party.DBA;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -37,12 +38,17 @@ namespace F21Party.Views
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-
+            ctrlFrmAccessList.TsbDelete();
         }
 
         private void frm_AccessList_Load(object sender, EventArgs e)
         {
             ctrlFrmAccessList.ShowData();
+        }
+
+        private void tstSearchWith_TextChanged(object sender, EventArgs e)
+        {
+            ctrlFrmAccessList.TsbSearch();
         }
     }
 }

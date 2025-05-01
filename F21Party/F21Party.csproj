@@ -64,6 +64,9 @@
     <Compile Include="BackupFunctions.cs" />
     <Compile Include="Controllers\CtrlFrmAccessList.cs" />
     <Compile Include="Controllers\CtrlFrmCreateAccess.cs" />
+    <Compile Include="Controllers\CtrlFrmCreatePage.cs" />
+    <Compile Include="Controllers\CtrlFrmCreatePermissionType.cs" />
+    <Compile Include="Controllers\CtrlFrmCreatePosition.cs" />
     <Compile Include="Controllers\CtrlFrmUserList.cs" />
     <Compile Include="Controllers\CtrlFrmAccountList.cs" />
     <Compile Include="Controllers\CtrlFrmCreateAccount.cs" />
@@ -77,6 +80,9 @@
     <Compile Include="DBA\DbaAccessSetting.cs" />
     <Compile Include="DBA\DbaConnection.cs" />
     <Compile Include="DBA\DbaAccountSetting.cs" />
+    <Compile Include="DBA\DbaPageSetting.cs" />
+    <Compile Include="DBA\DbaPermissionTypeSetting.cs" />
+    <Compile Include="DBA\DbaPositionSetting.cs" />
     <Compile Include="DBA\DbaUserSetting.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
@@ -98,11 +104,47 @@
     <Compile Include="Views\frm_CreateAccess.Designer.cs">
       <DependentUpon>frm_CreateAccess.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\frm_CreatePage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_CreatePage.Designer.cs">
+      <DependentUpon>frm_CreatePage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frm_CreatePermissionType.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_CreatePermissionType.Designer.cs">
+      <DependentUpon>frm_CreatePermissionType.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frm_CreatePosition.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_CreatePosition.Designer.cs">
+      <DependentUpon>frm_CreatePosition.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frm_Main.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Views\frm_Main.Designer.cs">
       <DependentUpon>frm_Main.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frm_PageList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_PageList.Designer.cs">
+      <DependentUpon>frm_PageList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frm_PermissionTypeList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_PermissionTypeList.Designer.cs">
+      <DependentUpon>frm_PermissionTypeList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\frm_PositionList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_PositionList.Designer.cs">
+      <DependentUpon>frm_PositionList.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frm_UserList.cs">
       <SubType>Form</SubType>
@@ -152,8 +194,26 @@
     <EmbeddedResource Include="Views\frm_CreateAccess.resx">
       <DependentUpon>frm_CreateAccess.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_CreatePage.resx">
+      <DependentUpon>frm_CreatePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_CreatePermissionType.resx">
+      <DependentUpon>frm_CreatePermissionType.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_CreatePosition.resx">
+      <DependentUpon>frm_CreatePosition.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\frm_Main.resx">
       <DependentUpon>frm_Main.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_PageList.resx">
+      <DependentUpon>frm_PageList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_PermissionTypeList.resx">
+      <DependentUpon>frm_PermissionTypeList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_PositionList.resx">
+      <DependentUpon>frm_PositionList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frm_UserList.resx">
       <DependentUpon>frm_UserList.cs</DependentUpon>
