@@ -36,9 +36,10 @@
             // 
             // btnClose
             // 
-            this.btnClose.Location = new System.Drawing.Point(491, 243);
+            this.btnClose.Location = new System.Drawing.Point(327, 158);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(104, 35);
+            this.btnClose.Size = new System.Drawing.Size(69, 23);
             this.btnClose.TabIndex = 43;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
@@ -46,9 +47,10 @@
             // 
             // btnCreate
             // 
-            this.btnCreate.Location = new System.Drawing.Point(265, 243);
+            this.btnCreate.Location = new System.Drawing.Point(177, 158);
+            this.btnCreate.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(104, 35);
+            this.btnCreate.Size = new System.Drawing.Size(69, 23);
             this.btnCreate.TabIndex = 42;
             this.btnCreate.Text = "Create";
             this.btnCreate.UseVisualStyleBackColor = true;
@@ -56,29 +58,32 @@
             // 
             // txtPermissionName
             // 
-            this.txtPermissionName.Location = new System.Drawing.Point(265, 106);
+            this.txtPermissionName.Location = new System.Drawing.Point(177, 69);
+            this.txtPermissionName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.txtPermissionName.Name = "txtPermissionName";
-            this.txtPermissionName.Size = new System.Drawing.Size(330, 26);
+            this.txtPermissionName.Size = new System.Drawing.Size(221, 20);
             this.txtPermissionName.TabIndex = 41;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(92, 109);
+            this.label1.Location = new System.Drawing.Point(61, 71);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(128, 20);
+            this.label1.Size = new System.Drawing.Size(91, 13);
             this.label1.TabIndex = 40;
-            this.label1.Text = "Permission Type:";
+            this.label1.Text = "Permission Name:";
             // 
             // frm_CreatePermissionType
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(710, 372);
+            this.ClientSize = new System.Drawing.Size(473, 242);
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnCreate);
             this.Controls.Add(this.txtPermissionName);
             this.Controls.Add(this.label1);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "frm_CreatePermissionType";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Create Permission Type";

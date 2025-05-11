@@ -62,5 +62,24 @@ namespace F21Party.Views
             frm_AccessList frm = new frm_AccessList();
             frm.ShowDialog();
         }
+
+        private void mnuPermission_Click(object sender, EventArgs e)
+        {
+            frm_PermissionList frm = new frm_PermissionList(); 
+            frm.ShowDialog();
+        }
+
+        private void profileToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if(Program.UserID == 0)
+            {
+                ctrlFrmMain.LoginAccount();
+            }
+            else
+            {
+                frm_Profile frm = new frm_Profile();
+                frm.ShowDialog();
+            }
+        }
     }
 }

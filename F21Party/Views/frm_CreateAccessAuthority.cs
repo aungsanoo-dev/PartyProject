@@ -11,31 +11,33 @@ using System.Windows.Forms;
 
 namespace F21Party.Views
 {
-    public partial class frm_CreateAccess : Form
+    public partial class frm_CreateAccessAuthority : Form
     {
         private CtrlFrmCreateAccess ctrlFrmCreateAccess; // Declare the View
         public int _AccessID = 0;
         public int _Authority = 0;
-        //public bool _IsEdit = false;
-        public frm_CreateAccess()
+        public bool _IsEdit = false;
+        public frm_CreateAccessAuthority()
         {
             InitializeComponent();
             ctrlFrmCreateAccess = new CtrlFrmCreateAccess(this);
         }
 
-        private void frm_CreateAccess_Load(object sender, EventArgs e)
+        private void frm_CreateAccessAuthority_Load(object sender, EventArgs e)
         {
             ctrlFrmCreateAccess.ShowCombo(this);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccess.CreateClick();
+            ctrlFrmCreateAccess.EditClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        
     }
 }

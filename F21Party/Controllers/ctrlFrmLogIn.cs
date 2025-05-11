@@ -18,21 +18,35 @@ namespace F21Party.Controllers
 
         bool isPasswordShown = false;
 
+        //public void EyeToggle()
+        //{
+        //    // Set initial icon and masking state
+        //    frmLogIn.btnEye.Text = "👁️";
+        //    frmLogIn.txtPassword.UseSystemPasswordChar = true;
+
+        //    // Attach the toggle event
+        //    frmLogIn.btnEye.Click += (s, e) =>
+        //    {
+        //        isPasswordShown = !isPasswordShown;
+
+        //        frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
+
+        //        frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
+        //    };
+        //}
+
         public void EyeToggle()
         {
-            // Set initial icon and masking state
-            frmLogIn.btnEye.Text = "👁️";
-            frmLogIn.txtPassword.UseSystemPasswordChar = true;
-
-            // Attach the toggle event
-            frmLogIn.btnEye.Click += (s, e) =>
+            if (frmLogIn.btnEye.Text == "👁️")
             {
-                isPasswordShown = !isPasswordShown;
-
-                frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
-
-                frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
-            };
+                frmLogIn.txtPassword.PasswordChar = '\0';
+                frmLogIn.btnEye.Text = "🚫";
+            }
+            else
+            {
+                frmLogIn.txtPassword.PasswordChar = '*';
+                frmLogIn.btnEye.Text = "👁️";
+            }
         }
     }
 }

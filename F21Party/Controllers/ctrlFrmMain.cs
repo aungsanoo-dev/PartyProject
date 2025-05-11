@@ -33,7 +33,8 @@ namespace F21Party.Controllers
                     SubMenu.Enabled = false;
                     foreach (string Menu in Arr_AccessLevel)
                     {
-                        if (SubMenu.Text.ToString() == Menu.ToString())
+                        //MessageBox.Show(SubMenu.Name);
+                        if (SubMenu.Name.ToString() == ("mnu" + Menu.ToString()))
                         {
                             SubMenu.Enabled = true;
                             break;
@@ -55,6 +56,7 @@ namespace F21Party.Controllers
                     Program.UserID = 0;
                     Program.UserAccessID = 0;
                     Program.UserAccessLevel = "";
+                    Program.UserAuthority = 0;
                     ShowMenu("");
                 }
                 return;
@@ -195,24 +197,26 @@ namespace F21Party.Controllers
 
         bool isPasswordShown = false;
 
-        public void EyeToggle()
-        {
-            frm_LogIn frmLogIn = new frm_LogIn();
+        //public void EyeToggle()
+        //{
+        //    frm_LogIn frmLogIn = new frm_LogIn();
 
-            // Set initial icon and masking state
-            frmLogIn.btnEye.Text = "👁️";
-            frmLogIn.txtPassword.UseSystemPasswordChar = true;
+        //    // Set initial icon and masking state
+        //    frmLogIn.btnEye.Text = "👁️";
+        //    frmLogIn.txtPassword.UseSystemPasswordChar = true;
 
-            // Attach the toggle event
-            frmLogIn.btnEye.Click += (s, e) =>
-            {
-                isPasswordShown = !isPasswordShown;
+        //    // Attach the toggle event
+        //    frmLogIn.btnEye.Click += (s, e) =>
+        //    {
+        //        isPasswordShown = !isPasswordShown;
 
-                frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
+        //        frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
 
-                frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
-            };
-        }
+        //        frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
+        //    };
+        //}
+
+
 
 
     }

@@ -21,6 +21,11 @@ namespace F21Party.Views
             ctrlFrmAccessList = new CtrlFrmAccessList(this); // Create the controller and pass itself to ctrlFrmMain()
         }
 
+        private void frm_AccessList_Load(object sender, EventArgs e)
+        {
+            ctrlFrmAccessList.ShowData();
+        }
+
         private void tsbNew_Click(object sender, EventArgs e)
         {
             ctrlFrmAccessList.TsbNew();
@@ -31,24 +36,20 @@ namespace F21Party.Views
             ctrlFrmAccessList.ShowEntry();
         }
 
-        private void tsbExit_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
         private void tsbDelete_Click(object sender, EventArgs e)
         {
             ctrlFrmAccessList.TsbDelete();
-        }
-
-        private void frm_AccessList_Load(object sender, EventArgs e)
-        {
-            ctrlFrmAccessList.ShowData();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
             ctrlFrmAccessList.TsbSearch();
         }
+
+        private void tsbExit_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
     }
 }

@@ -16,7 +16,7 @@ namespace F21Party.Views
 
         private CtrlFrmCreatePermissionType ctrlFrmCreatePermissionType; // Declare the View
         public int _PermissionTypeID = 0;
-        //public bool _IsEdit = false;
+        public bool _IsEdit = false;
         public frm_CreatePermissionType()
         {
             InitializeComponent();

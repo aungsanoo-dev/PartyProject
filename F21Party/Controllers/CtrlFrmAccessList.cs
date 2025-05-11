@@ -13,9 +13,9 @@ namespace F21Party.Controllers
     internal class CtrlFrmAccessList
     {
         public frm_AccessList frmAccessList; // Declare the View
-        public CtrlFrmAccessList(frm_AccessList userForm)
+        public CtrlFrmAccessList(frm_AccessList accessForm)
         {
-            frmAccessList = userForm; // Create the View
+            frmAccessList = accessForm; // Create the View
         }
         string spString = "";
         DbaConnection dbaConnection = new DbaConnection();
@@ -27,30 +27,40 @@ namespace F21Party.Controllers
             frmAccessList.dgvAccessSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
             frmAccessList.dgvAccessSetting.Columns[0].FillWeight = 25;
-            frmAccessList.dgvAccessSetting.Columns[1].FillWeight = 25;
+            frmAccessList.dgvAccessSetting.Columns[1].Visible = false;
             frmAccessList.dgvAccessSetting.Columns[2].FillWeight = 25;
             frmAccessList.dgvAccessSetting.Columns[3].FillWeight = 25;
+            frmAccessList.dgvAccessSetting.Columns[4].FillWeight = 25;
 
             dbaConnection.ToolStripTextBoxData(frmAccessList.tstSearchWith, spString, "AccessLevel");
         }
 
         public void ShowEntry()
         {
+     
             if (frmAccessList.dgvAccessSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
+            // Not Allowed to change SuperAdmin
+            else if (Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1 && Program.UserAuthority != 1) // AccessID 1 is SuperAdmin
+            {
+                MessageBox.Show("You cannont change SuperAdmin account!");
+            }
             else
             {
-                frm_CreateAccess frmCreateAccess = new frm_CreateAccess();
+                frm_CreateAccessAuthority frmCreateAccessAuthority = new frm_CreateAccessAuthority();
 
-                frmCreateAccess._AccessID = Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value);
-                frmCreateAccess.txtAccessLevel.Text = frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessLevel"].Value.ToString();
-                frmCreateAccess.cboLogInAccess.DisplayMember = frmAccessList.dgvAccessSetting.CurrentRow.Cells["LogInAccess"].Value.ToString();
+                frmCreateAccessAuthority._AccessID = Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value);
+                frmCreateAccessAuthority.txtAccessLevel.Text = frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessLevel"].Value.ToString();
+                frmCreateAccessAuthority.cboLogInAccess.DisplayMember = frmAccessList.dgvAccessSetting.CurrentRow.Cells["LogInAccess"].Value.ToString();
+                frmCreateAccessAuthority.txtAuthority.Text = frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value.ToString();
 
-                frmCreateAccess._IsEdit = true;
-                frmCreateAccess.btnCreate.Text = "Save";
-                frmCreateAccess.ShowDialog();
+
+
+                frmCreateAccessAuthority._IsEdit = true;
+                frmCreateAccessAuthority.btnCreate.Text = "Save";
+                frmCreateAccessAuthority.ShowDialog();
                 ShowData();
             }
         }
@@ -83,17 +93,22 @@ namespace F21Party.Controllers
                     DataTable DT = new DataTable();
                     DT = dbaConnection.SelectData(spString);
 
-                    int selectedRowIndex = frmAccessList.dgvAccessSetting.CurrentRow.Index;
-                    int lastDataRowIndex = frmAccessList.dgvAccessSetting.Rows.Count - 2; // exclude empty new row
+                    //int selectedRowIndex = frmAccessList.dgvAccessSetting.CurrentRow.Index;
+                    //int lastDataRowIndex = frmAccessList.dgvAccessSetting.Rows.Count - 2; // exclude empty new row
 
-                    if (selectedRowIndex != lastDataRowIndex)
-                    {
-                        MessageBox.Show("You can only delete the last row!");
-                        return;
-                    }
-                    else if (DT.Rows.Count > 0)
+                    //if (selectedRowIndex != lastDataRowIndex)
+                    //{
+                    //    MessageBox.Show("You can only delete the last row!");
+                    //    return;
+                    //}
+                    //else 
+                    if (DT.Rows.Count > 0)
                     {
                         MessageBox.Show("You cannont delete the Access which is currently used by the User's Account!");
+                    }
+                    else if(Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1)
+                    {
+                        MessageBox.Show("You cannot delete SuperAdmin!");
                     }
                     else
                     {

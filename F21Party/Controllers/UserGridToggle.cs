@@ -3,10 +3,13 @@ using F21Party.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.VisualStyles;
 
 namespace F21Party.Controllers
 {
@@ -15,13 +18,13 @@ namespace F21Party.Controllers
         public frm_AccountList parentForm;
         private DataGridView originalGrid;
         private DataGridView extraUserGrid;
-
+        
         public UserGridToggle(frm_AccountList accountForm, DataGridView originalGrid)
         {
             parentForm = accountForm;
             this.originalGrid = originalGrid;
         }
-
+        
         public void ToggleExtraGrid()
         {
             // If extraGrid does not exist or is not currently added to the form,
@@ -57,8 +60,16 @@ namespace F21Party.Controllers
                 // Configure the extra grid's appearance.
                 extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+                extraUserGrid.CellPainting -= ExtraUserGrid_CellPainting;
+                extraUserGrid.CellPainting += ExtraUserGrid_CellPainting;
+
+                extraUserGrid.CellClick -= ExtraUserGrid_CellClick;
+                extraUserGrid.CellClick += ExtraUserGrid_CellClick;
+
+                //extraUserGrid.CellValueChanged += ExtraUserGrid_CellValueChanged;
+
                 // Optionally adjust the columns if the data contains at least six columns:
-                if (extraUserGrid.Columns.Count >= 6)
+                if (extraUserGrid.Columns.Count >= 7)
                 {
                     extraUserGrid.Columns[0].FillWeight = 6;
                     extraUserGrid.Columns[1].FillWeight = 6;
@@ -80,7 +91,10 @@ namespace F21Party.Controllers
                 parentForm.tsbUser.Text = "Users";
             }
         }
-
+        //private void ExtraUserGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        //{
+        //    MessageBox.Show("It changed!");
+        //}
         public void DoubleToggleExtraGrid()
         {
             // If extraGrid does not exist or is not currently added to the form,
@@ -116,17 +130,18 @@ namespace F21Party.Controllers
                 // Configure the extra grid's appearance.
                 extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
+
                 // Optionally adjust the columns if the data contains at least six columns:
-                if (extraUserGrid.Columns.Count >= 6)
+                if (extraUserGrid.Columns.Count >= 7)
                 {
                     extraUserGrid.Columns[0].FillWeight = 6;
                     extraUserGrid.Columns[1].FillWeight = 6;
                     extraUserGrid.Columns[2].FillWeight = 6;
-                    extraUserGrid.Columns[3].FillWeight = 38;
-                    extraUserGrid.Columns[4].FillWeight = 38;
+                    extraUserGrid.Columns[3].FillWeight = 30;
+                    extraUserGrid.Columns[4].FillWeight = 30;
                     extraUserGrid.Columns[5].Visible = false;
-                    extraUserGrid.Columns[6].FillWeight = 16;
-                    extraUserGrid.Columns[7].FillWeight = 6;
+                    extraUserGrid.Columns[6].FillWeight = 6;
+                    extraUserGrid.Columns[7].FillWeight = 16;
                 }
 
                 
@@ -165,7 +180,7 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "0");
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
                 // Set the DataSource of the extra grid.
                 extraUserGrid.DataSource = dbaConnection.SelectData(spString);
 
@@ -191,6 +206,117 @@ namespace F21Party.Controllers
                 }
                 parentForm.tsbUser.Text = "Close";
 
+            }
+        }
+
+        private void ExtraUserGrid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
+        {
+            //if (e.ColumnIndex == 6 && e.RowIndex >= 0)
+            //{
+            //    var grid = (DataGridView)sender;
+            //    string cellValue = grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+
+            //    if (cellValue == "False")
+            //    {
+            //        e.PaintBackground(e.ClipBounds, true);
+            //        e.PaintContent(e.ClipBounds);
+
+            //        // Draw the text "false"
+            //        TextRenderer.DrawText(e.Graphics, "False", grid.Font, e.CellBounds, grid.ForeColor, TextFormatFlags.Left);
+
+            //        // Draw the button
+            //        Rectangle buttonRect = new Rectangle(
+            //            e.CellBounds.Left + 40, // position to the right of "false"
+            //            e.CellBounds.Top + 2,
+            //            40, // button width
+            //            e.CellBounds.Height - 4 // button height
+            //        );
+
+            //        ButtonRenderer.DrawButton(e.Graphics, buttonRect, "Add", grid.Font, false, PushButtonState.Default);
+            //        e.Handled = true;
+            //    }
+            //}
+            if (e.ColumnIndex == 6 && e.RowIndex >= 0)
+            {
+                object value = extraUserGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                if (value != null && value.ToString() == "False")
+                {
+                    e.PaintBackground(e.ClipBounds, true);
+
+                    // Draw the "False" text manually
+                    TextRenderer.DrawText(e.Graphics, "False", e.CellStyle.Font,
+                        new Rectangle(e.CellBounds.X + 2, e.CellBounds.Y + 2, 40, e.CellBounds.Height - 4),
+                        e.CellStyle.ForeColor, TextFormatFlags.Left | TextFormatFlags.VerticalCenter);
+
+                    // Draw the "Add" button next to it
+                    Rectangle buttonRect = new Rectangle(
+                        e.CellBounds.X + 45, e.CellBounds.Y + 2, 40, e.CellBounds.Height - 4);
+
+                    ButtonRenderer.DrawButton(e.Graphics, buttonRect, "Add", e.CellStyle.Font,
+                        false, PushButtonState.Default);
+
+                    // prevent default painting of "False"
+                    e.Handled = true;
+                }
+            }
+            //e.Handled = true;
+        }
+
+        private void ExtraUserGrid_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == 6 && e.RowIndex >= 0)
+            {
+                var grid = (DataGridView)sender;
+                string cellValue = grid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value?.ToString();
+
+                if (cellValue == "False")
+                {
+                    // Simulate button click if user clicks inside the "Add" button area
+                    var cellBounds = grid.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                    var mouse = grid.PointToClient(Cursor.Position);
+
+                    Rectangle buttonRect = new Rectangle(
+                        cellBounds.Left + 40,
+                        cellBounds.Top + 2,
+                        40,
+                        cellBounds.Height - 4
+                    );
+
+                    if (buttonRect.Contains(mouse))
+                    {
+                        
+                        frm_CreateAccount frmCreateAccount = new frm_CreateAccount();
+
+                        frmCreateAccount._UserID = Convert.ToInt32(extraUserGrid.CurrentRow.Cells["UserID"].Value.ToString());
+                        frmCreateAccount.txtFullName.Text = extraUserGrid.CurrentRow.Cells["FullName"].Value.ToString();
+                        frmCreateAccount.txtAddress.Text = extraUserGrid.CurrentRow.Cells["Address"].Value.ToString();
+                        frmCreateAccount.txtPhone.Text = extraUserGrid.CurrentRow.Cells["Phone"].Value.ToString();
+                        frmCreateAccount.cboPosition.DisplayMember = extraUserGrid.CurrentRow.Cells["PositionID"].Value.ToString();
+
+                        frmCreateAccount.btnCreate.Text = "Add";
+                        frmCreateAccount.ShowDialog();
+
+                        parentForm.RefreshAccountList();
+                        RefreshExtraGrid();
+                        //ToggleExtraGrid();
+                        //ToggleExtraGrid();
+                    }
+                }
+
+            }
+            
+        }
+
+        public void RefreshExtraGrid()
+        {
+            if (extraUserGrid != null && parentForm.Controls.Contains(extraUserGrid))
+            {
+                // Instantiate your data access object.
+                DbaConnection dbaConnection = new DbaConnection();
+                // Create your stored procedure string.
+                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+                // Refresh the DataSource of the extra grid.
+                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
             }
         }
     }

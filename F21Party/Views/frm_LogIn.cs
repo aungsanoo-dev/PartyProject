@@ -34,12 +34,17 @@ namespace F21Party.Views
 
         private void frm_LogIn_Load(object sender, EventArgs e)
         {
-            ctrlFrmLogIn.EyeToggle();
+            
         }
 
         private void frm_LogIn_Shown(object sender, EventArgs e)
         {
             
+        }
+
+        private void btnEye_Click(object sender, EventArgs e)
+        {
+            ctrlFrmLogIn.EyeToggle();
         }
     }
 }

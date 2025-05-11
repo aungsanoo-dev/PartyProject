@@ -16,7 +16,7 @@ namespace F21Party.Views
 
         private CtrlFrmCreatePage ctrlFrmCreatePage; // Declare the View
         public int _PageID = 0;
-        //public bool _IsEdit = false;
+        public bool _IsEdit = false;
         public frm_CreatePage()
         {
             InitializeComponent();

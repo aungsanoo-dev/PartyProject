@@ -15,7 +15,7 @@ namespace F21Party.Views
     {
         private CtrlFrmCreatePosition ctrlFrmCreatePosition; // Declare the View
         public int _PositionID = 0;
-        //public bool _IsEdit = false;
+        public bool _IsEdit = false;
 
         public frm_CreatePosition()
         {

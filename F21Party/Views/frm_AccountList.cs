@@ -43,6 +43,7 @@ namespace F21Party.Views
         private void tsbDelete_Click(object sender, EventArgs e)
         {
             ctrlFrmAccountList.TsbDelete();
+            userGridToggle.RefreshExtraGrid();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
@@ -50,6 +51,7 @@ namespace F21Party.Views
             ctrlFrmAccountList.TsbSearch();
         }
 
+        
         private void frm_AccountList_Load(object sender, EventArgs e)
         {
             ctrlFrmAccountList.ShowData();
@@ -79,6 +81,11 @@ namespace F21Party.Views
                     e.Value = new string('*', e.Value.ToString().Length); // Display asterisks
                 }
             }
+        }
+
+        public void RefreshAccountList()
+        {
+            ctrlFrmAccountList.ShowData();
         }
     }
 }

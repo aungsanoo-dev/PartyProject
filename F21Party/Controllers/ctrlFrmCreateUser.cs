@@ -22,9 +22,9 @@ namespace F21Party.Controllers
         }
         DbaConnection dbaConnection = new DbaConnection();
         DbaUserSetting dbaUserSetting = new DbaUserSetting();
-        public int positionLevelIndex;
-        public bool _IsEdit;
-        public int _UserID;
+        //private int positionLevelIndex;
+        private bool _IsEdit;
+        private int _UserID;
 
         public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value)
         {
@@ -84,7 +84,7 @@ namespace F21Party.Controllers
             AddCombo(frmCreateUser.cboPosition, spString, "PositionName", "PositionID");
 
             frmCreateUser.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
-            positionLevelIndex = frmCreateUser.cboPosition.SelectedIndex;
+            //positionLevelIndex = frmCreateUser.cboPosition.SelectedIndex;
 
         }
 

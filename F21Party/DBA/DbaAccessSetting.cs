@@ -16,6 +16,7 @@ namespace F21Party.DBA
         public int AID { get; set; }
         public string ALEVEL { get; set; }
         public string LIACCESS { get; set; }
+        public int AUTHORITY { get; set; }
         public int ACTION { get; set; }
 
         DbaConnection dbaConnection = new DbaConnection();
@@ -30,6 +31,7 @@ namespace F21Party.DBA
                 sql.Parameters.AddWithValue("@AccessID", AID);
                 sql.Parameters.AddWithValue("@AccessLevel", ALEVEL);
                 sql.Parameters.AddWithValue("@LogInAccess", LIACCESS);
+                sql.Parameters.AddWithValue("@Authority", AUTHORITY);
                 sql.Parameters.AddWithValue("@action", ACTION);
                 sql.ExecuteNonQuery();
             }

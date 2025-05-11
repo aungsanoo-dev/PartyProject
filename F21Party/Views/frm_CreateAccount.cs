@@ -27,12 +27,19 @@ namespace F21Party.Views
         private void frm_CreateAccount_Load(object sender, EventArgs e)
         {
             ctrlFrmCreateAccount.ShowCombo(_IsEdit);
-            ctrlFrmCreateAccount.EyeToggle();
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccount.SaveClick();
+            if(btnCreate.Text == "Add")
+            {
+                ctrlFrmCreateAccount.AddAccountClick();
+            }
+            else
+            {
+                ctrlFrmCreateAccount.SaveClick();
+            }
+            
         }
 
         private void cboAccessLevel_SelectedIndexChanged(object sender, EventArgs e)
@@ -43,6 +50,11 @@ namespace F21Party.Views
         private void btnClose_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void btnEye_Click(object sender, EventArgs e)
+        {
+            ctrlFrmCreateAccount.EyeToggle();
         }
     }
 }

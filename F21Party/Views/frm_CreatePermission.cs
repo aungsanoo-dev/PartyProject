@@ -11,26 +11,25 @@ using System.Windows.Forms;
 
 namespace F21Party.Views
 {
-    public partial class frm_CreateAccess : Form
+    public partial class frm_CreatePermission : Form
     {
-        private CtrlFrmCreateAccess ctrlFrmCreateAccess; // Declare the View
-        public int _AccessID = 0;
-        public int _Authority = 0;
-        //public bool _IsEdit = false;
-        public frm_CreateAccess()
+        private CtrlFrmCreatePermission ctrlFrmCreatePermission; // Declare the View
+        public int PermissionID = 0;
+        public bool IsEdit = false;
+        public frm_CreatePermission()
         {
             InitializeComponent();
-            ctrlFrmCreateAccess = new CtrlFrmCreateAccess(this);
+            ctrlFrmCreatePermission = new CtrlFrmCreatePermission(this);
         }
 
-        private void frm_CreateAccess_Load(object sender, EventArgs e)
+        private void frm_CreatePermission_Load(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccess.ShowCombo(this);
+            ctrlFrmCreatePermission.ShowCombo(IsEdit);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccess.CreateClick();
+            ctrlFrmCreatePermission.SaveClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data;
 using System.Linq;
+using System.Net;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Security.Cryptography;
+using System.Xml.Linq;
 
 namespace F21Party.DBA
 {
-    internal class DbaUserSetting
+    internal class DbaPermissionSetting
     {
-        public int UID { get; set; }
-        public string FNAME { get; set; }
-        public string ADDRESS { get; set; }
-        public string PHONE { get; set; }
-        public int PID { get; set; }
-        public string HASACC { get; set; }
+        public int PERMISSIONID { get; set; }
+        public int ACCESSID { get; set; }
+        public int PAGEID { get; set; }
+        public int PERMISSIONTYPEID { get; set; }
+        public string ACCESSVALUE { get; set; }
         public int ACTION { get; set; }
 
         DbaConnection dbaConnection = new DbaConnection();
@@ -27,14 +28,13 @@ namespace F21Party.DBA
             try
             {
                 dbaConnection.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_Insert_Users", dbaConnection.con);
+                SqlCommand sql = new SqlCommand("SP_Insert_Permission", dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
-                sql.Parameters.AddWithValue("@UserID", UID);
-                sql.Parameters.AddWithValue("@FullName", FNAME);
-                sql.Parameters.AddWithValue("@Address", ADDRESS);
-                sql.Parameters.AddWithValue("@Phone", PHONE);
-                sql.Parameters.AddWithValue("@PositionID", PID);
-                sql.Parameters.AddWithValue("@HasAccount", HASACC);
+                sql.Parameters.AddWithValue("@PermissionID", PERMISSIONID);
+                sql.Parameters.AddWithValue("@AccessID", ACCESSID);
+                sql.Parameters.AddWithValue("@PageID", PAGEID);
+                sql.Parameters.AddWithValue("@PermissionTypeID", PERMISSIONTYPEID);
+                sql.Parameters.AddWithValue("@AccessValue", ACCESSVALUE);
                 sql.Parameters.AddWithValue("@action", ACTION);
                 sql.ExecuteNonQuery();
             }

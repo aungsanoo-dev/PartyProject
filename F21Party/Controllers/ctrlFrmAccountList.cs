@@ -50,9 +50,13 @@ namespace F21Party.Controllers
                 MessageBox.Show("There is No Data");
             }
             // Not Allowed to change SuperAdmin
-            else if (Convert.ToInt32(DTAccess.Rows[0]["AccessID"]) == 1 && Program.UserID != 1) // AccessID 1 is SuperAdmin
+            else if (Convert.ToInt32(DTAccess.Rows[0]["Authority"]) == 1 && Program.UserAuthority != 1) // Authority 1 is SuperAdmin
             {
                 MessageBox.Show("You cannont change SuperAdmin account!");
+            }
+            else if(Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+            {
+                MessageBox.Show("You cannont change Higher or Same Authority Account!");
             }
             else
             {
@@ -81,19 +85,34 @@ namespace F21Party.Controllers
                 frmCreateAccount.cboPosition.DisplayMember = DT.Rows[0]["PositionID"].ToString();
                 frmCreateAccount.cboPosition.Enabled = false;
 
+                frmCreateAccount.txtPassword.Enabled = false;
+
+                if(Program.UserAuthority != 1)
+                {
+                    frmCreateAccount.btnEye.Enabled = false;
+                }
+                
+                frmCreateAccount.txtUserName.Enabled = false;
+
+                frmCreateAccount.txtConfirmPassword.Visible = false;
+                frmCreateAccount.lblConfirmPassword.Visible=false;
+
                 //if (Program.UserAccessID == 1) // AccessID 1 is SuperAdmin
                 //{
                 //    frmCreateAccount.cboAccessLevel.Enabled = false;
                 //}
-                if (Program.UserAccessID >= Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccessID"].Value))
+
+
+
+                if (Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]))
                 {
                     frmCreateAccount.cboAccessLevel.Enabled = false;
                 }
-                if(Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value) == Program.UserID)
+                if (Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value) == Program.UserID)
                 {
                     frmCreateAccount.cboAccessLevel.Enabled = false;
                 }
-                
+
                 frmCreateAccount._IsEdit = true;
                 frmCreateAccount.btnCreate.Text = "Save";
                 frmCreateAccount.ShowDialog();
@@ -161,5 +180,7 @@ namespace F21Party.Controllers
             frmCreateAccount.ShowDialog();
             ShowData();
         }
+
+        
     }
 }

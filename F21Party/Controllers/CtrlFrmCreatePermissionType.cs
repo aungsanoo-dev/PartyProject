@@ -21,7 +21,7 @@ namespace F21Party.Controllers
 
         DbaConnection dbaConnection = new DbaConnection();
         DbaPermissionTypeSetting dbaPermissionTypeSetting = new DbaPermissionTypeSetting();
-        public bool _IsEdit;
+        private bool _IsEdit;
         private int _PermissionTypeID;
 
         public void CreateClick()

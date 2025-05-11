@@ -1,6 +1,6 @@
 ﻿namespace F21Party.Views
 {
-    partial class frm_PositionList
+    partial class frm_PermissionList
     {
         /// <summary>
         /// Required designer variable.
@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_PositionList));
-            this.dgvPositionSetting = new System.Windows.Forms.DataGridView();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_PermissionList));
+            this.dgvPermissionSetting = new System.Windows.Forms.DataGridView();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -42,23 +42,23 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPositionSetting)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPermissionSetting)).BeginInit();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // dgvPositionSetting
+            // dgvPermissionSetting
             // 
-            this.dgvPositionSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvPositionSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvPositionSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvPositionSetting.Location = new System.Drawing.Point(0, 33);
-            this.dgvPositionSetting.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.dgvPositionSetting.MultiSelect = false;
-            this.dgvPositionSetting.Name = "dgvPositionSetting";
-            this.dgvPositionSetting.RowHeadersWidth = 62;
-            this.dgvPositionSetting.RowTemplate.Height = 28;
-            this.dgvPositionSetting.Size = new System.Drawing.Size(702, 381);
-            this.dgvPositionSetting.TabIndex = 7;
+            this.dgvPermissionSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPermissionSetting.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPermissionSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
+            this.dgvPermissionSetting.Location = new System.Drawing.Point(0, 33);
+            this.dgvPermissionSetting.Margin = new System.Windows.Forms.Padding(2);
+            this.dgvPermissionSetting.MultiSelect = false;
+            this.dgvPermissionSetting.Name = "dgvPermissionSetting";
+            this.dgvPermissionSetting.RowHeadersWidth = 62;
+            this.dgvPermissionSetting.RowTemplate.Height = 28;
+            this.dgvPermissionSetting.Size = new System.Drawing.Size(800, 417);
+            this.dgvPermissionSetting.TabIndex = 7;
             // 
             // toolStrip1
             // 
@@ -78,7 +78,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(702, 33);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 33);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -123,7 +123,6 @@
             this.tsbDelete.Name = "tsbDelete";
             this.tsbDelete.Size = new System.Drawing.Size(60, 30);
             this.tsbDelete.Text = "Delete";
-            this.tsbDelete.Click += new System.EventHandler(this.tsbDelete_Click);
             // 
             // toolStripSeparator3
             // 
@@ -135,8 +134,8 @@
             this.toolStripLabel1.AutoSize = false;
             this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(140, 30);
-            this.toolStripLabel1.Text = "Position Name:";
+            this.toolStripLabel1.Size = new System.Drawing.Size(120, 30);
+            this.toolStripLabel1.Text = "AccessLevel:";
             this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // tstSearchWith
@@ -147,7 +146,6 @@
             this.tstSearchWith.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstSearchWith.Name = "tstSearchWith";
             this.tstSearchWith.Size = new System.Drawing.Size(134, 33);
-            this.tstSearchWith.TextChanged += new System.EventHandler(this.tstSearchWith_TextChanged);
             // 
             // toolStripSeparator5
             // 
@@ -170,19 +168,18 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 33);
             // 
-            // frm_PositionList
+            // frm_PermissionList
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 414);
-            this.Controls.Add(this.dgvPositionSetting);
+            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.dgvPermissionSetting);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.Name = "frm_PositionList";
-            this.Text = "Position List";
+            this.Name = "frm_PermissionList";
+            this.Text = "Permission List";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.frm_PositionList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvPositionSetting)).EndInit();
+            this.Load += new System.EventHandler(this.frm_PermissionList_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPermissionSetting)).EndInit();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -192,7 +189,7 @@
 
         #endregion
 
-        public System.Windows.Forms.DataGridView dgvPositionSetting;
+        public System.Windows.Forms.DataGridView dgvPermissionSetting;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
