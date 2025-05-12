@@ -41,5 +41,30 @@ namespace F21Party.Views
         {
             this.Close();
         }
+
+        private void tsmiAccessLevel_Click(object sender, EventArgs e)
+        {
+            ctrlFrmPermissionList.TsmiAccessLevelClick();
+        }
+
+        private void tsmiPageName_Click(object sender, EventArgs e)
+        {
+            ctrlFrmPermissionList.TsmiPageNameClick();
+        }
+
+        private void tsmiPermissionName_Click(object sender, EventArgs e)
+        {
+            ctrlFrmPermissionList.TsmiPermissionNameClick();
+        }
+
+        private void tstSearchWith_TextChanged(object sender, EventArgs e)
+        {
+            ctrlFrmPermissionList.TstSearchWithTextChanged();
+        }
+
+        private void tsbDelete_Click(object sender, EventArgs e)
+        {
+            ctrlFrmPermissionList.TsbDelete();
+        }
     }
 }

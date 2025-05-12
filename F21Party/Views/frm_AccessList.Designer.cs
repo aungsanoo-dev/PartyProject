@@ -51,12 +51,13 @@
             this.dgvAccessSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAccessSetting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAccessSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvAccessSetting.Location = new System.Drawing.Point(0, 35);
+            this.dgvAccessSetting.Location = new System.Drawing.Point(0, 33);
+            this.dgvAccessSetting.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.dgvAccessSetting.MultiSelect = false;
             this.dgvAccessSetting.Name = "dgvAccessSetting";
             this.dgvAccessSetting.RowHeadersWidth = 62;
             this.dgvAccessSetting.RowTemplate.Height = 28;
-            this.dgvAccessSetting.Size = new System.Drawing.Size(1200, 657);
+            this.dgvAccessSetting.Size = new System.Drawing.Size(800, 417);
             this.dgvAccessSetting.TabIndex = 5;
             // 
             // toolStrip1
@@ -76,8 +77,8 @@
             this.toolStripSeparator7});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 3, 0);
-            this.toolStrip1.Size = new System.Drawing.Size(1200, 35);
+            this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
+            this.toolStrip1.Size = new System.Drawing.Size(800, 33);
             this.toolStrip1.TabIndex = 4;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -95,7 +96,7 @@
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
             // 
             // tsbEdit
             // 
@@ -111,7 +112,7 @@
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
             // 
             // tsbDelete
             // 
@@ -127,7 +128,7 @@
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
             // 
             // toolStripLabel1
             // 
@@ -145,13 +146,13 @@
             this.tstSearchWith.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstSearchWith.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstSearchWith.Name = "tstSearchWith";
-            this.tstSearchWith.Size = new System.Drawing.Size(200, 38);
+            this.tstSearchWith.Size = new System.Drawing.Size(134, 33);
             this.tstSearchWith.TextChanged += new System.EventHandler(this.tstSearchWith_TextChanged);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 33);
             // 
             // tsbExit
             // 
@@ -167,16 +168,15 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 38);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 33);
             // 
             // frm_AccessList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1200, 692);
+            this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.dgvAccessSetting);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "frm_AccessList";
             this.Text = "Access List";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -193,16 +193,16 @@
 
         public System.Windows.Forms.DataGridView dgvAccessSetting;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         public System.Windows.Forms.ToolStripTextBox tstSearchWith;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        public System.Windows.Forms.ToolStripButton tsbNew;
+        public System.Windows.Forms.ToolStripButton tsbEdit;
+        public System.Windows.Forms.ToolStripButton tsbDelete;
     }
 }

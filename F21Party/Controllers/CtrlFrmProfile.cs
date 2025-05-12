@@ -345,10 +345,10 @@ namespace F21Party.Controllers
             spAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID, "0", "1");
             dtAccess = dbaConnection.SelectData(spAccess);
 
-            if (Program.UserID != 0)
-            {
-                Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
-            }
+            //if (Program.UserID != 0)
+            //{
+            //    Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
+            //}
 
             try
             {

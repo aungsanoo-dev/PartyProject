@@ -87,7 +87,7 @@ namespace F21Party.Controllers
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
                  MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "6");
+                    spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "8");
                     DataTable DT = new DataTable();
                     DT = dbaConnection.SelectData(spString);
 
@@ -115,7 +115,7 @@ namespace F21Party.Controllers
         }
         public void TsbSearch()
         {
-            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmUserList.tstSearchWith.Text.Trim().ToString(), "0", "0", "2");
+            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmUserList.tstSearchWith.Text.Trim().ToString(), "0", "0", "9");
             frmUserList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
         }
 

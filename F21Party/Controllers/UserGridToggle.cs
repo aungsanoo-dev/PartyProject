@@ -27,6 +27,12 @@ namespace F21Party.Controllers
         
         public void ToggleExtraGrid()
         {
+            if (!Program.PublicArrReadAccessPages.Contains("User"))
+            {
+                MessageBox.Show("You don't have 'Read' Access on User!");
+                return;
+            }
+            
             // If extraGrid does not exist or is not currently added to the form,
             // add it and adjust the layout.
             if (extraUserGrid == null || !parentForm.Controls.Contains(extraUserGrid))
@@ -73,12 +79,12 @@ namespace F21Party.Controllers
                 {
                     extraUserGrid.Columns[0].FillWeight = 6;
                     extraUserGrid.Columns[1].FillWeight = 6;
-                    extraUserGrid.Columns[2].FillWeight = 6;
+                    extraUserGrid.Columns[2].FillWeight = 18;
                     extraUserGrid.Columns[3].FillWeight = 30;
-                    extraUserGrid.Columns[4].FillWeight = 30;
+                    extraUserGrid.Columns[4].FillWeight = 18;
                     extraUserGrid.Columns[5].Visible = false;
-                    extraUserGrid.Columns[6].FillWeight = 6;
-                    extraUserGrid.Columns[7].FillWeight = 16;
+                    extraUserGrid.Columns[6].FillWeight = 10;
+                    extraUserGrid.Columns[7].FillWeight = 12;
                 }
                 parentForm.tsbUser.Text = "Close";
                 
@@ -97,6 +103,12 @@ namespace F21Party.Controllers
         //}
         public void DoubleToggleExtraGrid()
         {
+            if (!Program.PublicArrReadAccessPages.Contains("User"))
+            {
+                MessageBox.Show("You don't have 'Read' Access on User!");
+                return;
+            }
+
             // If extraGrid does not exist or is not currently added to the form,
             // add it and adjust the layout.
             if (extraUserGrid == null || !parentForm.Controls.Contains(extraUserGrid))
@@ -136,12 +148,12 @@ namespace F21Party.Controllers
                 {
                     extraUserGrid.Columns[0].FillWeight = 6;
                     extraUserGrid.Columns[1].FillWeight = 6;
-                    extraUserGrid.Columns[2].FillWeight = 6;
+                    extraUserGrid.Columns[2].FillWeight = 18;
                     extraUserGrid.Columns[3].FillWeight = 30;
-                    extraUserGrid.Columns[4].FillWeight = 30;
+                    extraUserGrid.Columns[4].FillWeight = 18;
                     extraUserGrid.Columns[5].Visible = false;
-                    extraUserGrid.Columns[6].FillWeight = 6;
-                    extraUserGrid.Columns[7].FillWeight = 16;
+                    extraUserGrid.Columns[6].FillWeight = 10;
+                    extraUserGrid.Columns[7].FillWeight = 12;
                 }
 
                 

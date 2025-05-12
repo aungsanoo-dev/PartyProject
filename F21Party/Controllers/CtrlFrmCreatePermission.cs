@@ -124,6 +124,7 @@ namespace F21Party.Controllers
 
                         if (Program.UserAuthority == 0 && Display == "AccessLevel")
                         {
+                            MessageBox.Show(Program.UserAuthority.ToString());
                             if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1 || Convert.ToInt32(DTAC.Rows[i][Value]) == 2) // 1 is SuperAdmin. 2 is Admin.
                             {
                                 continue;

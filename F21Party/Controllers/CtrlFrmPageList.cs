@@ -26,14 +26,27 @@ namespace F21Party.Controllers
             frmPageList.dgvPageSetting.DataSource = dbaConnection.SelectData(spString);
             frmPageList.dgvPageSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            frmPageList.dgvPageSetting.Columns[0].FillWeight = 33;
-            frmPageList.dgvPageSetting.Columns[1].FillWeight = 33;
-            frmPageList.dgvPageSetting.Columns[2].FillWeight = 34;
+            frmPageList.dgvPageSetting.Columns[0].FillWeight = 40;
+            frmPageList.dgvPageSetting.Columns[1].Visible = false;
+            frmPageList.dgvPageSetting.Columns[2].FillWeight = 60;
 
             dbaConnection.ToolStripTextBoxData(frmPageList.tstSearchWith, spString, "PageName");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
+            {
+                frmPageList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmPageList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmPageList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
         public void ShowEntry()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             if (frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
@@ -54,6 +67,12 @@ namespace F21Party.Controllers
 
         public void TsbNew()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             frm_CreatePage frmCreatePage = new frm_CreatePage();
             frmCreatePage.ShowDialog();
             ShowData();
@@ -66,6 +85,12 @@ namespace F21Party.Controllers
         }
         public void TsbDelete()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             DbaPageSetting dbaPageSetting = new DbaPageSetting();
             if (frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
@@ -82,7 +107,7 @@ namespace F21Party.Controllers
 
                     if (DT.Rows.Count > 0)
                     {
-                        MessageBox.Show("You cannont delete the Page which is currently used by the Access!");
+                        MessageBox.Show("You cannont delete the Page which is currently used by the Permission!");
                     }
                     else
                     {

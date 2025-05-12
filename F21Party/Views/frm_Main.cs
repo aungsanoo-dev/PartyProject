@@ -67,6 +67,7 @@ namespace F21Party.Views
         {
             frm_PermissionList frm = new frm_PermissionList(); 
             frm.ShowDialog();
+            ctrlFrmMain.ShowMenu(string.Join(",", Program.PublicArrReadAccessPages.Distinct()));
         }
 
         private void profileToolStripMenuItem1_Click(object sender, EventArgs e)
@@ -80,6 +81,12 @@ namespace F21Party.Views
                 frm_Profile frm = new frm_Profile();
                 frm.ShowDialog();
             }
+        }
+
+        private void mnuPage_Click(object sender, EventArgs e)
+        {
+            frm_PageList frm = new frm_PageList();
+            frm.ShowDialog();
         }
     }
 }

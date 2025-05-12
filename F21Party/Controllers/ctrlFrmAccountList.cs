@@ -37,6 +37,17 @@ namespace F21Party.Controllers
             frmAccountList.dgvAccountSetting.Columns[6].FillWeight = 22;
 
             dbaConnection.ToolStripTextBoxData(frmAccountList.tstSearchWith, spString, "UserName");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("Accounts"))
+            {
+                frmAccountList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmAccountList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmAccountList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
+            if(!Program.PublicArrReadAccessPages.Contains("User"))
+            {
+                frmAccountList.tsbUser.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
         
         public void ShowEntry()
@@ -142,6 +153,10 @@ namespace F21Party.Controllers
                     {
                         MessageBox.Show("You cannot delete your own account!");
                     }
+                    else if (Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+                    {
+                        MessageBox.Show("You cannont delete Higher or Same Authority Account!");
+                    }
                     else
                     {
                         dbaAccountSetting.USERID = Convert.ToInt32(frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString());
@@ -155,7 +170,7 @@ namespace F21Party.Controllers
         }
         public void TsbSearch()
         {
-            spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", frmAccountList.tstSearchWith.Text.Trim().ToString(), "0", "0", "2");
+            spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", frmAccountList.tstSearchWith.Text.Trim().ToString(), "0", "0", "7");
             frmAccountList.dgvAccountSetting.DataSource = dbaConnection.SelectData(spString);
         }
         public void HoverToolTip()

@@ -215,11 +215,8 @@ namespace F21Party.Views
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
@@ -229,5 +226,8 @@ namespace F21Party.Views
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         public System.Windows.Forms.ToolStripButton tsbUser;
+        public System.Windows.Forms.ToolStripButton tsbNew;
+        public System.Windows.Forms.ToolStripButton tsbEdit;
+        public System.Windows.Forms.ToolStripButton tsbDelete;
     }
 }

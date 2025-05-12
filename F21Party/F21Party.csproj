@@ -144,6 +144,12 @@
     <Compile Include="Views\frm_CreatePosition.Designer.cs">
       <DependentUpon>frm_CreatePosition.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\frm_ItemList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\frm_ItemList.Designer.cs">
+      <DependentUpon>frm_ItemList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\frm_Main.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -242,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frm_CreatePosition.resx">
       <DependentUpon>frm_CreatePosition.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\frm_ItemList.resx">
+      <DependentUpon>frm_ItemList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frm_Main.resx">
       <DependentUpon>frm_Main.cs</DependentUpon>

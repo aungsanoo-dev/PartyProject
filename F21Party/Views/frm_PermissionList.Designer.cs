@@ -37,7 +37,10 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tslLabel = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsmiAccessLevel = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPageName = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiPermissionName = new System.Windows.Forms.ToolStripMenuItem();
             this.tstSearchWith = new System.Windows.Forms.ToolStripTextBox();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbExit = new System.Windows.Forms.ToolStripButton();
@@ -70,7 +73,7 @@
             this.toolStripSeparator2,
             this.tsbDelete,
             this.toolStripSeparator3,
-            this.toolStripLabel1,
+            this.tslLabel,
             this.tstSearchWith,
             this.toolStripSeparator5,
             this.tsbExit,
@@ -123,20 +126,48 @@
             this.tsbDelete.Name = "tsbDelete";
             this.tsbDelete.Size = new System.Drawing.Size(60, 30);
             this.tsbDelete.Text = "Delete";
+            this.tsbDelete.Click += new System.EventHandler(this.tsbDelete_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
             this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
             // 
-            // toolStripLabel1
+            // tslLabel
             // 
-            this.toolStripLabel1.AutoSize = false;
-            this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(120, 30);
-            this.toolStripLabel1.Text = "AccessLevel:";
-            this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tslLabel.AutoSize = false;
+            this.tslLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tslLabel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmiAccessLevel,
+            this.tsmiPageName,
+            this.tsmiPermissionName});
+            this.tslLabel.Image = ((System.Drawing.Image)(resources.GetObject("tslLabel.Image")));
+            this.tslLabel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tslLabel.Name = "tslLabel";
+            this.tslLabel.Size = new System.Drawing.Size(130, 30);
+            this.tslLabel.Text = "Access Level:";
+            this.tslLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tsmiAccessLevel
+            // 
+            this.tsmiAccessLevel.Name = "tsmiAccessLevel";
+            this.tsmiAccessLevel.Size = new System.Drawing.Size(170, 22);
+            this.tsmiAccessLevel.Text = "Access Level:";
+            this.tsmiAccessLevel.Click += new System.EventHandler(this.tsmiAccessLevel_Click);
+            // 
+            // tsmiPageName
+            // 
+            this.tsmiPageName.Name = "tsmiPageName";
+            this.tsmiPageName.Size = new System.Drawing.Size(170, 22);
+            this.tsmiPageName.Text = "Page Name:";
+            this.tsmiPageName.Click += new System.EventHandler(this.tsmiPageName_Click);
+            // 
+            // tsmiPermissionName
+            // 
+            this.tsmiPermissionName.Name = "tsmiPermissionName";
+            this.tsmiPermissionName.Size = new System.Drawing.Size(170, 22);
+            this.tsmiPermissionName.Text = "Permission Name:";
+            this.tsmiPermissionName.Click += new System.EventHandler(this.tsmiPermissionName_Click);
             // 
             // tstSearchWith
             // 
@@ -146,6 +177,7 @@
             this.tstSearchWith.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstSearchWith.Name = "tstSearchWith";
             this.tstSearchWith.Size = new System.Drawing.Size(134, 33);
+            this.tstSearchWith.TextChanged += new System.EventHandler(this.tstSearchWith_TextChanged);
             // 
             // toolStripSeparator5
             // 
@@ -191,16 +223,19 @@
 
         public System.Windows.Forms.DataGridView dgvPermissionSetting;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         public System.Windows.Forms.ToolStripTextBox tstSearchWith;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        public System.Windows.Forms.ToolStripSplitButton tslLabel;
+        public System.Windows.Forms.ToolStripMenuItem tsmiAccessLevel;
+        public System.Windows.Forms.ToolStripMenuItem tsmiPageName;
+        public System.Windows.Forms.ToolStripMenuItem tsmiPermissionName;
+        public System.Windows.Forms.ToolStripButton tsbNew;
+        public System.Windows.Forms.ToolStripButton tsbEdit;
+        public System.Windows.Forms.ToolStripButton tsbDelete;
     }
 }

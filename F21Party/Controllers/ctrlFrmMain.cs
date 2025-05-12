@@ -40,6 +40,8 @@ namespace F21Party.Controllers
                             break;
                         }
                     }
+
+
                  
                 }
             }
@@ -57,15 +59,18 @@ namespace F21Party.Controllers
                     Program.UserAccessID = 0;
                     Program.UserAccessLevel = "";
                     Program.UserAuthority = 0;
+                    Program.PublicArrWriteAccessPages = Array.Empty<string>();
+                    Program.PublicArrReadAccessPages = Array.Empty<string>();
                     ShowMenu("");
                 }
                 return;
             }
+            
 
             DbaConnection dbaConnection = new DbaConnection();
             DataTable DT = new DataTable();
             DataTable DTPage = new DataTable();
-            DataTable DTAccess = new DataTable();
+            DataTable dtAccess = new DataTable();
             DataTable DTAccessPage = new DataTable();
 
             // Reuse the same login form
@@ -122,15 +127,27 @@ namespace F21Party.Controllers
                     continue;
                 }
 
-                // Set global user information
-                Program.UserID = Convert.ToInt32(DT.Rows[0]["UserID"]);
+                // Get User AccessID
                 Program.UserAccessID = Convert.ToInt32(DT.Rows[0]["AccessID"]);
 
                 // For AccessLevel
                 string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
                     "", 1);
-                DTAccess = dbaConnection.SelectData(SPAccess);
-                Program.UserAccessLevel = DTAccess.Rows[0]["AccessLevel"].ToString();
+                dtAccess = dbaConnection.SelectData(SPAccess);
+
+                Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
+
+                // Check Log In Access
+                if (dtAccess.Rows[0]["LogInAccess"].ToString() == "False")
+                {
+                    MessageBox.Show("You don't have 'LogIn' Access!");
+                    Program.UserAccessID = 0;
+                    break;
+                }
+
+                // Set global user information
+                Program.UserAccessLevel = dtAccess.Rows[0]["AccessLevel"].ToString();
+                Program.UserID = Convert.ToInt32(DT.Rows[0]["UserID"]);
 
                 // For Pages
                 string SPpage = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
@@ -149,6 +166,9 @@ namespace F21Party.Controllers
                 if (!ReadWrite.Contains("Read") && !ReadWrite.Contains("Write"))
                 {
                     MessageBox.Show("Error in Database. Read and Write Accesses aren't found");
+                    Program.UserAccessID = 0;
+                    Program.UserAccessLevel = "";
+                    Program.UserID = 0;
                     break;
                 }
 
@@ -169,7 +189,8 @@ namespace F21Party.Controllers
                         WriteAccessPages.Add(DTAccessPage.Rows[0]["PageName"].ToString());
                     }
                 }
-                string AccessLevel = string.Join(",", WriteAccessPages.Distinct()); // Page Name Values
+                string WritePagesString = string.Join(",", WriteAccessPages.Distinct()); // Page Name Values
+                Program.PublicArrWriteAccessPages = WritePagesString.Split(',');
 
                 // For AccessLevel (Read)
                 List<string> ReadAccessPages = new List<string>();
@@ -188,14 +209,19 @@ namespace F21Party.Controllers
                         ReadAccessPages.Add(DTAccessPage.Rows[0]["PageName"].ToString());
                     }
                 }
+                string ReadPagesString = string.Join(",", ReadAccessPages.Distinct()); // Page Name Values
+                Program.PublicArrReadAccessPages = ReadPagesString.Split(',');
+
 
                 frmMain.mnuLogIn.Text = "Logout";
-                ShowMenu(AccessLevel);
+                //MessageBox.Show(Program.UserAccessLevel.ToString());
+                //MessageBox.Show(Program.UserAuthority.ToString());
+                ShowMenu(ReadPagesString);
                 break;
             }
         }
 
-        bool isPasswordShown = false;
+        //bool isPasswordShown = false;
 
         //public void EyeToggle()
         //{

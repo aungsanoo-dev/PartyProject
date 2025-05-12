@@ -3,6 +3,7 @@ using F21Party.Views;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SqlTypes;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,10 +38,23 @@ namespace F21Party.Controllers
             frmPermissionList.dgvPermissionSetting.Columns[8].FillWeight = 20;
 
             dbaConnection.ToolStripTextBoxData(frmPermissionList.tstSearchWith, spString, "AccessLevel");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("Permission"))
+            {
+                frmPermissionList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmPermissionList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmPermissionList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
 
         public void ShowEntry()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Permission"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
                     "", 1);
             DataTable DTAccess = dbaConnection.SelectData(SPAccess);
@@ -53,6 +67,14 @@ namespace F21Party.Controllers
             else if (Convert.ToInt32(DTAccess.Rows[0]["AccessID"]) == 1 && Program.UserAuthority != 1) // AccessID 1 is SuperAdmin
             {
                 MessageBox.Show("You cannont change SuperAdmin account!");
+            }
+            else if (Program.UserAuthority > Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+            {
+                MessageBox.Show("You cannont change Higher Authority Account!");
+            }
+            else if (frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["AccessID"].Value.ToString() == Program.UserAccessID.ToString() && frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["PageName"].Value.ToString() == "Permission")
+            {
+                MessageBox.Show("You cannot change your own permission for this page!");
             }
             else
             {
@@ -78,11 +100,102 @@ namespace F21Party.Controllers
 
         public void TsbNew()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Permission"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             frm_CreatePermission frmCreatePermission = new frm_CreatePermission();
             frmCreatePermission.ShowDialog();
             ShowData();
         }
 
+        public void TsbDelete()
+        {
+            if (!Program.PublicArrWriteAccessPages.Contains("Permission"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
+            DbaPermissionSetting dbaPermissionSetting = new DbaPermissionSetting();
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+                    "", 1);
+            DataTable DTAccess = dbaConnection.SelectData(SPAccess);
+            if (frmPermissionList.dgvPermissionSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            {
+                MessageBox.Show("There Is No Data");
+            }
+            else if (Convert.ToInt32(DTAccess.Rows[0]["Authority"]) == 1 && Program.UserAuthority != 1) // AccessID 1 is SuperAdmin
+            {
+                MessageBox.Show("You cannont delete SuperAdmin permission!");
+            }
+            else
+            {
+                if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
+                 MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    if (frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["AccessID"].Value.ToString() == Program.UserAccessID.ToString() && frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["PageName"].Value.ToString() == "Permission")
+                    {
+                        MessageBox.Show("You cannot delete your own permission for this page!");
+                    }
+                    else if (Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+                    {
+                        MessageBox.Show("You cannont delete Higher or Same Authority Account!");
+                    }
+                    else
+                    {
+                        dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(frmPermissionList.dgvPermissionSetting.CurrentRow.Cells["PermissionID"].Value.ToString());
+                        dbaPermissionSetting.ACTION = 2;
+                        dbaPermissionSetting.SaveData();
+                        MessageBox.Show("Successfully Delete");
+                        ShowData();
+                    }
+                }
+            }
+        }
+        public void TsmiAccessLevelClick()
+        {
+            frmPermissionList.tslLabel.Text = "Access Level:";
+            spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", "0", "0", "0", "4");
+            dbaConnection.ToolStripTextBoxData(frmPermissionList.tstSearchWith, spString, "AccessLevel");
+        }
+
+        public void TsmiPageNameClick()
+        {
+            frmPermissionList.tslLabel.Text = "Page Name:";
+            spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", "0", "0", "0", "4");
+            dbaConnection.ToolStripTextBoxData(frmPermissionList.tstSearchWith, spString, "PageName");
+        }
+
+        public void TsmiPermissionNameClick()
+        {
+            frmPermissionList.tslLabel.Text = "Permission Name:";
+            spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", "0", "0", "0", "4");
+            dbaConnection.ToolStripTextBoxData(frmPermissionList.tstSearchWith, spString, "PermissionName");
+        }
+
+        public void TstSearchWithTextChanged()
+        {
+            if(frmPermissionList.tslLabel.Text == "Access Level:")
+            {
+                spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", frmPermissionList.tstSearchWith.Text.Trim().ToString(), "0", "0", "5");
+            }
+            else if (frmPermissionList.tslLabel.Text == "Page Name:")
+            {
+                spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", frmPermissionList.tstSearchWith.Text.Trim().ToString(), "0", "0", "6");
+            }
+            else if (frmPermissionList.tslLabel.Text == "Permission Name:")
+            {
+                spString = string.Format("SP_Select_Permission N'{0}', N'{1}', N'{2}',N'{3}'", frmPermissionList.tstSearchWith.Text.Trim().ToString(), "0", "0", "7");
+            }
+            else
+            {
+                MessageBox.Show("Error: Something went wrong.");
+            }
+            frmPermissionList.dgvPermissionSetting.DataSource = dbaConnection.SelectData(spString);
+        }
 
     }
 }

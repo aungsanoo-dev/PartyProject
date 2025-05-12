@@ -37,7 +37,8 @@ namespace F21Party.Views
 
         private void dgvUserSetting_DoubleClick(object sender, EventArgs e)
         {
-            accountGridToggle.DoubleToggleExtraGrid();
+            //accountGridToggle.DoubleToggleExtraGrid();
+            ctrlFrmUserList.ShowEntry();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)

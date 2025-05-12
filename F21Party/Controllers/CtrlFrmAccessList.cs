@@ -19,7 +19,7 @@ namespace F21Party.Controllers
         }
         string spString = "";
         DbaConnection dbaConnection = new DbaConnection();
-
+        
         public void ShowData()
         {
             spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", "0", "0", "0");
@@ -33,11 +33,27 @@ namespace F21Party.Controllers
             frmAccessList.dgvAccessSetting.Columns[4].FillWeight = 25;
 
             dbaConnection.ToolStripTextBoxData(frmAccessList.tstSearchWith, spString, "AccessLevel");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("Access"))
+            {
+                frmAccessList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmAccessList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmAccessList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
 
         public void ShowEntry()
         {
-     
+            if (!Program.PublicArrWriteAccessPages.Contains("Access"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+                    "", 1);
+            DataTable DTAccess = dbaConnection.SelectData(SPAccess);
+
             if (frmAccessList.dgvAccessSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
@@ -46,6 +62,10 @@ namespace F21Party.Controllers
             else if (Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1 && Program.UserAuthority != 1) // AccessID 1 is SuperAdmin
             {
                 MessageBox.Show("You cannont change SuperAdmin account!");
+            }
+            else if (Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+            {
+                MessageBox.Show("You cannont change Higher or Same Authority Account!");
             }
             else
             {
@@ -67,9 +87,16 @@ namespace F21Party.Controllers
 
         public void TsbNew()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Access"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+            
             frm_CreateAccess frmCreateAccess = new frm_CreateAccess();
             frmCreateAccess.ShowDialog();
             ShowData();
+
         }
 
         public void TsbSearch()
@@ -79,7 +106,17 @@ namespace F21Party.Controllers
         }
         public void TsbDelete()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Access"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             DbaAccessSetting dbaAccessSetting = new DbaAccessSetting();
+            string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString(),
+                    "", 1);
+            DataTable DTAccess = dbaConnection.SelectData(SPAccess);
+
             if (frmAccessList.dgvAccessSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
@@ -89,9 +126,15 @@ namespace F21Party.Controllers
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
                  MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "3");
-                    DataTable DT = new DataTable();
-                    DT = dbaConnection.SelectData(spString);
+                    string spStringUser = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "3"); // Check User with this Access
+                    DataTable dtUser = new DataTable();
+                    dtUser = dbaConnection.SelectData(spStringUser);
+
+                    string spStringPermission = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "6"); // Check Permission with this Access
+                    DataTable dtPermission = new DataTable();
+                    dtPermission = dbaConnection.SelectData(spStringPermission);
+
+
 
                     //int selectedRowIndex = frmAccessList.dgvAccessSetting.CurrentRow.Index;
                     //int lastDataRowIndex = frmAccessList.dgvAccessSetting.Rows.Count - 2; // exclude empty new row
@@ -102,13 +145,21 @@ namespace F21Party.Controllers
                     //    return;
                     //}
                     //else 
-                    if (DT.Rows.Count > 0)
+                    if (dtUser.Rows.Count > 0)
                     {
                         MessageBox.Show("You cannont delete the Access which is currently used by the User's Account!");
                     }
-                    else if(Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1)
+                    else if(dtPermission.Rows.Count > 0)
+                    {
+                        MessageBox.Show("You cannont delete the Access which is currently used by the Permission!");
+                    }
+                    else if (Convert.ToInt32(frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1)
                     {
                         MessageBox.Show("You cannot delete SuperAdmin!");
+                    }
+                    else if (Program.UserAuthority >= Convert.ToInt32(DTAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+                    {
+                        MessageBox.Show("You cannont delete Higher or Same Authority Account!");
                     }
                     else
                     {

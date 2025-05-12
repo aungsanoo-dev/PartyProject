@@ -52,7 +52,7 @@
             this.dgvPageSetting.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPageSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvPageSetting.Location = new System.Drawing.Point(0, 33);
-            this.dgvPageSetting.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvPageSetting.Margin = new System.Windows.Forms.Padding(2);
             this.dgvPageSetting.MultiSelect = false;
             this.dgvPageSetting.Name = "dgvPageSetting";
             this.dgvPageSetting.RowHeadersWidth = 62;
@@ -177,7 +177,7 @@
             this.ClientSize = new System.Drawing.Size(715, 392);
             this.Controls.Add(this.dgvPageSetting);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frm_PageList";
             this.Text = "Page List";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
@@ -194,16 +194,16 @@
 
         public System.Windows.Forms.DataGridView dgvPageSetting;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripButton tsbEdit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripLabel toolStripLabel1;
         public System.Windows.Forms.ToolStripTextBox tstSearchWith;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton tsbExit;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        public System.Windows.Forms.ToolStripButton tsbNew;
+        public System.Windows.Forms.ToolStripButton tsbEdit;
+        public System.Windows.Forms.ToolStripButton tsbDelete;
     }
 }

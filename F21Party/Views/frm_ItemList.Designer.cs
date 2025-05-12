@@ -1,7 +1,7 @@
 ﻿
 namespace F21Party.Views
 {
-    partial class frm_UserList
+    partial class frm_ItemList
     {
         /// <summary>
         /// Required designer variable.
@@ -29,8 +29,7 @@ namespace F21Party.Views
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_UserList));
-            this.dgvUserSetting = new System.Windows.Forms.DataGridView();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ItemList));
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbNew = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -38,32 +37,17 @@ namespace F21Party.Views
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.tslLabel = new System.Windows.Forms.ToolStripSplitButton();
+            this.tsmItemName = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmQty = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmPrice = new System.Windows.Forms.ToolStripMenuItem();
             this.tstSearchWith = new System.Windows.Forms.ToolStripTextBox();
-            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbAccount = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbExit = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).BeginInit();
+            this.tsbPrint = new System.Windows.Forms.ToolStripButton();
+            this.dgvItem = new System.Windows.Forms.DataGridView();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).BeginInit();
             this.SuspendLayout();
-            // 
-            // dgvUserSetting
-            // 
-            this.dgvUserSetting.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvUserSetting.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvUserSetting.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvUserSetting.Location = new System.Drawing.Point(0, 33);
-            this.dgvUserSetting.Margin = new System.Windows.Forms.Padding(2);
-            this.dgvUserSetting.MultiSelect = false;
-            this.dgvUserSetting.Name = "dgvUserSetting";
-            this.dgvUserSetting.RowHeadersWidth = 62;
-            this.dgvUserSetting.RowTemplate.Height = 28;
-            this.dgvUserSetting.Size = new System.Drawing.Size(710, 259);
-            this.dgvUserSetting.TabIndex = 3;
-            this.dgvUserSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvUserSetting_DataBindingComplete);
-            this.dgvUserSetting.DoubleClick += new System.EventHandler(this.dgvUserSetting_DoubleClick);
             // 
             // toolStrip1
             // 
@@ -75,17 +59,14 @@ namespace F21Party.Views
             this.toolStripSeparator2,
             this.tsbDelete,
             this.toolStripSeparator3,
-            this.toolStripLabel1,
+            this.tslLabel,
             this.tstSearchWith,
-            this.toolStripSeparator5,
-            this.tsbAccount,
             this.toolStripSeparator4,
-            this.tsbExit,
-            this.toolStripSeparator7});
+            this.tsbPrint});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(710, 33);
-            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Size = new System.Drawing.Size(1093, 35);
+            this.toolStrip1.TabIndex = 0;
             this.toolStrip1.Text = "toolStrip1";
             // 
             // tsbNew
@@ -102,7 +83,7 @@ namespace F21Party.Views
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 33);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 35);
             // 
             // tsbEdit
             // 
@@ -118,7 +99,7 @@ namespace F21Party.Views
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 33);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 35);
             // 
             // tsbDelete
             // 
@@ -134,16 +115,43 @@ namespace F21Party.Views
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 33);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 35);
             // 
-            // toolStripLabel1
+            // tslLabel
             // 
-            this.toolStripLabel1.AutoSize = false;
-            this.toolStripLabel1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(100, 30);
-            this.toolStripLabel1.Text = "User Name:";
-            this.toolStripLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.tslLabel.AutoSize = false;
+            this.tslLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tslLabel.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsmItemName,
+            this.tsmQty,
+            this.tsmPrice});
+            this.tslLabel.Image = ((System.Drawing.Image)(resources.GetObject("tslLabel.Image")));
+            this.tslLabel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tslLabel.Name = "tslLabel";
+            this.tslLabel.Size = new System.Drawing.Size(110, 30);
+            this.tslLabel.Text = "Item Name";
+            this.tslLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // tsmItemName
+            // 
+            this.tsmItemName.Name = "tsmItemName";
+            this.tsmItemName.Size = new System.Drawing.Size(197, 34);
+            this.tsmItemName.Text = "ItemName";
+            this.tsmItemName.Click += new System.EventHandler(this.tsmItemName_Click);
+            // 
+            // tsmQty
+            // 
+            this.tsmQty.Name = "tsmQty";
+            this.tsmQty.Size = new System.Drawing.Size(197, 34);
+            this.tsmQty.Text = "Qty";
+            this.tsmQty.Click += new System.EventHandler(this.tsmQty_Click);
+            // 
+            // tsmPrice
+            // 
+            this.tsmPrice.Name = "tsmPrice";
+            this.tsmPrice.Size = new System.Drawing.Size(197, 34);
+            this.tsmPrice.Text = "Price";
+            this.tsmPrice.Click += new System.EventHandler(this.tsmPrice_Click);
             // 
             // tstSearchWith
             // 
@@ -152,69 +160,61 @@ namespace F21Party.Views
             this.tstSearchWith.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.tstSearchWith.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.tstSearchWith.Name = "tstSearchWith";
-            this.tstSearchWith.Size = new System.Drawing.Size(134, 33);
+            this.tstSearchWith.Size = new System.Drawing.Size(200, 35);
             this.tstSearchWith.TextChanged += new System.EventHandler(this.tstSearchWith_TextChanged);
-            // 
-            // toolStripSeparator5
-            // 
-            this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 33);
-            this.toolStripSeparator5.Visible = false;
-            // 
-            // tsbAccount
-            // 
-            this.tsbAccount.AutoSize = false;
-            this.tsbAccount.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbAccount.Image = ((System.Drawing.Image)(resources.GetObject("tsbAccount.Image")));
-            this.tsbAccount.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAccount.Name = "tsbAccount";
-            this.tsbAccount.Size = new System.Drawing.Size(60, 30);
-            this.tsbAccount.Text = "Accounts";
-            this.tsbAccount.Visible = false;
-            this.tsbAccount.Click += new System.EventHandler(this.tsbAccount_Click);
             // 
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 33);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 35);
             // 
-            // tsbExit
+            // tsbPrint
             // 
-            this.tsbExit.AutoSize = false;
-            this.tsbExit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbExit.Image = ((System.Drawing.Image)(resources.GetObject("tsbExit.Image")));
-            this.tsbExit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbExit.Name = "tsbExit";
-            this.tsbExit.Size = new System.Drawing.Size(60, 30);
-            this.tsbExit.Text = "Exit";
-            this.tsbExit.Click += new System.EventHandler(this.tsbExit_Click);
+            this.tsbPrint.AutoSize = false;
+            this.tsbPrint.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbPrint.Image = ((System.Drawing.Image)(resources.GetObject("tsbPrint.Image")));
+            this.tsbPrint.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbPrint.Name = "tsbPrint";
+            this.tsbPrint.Size = new System.Drawing.Size(60, 30);
+            this.tsbPrint.Text = "Print";
+            this.tsbPrint.Click += new System.EventHandler(this.tsbPrint_Click);
             // 
-            // toolStripSeparator7
+            // dgvItem
             // 
-            this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(6, 33);
+            this.dgvItem.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvItem.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvItem.Location = new System.Drawing.Point(0, 35);
+            this.dgvItem.Name = "dgvItem";
+            this.dgvItem.RowHeadersWidth = 62;
+            this.dgvItem.RowTemplate.Height = 28;
+            this.dgvItem.Size = new System.Drawing.Size(1093, 325);
+            this.dgvItem.TabIndex = 1;
+            this.dgvItem.DoubleClick += new System.EventHandler(this.dgvItem_DoubleClick);
             // 
-            // frm_UserList
+            // frm_ItemList
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(710, 292);
-            this.Controls.Add(this.dgvUserSetting);
+            this.ClientSize = new System.Drawing.Size(1093, 360);
+            this.Controls.Add(this.dgvItem);
             this.Controls.Add(this.toolStrip1);
-            this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "frm_UserList";
-            this.Text = "User List";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "frm_ItemList";
+            this.Text = "Item List";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.Load += new System.EventHandler(this.frm_AccountList_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvUserSetting)).EndInit();
+            this.Load += new System.EventHandler(this.frm_ItemList_Load);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvItem)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
+
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
@@ -222,13 +222,13 @@ namespace F21Party.Views
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton tsbDelete;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripSplitButton tslLabel;
+        private System.Windows.Forms.ToolStripMenuItem tsmItemName;
+        private System.Windows.Forms.ToolStripMenuItem tsmQty;
+        private System.Windows.Forms.ToolStripMenuItem tsmPrice;
+        private System.Windows.Forms.ToolStripTextBox tstSearchWith;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
-        public System.Windows.Forms.DataGridView dgvUserSetting;
-        public System.Windows.Forms.ToolStripTextBox tstSearchWith;
-        private System.Windows.Forms.ToolStripButton tsbExit;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
-        public System.Windows.Forms.ToolStripButton tsbAccount;
+        private System.Windows.Forms.ToolStripButton tsbPrint;
+        public System.Windows.Forms.DataGridView dgvItem;
     }
 }
