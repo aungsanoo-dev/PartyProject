@@ -26,7 +26,7 @@ namespace F21Party
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_Main());
+            Application.Run(new Views.frm_Main());
         }
     }
 }

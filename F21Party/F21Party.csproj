@@ -65,35 +65,59 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupFunctions.cs" />
-    <Compile Include="Controllers\CtrlFrmAccessList.cs" />
-    <Compile Include="Controllers\CtrlFrmCreateAccess.cs" />
-    <Compile Include="Controllers\CtrlFrmCreatePage.cs" />
-    <Compile Include="Controllers\CtrlFrmCreatePermission.cs" />
-    <Compile Include="Controllers\CtrlFrmCreatePermissionType.cs" />
-    <Compile Include="Controllers\CtrlFrmCreatePosition.cs" />
-    <Compile Include="Controllers\CtrlFrmPageList.cs" />
-    <Compile Include="Controllers\CtrlFrmPermissionList.cs" />
-    <Compile Include="Controllers\CtrlFrmPermissionTypeList.cs" />
-    <Compile Include="Controllers\CtrlFrmPositionList.cs" />
-    <Compile Include="Controllers\CtrlFrmProfile.cs" />
-    <Compile Include="Controllers\CtrlFrmUserList.cs" />
-    <Compile Include="Controllers\CtrlFrmAccountList.cs" />
-    <Compile Include="Controllers\CtrlFrmCreateAccount.cs" />
-    <Compile Include="Controllers\CtrlFrmCreateUser.cs" />
-    <Compile Include="Controllers\CtrlFrmLogIn.cs" />
-    <Compile Include="Controllers\CtrlFrmMain.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmAccessList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreateAccess.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreatePage.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreatePermission.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreatePermissionType.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreatePosition.cs" />
+    <Compile Include="Controllers\Party\ctl_ItemRequestsDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllers\Party\ctl_ItemRequestsDetail.Designer.cs">
+      <DependentUpon>ctl_ItemRequestsDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\Party\CtrlFrmItemRequestsList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmPageList.cs" />
+    <Compile Include="Controllers\Party\ctl_DonationDetail.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controllers\Party\ctl_DonationDetail.Designer.cs">
+      <DependentUpon>ctl_DonationDetail.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controllers\Party\CtrlFrmCreateDonation.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmCreateItemRequests.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmCreatePartyItem.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmDonationList.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmPartyItemList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmPermissionList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmPermissionTypeList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmPositionList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmProfile.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmUserList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmAccountList.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreateAccount.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmCreateUser.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmLogIn.cs" />
+    <Compile Include="Controllers\MasterData\CtrlFrmMain.cs" />
     <Compile Include="Controllers\CtrlTest.cs" />
-    <Compile Include="Controllers\AccountGridToggle.cs" />
-    <Compile Include="Controllers\UserGridToggle.cs" />
+    <Compile Include="Controllers\MasterData\AccountGridToggle.cs" />
+    <Compile Include="Controllers\MasterData\PwEncryption.cs" />
+    <Compile Include="Controllers\MasterData\UserGridToggle.cs" />
     <Compile Include="Controllers\testdel.cs" />
-    <Compile Include="DBA\DbaAccessSetting.cs" />
+    <Compile Include="DBA\DbaDonation.cs" />
+    <Compile Include="DBA\DbaDonationDetail.cs" />
+    <Compile Include="DBA\DbaItemRequests.cs" />
+    <Compile Include="DBA\DbaItemRequestsDetail.cs" />
+    <Compile Include="DBA\DbaPartyItem.cs" />
+    <Compile Include="DBA\DbaAccess.cs" />
     <Compile Include="DBA\DbaConnection.cs" />
-    <Compile Include="DBA\DbaAccountSetting.cs" />
-    <Compile Include="DBA\DbaPageSetting.cs" />
-    <Compile Include="DBA\DbaPermissionSetting.cs" />
-    <Compile Include="DBA\DbaPermissionTypeSetting.cs" />
-    <Compile Include="DBA\DbaPositionSetting.cs" />
-    <Compile Include="DBA\DbaUserSetting.cs" />
+    <Compile Include="DBA\DbaAccounts.cs" />
+    <Compile Include="DBA\DbaPage.cs" />
+    <Compile Include="DBA\DbaPermission.cs" />
+    <Compile Include="DBA\DbaPermissionType.cs" />
+    <Compile Include="DBA\DbaPosition.cs" />
+    <Compile Include="DBA\DbaUsers.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,53 +126,83 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\frm_AccessList.cs">
+    <Compile Include="Views\MasterData\frm_AccessList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_AccessList.Designer.cs">
+    <Compile Include="Views\MasterData\frm_AccessList.Designer.cs">
       <DependentUpon>frm_AccessList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreateAccessAuthority.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccessAuthority.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreateAccessAuthority.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccessAuthority.Designer.cs">
       <DependentUpon>frm_CreateAccessAuthority.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreateAccess.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccess.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreateAccess.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccess.Designer.cs">
       <DependentUpon>frm_CreateAccess.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreatePage.cs">
+    <Compile Include="Views\MasterData\frm_CreatePage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreatePage.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreatePage.Designer.cs">
       <DependentUpon>frm_CreatePage.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreatePermission.cs">
+    <Compile Include="Views\MasterData\frm_CreatePermission.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreatePermission.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreatePermission.Designer.cs">
       <DependentUpon>frm_CreatePermission.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreatePermissionType.cs">
+    <Compile Include="Views\MasterData\frm_CreatePermissionType.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreatePermissionType.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreatePermissionType.Designer.cs">
       <DependentUpon>frm_CreatePermissionType.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreatePosition.cs">
+    <Compile Include="Views\MasterData\frm_CreatePosition.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreatePosition.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreatePosition.Designer.cs">
       <DependentUpon>frm_CreatePosition.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_ItemList.cs">
+    <Compile Include="Views\Party\frm_CreatePartyItem.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_ItemList.Designer.cs">
-      <DependentUpon>frm_ItemList.cs</DependentUpon>
+    <Compile Include="Views\Party\frm_CreatePartyItem.Designer.cs">
+      <DependentUpon>frm_CreatePartyItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateDonation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateDonation.Designer.cs">
+      <DependentUpon>frm_CreateDonation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_DonationList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_DonationList.Designer.cs">
+      <DependentUpon>frm_DonationList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateItemRequests.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateItemRequests.Designer.cs">
+      <DependentUpon>frm_CreateItemRequests.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_ItemRequestsList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_ItemRequestsList.Designer.cs">
+      <DependentUpon>frm_ItemRequestsList.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_PartyItemList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_PartyItemList.Designer.cs">
+      <DependentUpon>frm_PartyItemList.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\frm_Main.cs">
       <SubType>Form</SubType>
@@ -156,66 +210,72 @@
     <Compile Include="Views\frm_Main.Designer.cs">
       <DependentUpon>frm_Main.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_PageList.cs">
+    <Compile Include="Views\MasterData\frm_PageList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_PageList.Designer.cs">
+    <Compile Include="Views\MasterData\frm_PageList.Designer.cs">
       <DependentUpon>frm_PageList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_PermissionList.cs">
+    <Compile Include="Views\MasterData\frm_PermissionList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_PermissionList.Designer.cs">
+    <Compile Include="Views\MasterData\frm_PermissionList.Designer.cs">
       <DependentUpon>frm_PermissionList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_PermissionTypeList.cs">
+    <Compile Include="Views\MasterData\frm_PermissionTypeList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_PermissionTypeList.Designer.cs">
+    <Compile Include="Views\MasterData\frm_PermissionTypeList.Designer.cs">
       <DependentUpon>frm_PermissionTypeList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_PositionList.cs">
+    <Compile Include="Views\MasterData\frm_PositionList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_PositionList.Designer.cs">
+    <Compile Include="Views\MasterData\frm_PositionList.Designer.cs">
       <DependentUpon>frm_PositionList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_Profile.cs">
+    <Compile Include="Views\MasterData\frm_Profile.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_Profile.Designer.cs">
+    <Compile Include="Views\MasterData\frm_Profile.Designer.cs">
       <DependentUpon>frm_Profile.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_UserList.cs">
+    <Compile Include="Views\MasterData\frm_UserList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_UserList.designer.cs">
+    <Compile Include="Views\MasterData\frm_UserList.designer.cs">
       <DependentUpon>frm_UserList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_AccountList.cs">
+    <Compile Include="Views\MasterData\frm_AccountList.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_AccountList.designer.cs">
+    <Compile Include="Views\MasterData\frm_AccountList.designer.cs">
       <DependentUpon>frm_AccountList.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreateUser.cs">
+    <Compile Include="Views\MasterData\frm_CreateUser.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreateUser.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreateUser.Designer.cs">
       <DependentUpon>frm_CreateUser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_CreateAccount.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccount.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_CreateAccount.Designer.cs">
+    <Compile Include="Views\MasterData\frm_CreateAccount.Designer.cs">
       <DependentUpon>frm_CreateAccount.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\frm_LogIn.cs">
+    <Compile Include="Views\MasterData\frm_LogIn.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Views\frm_LogIn.designer.cs">
+    <Compile Include="Views\MasterData\frm_LogIn.designer.cs">
       <DependentUpon>frm_LogIn.cs</DependentUpon>
     </Compile>
+    <EmbeddedResource Include="Controllers\Party\ctl_DonationDetail.resx">
+      <DependentUpon>ctl_DonationDetail.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controllers\Party\ctl_ItemRequestsDetail.resx">
+      <DependentUpon>ctl_ItemRequestsDetail.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
@@ -227,62 +287,78 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
-    <EmbeddedResource Include="Views\frm_AccessList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_AccessList.resx">
       <DependentUpon>frm_AccessList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreateAccessAuthority.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreateAccessAuthority.resx">
       <DependentUpon>frm_CreateAccessAuthority.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreateAccess.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreateAccess.resx">
       <DependentUpon>frm_CreateAccess.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreatePage.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreatePage.resx">
       <DependentUpon>frm_CreatePage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreatePermission.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreatePermission.resx">
       <DependentUpon>frm_CreatePermission.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreatePermissionType.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreatePermissionType.resx">
       <DependentUpon>frm_CreatePermissionType.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreatePosition.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreatePosition.resx">
       <DependentUpon>frm_CreatePosition.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_ItemList.resx">
-      <DependentUpon>frm_ItemList.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Party\frm_CreatePartyItem.resx">
+      <DependentUpon>frm_CreatePartyItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_CreateDonation.resx">
+      <DependentUpon>frm_CreateDonation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_DonationList.resx">
+      <DependentUpon>frm_DonationList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_CreateItemRequests.resx">
+      <DependentUpon>frm_CreateItemRequests.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_ItemRequestsList.resx">
+      <DependentUpon>frm_ItemRequestsList.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_PartyItemList.resx">
+      <DependentUpon>frm_PartyItemList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\frm_Main.resx">
       <DependentUpon>frm_Main.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_PageList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_PageList.resx">
       <DependentUpon>frm_PageList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_PermissionList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_PermissionList.resx">
       <DependentUpon>frm_PermissionList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_PermissionTypeList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_PermissionTypeList.resx">
       <DependentUpon>frm_PermissionTypeList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_PositionList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_PositionList.resx">
       <DependentUpon>frm_PositionList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_Profile.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_Profile.resx">
       <DependentUpon>frm_Profile.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_UserList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_UserList.resx">
       <DependentUpon>frm_UserList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_AccountList.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_AccountList.resx">
       <DependentUpon>frm_AccountList.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreateUser.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreateUser.resx">
       <DependentUpon>frm_CreateUser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_CreateAccount.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_CreateAccount.resx">
       <DependentUpon>frm_CreateAccount.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\frm_LogIn.resx">
+    <EmbeddedResource Include="Views\MasterData\frm_LogIn.resx">
       <DependentUpon>frm_LogIn.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
@@ -316,6 +392,7 @@
     <Content Include="MyNamingConvention.txt" />
     <Content Include="NamingConvention.txt" />
     <Content Include="party.ico" />
+    <None Include="Resources\Partying.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

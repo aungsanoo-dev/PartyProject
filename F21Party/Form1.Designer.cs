@@ -37,6 +37,7 @@
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cboAccessLevel = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.txtTest = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -65,14 +66,14 @@
             // createToolStripMenuItem
             // 
             this.createToolStripMenuItem.Name = "createToolStripMenuItem";
-            this.createToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.createToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.createToolStripMenuItem.Text = "Create";
             this.createToolStripMenuItem.Click += new System.EventHandler(this.createToolStripMenuItem_Click);
             // 
             // quitToolStripMenuItem
             // 
             this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(164, 34);
+            this.quitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
             this.quitToolStripMenuItem.Text = "Quit";
             // 
             // optionsToolStripMenuItem
@@ -114,11 +115,19 @@
             this.label3.TabIndex = 14;
             this.label3.Text = "AccessLevel:";
             // 
+            // txtTest
+            // 
+            this.txtTest.Location = new System.Drawing.Point(272, 118);
+            this.txtTest.Name = "txtTest";
+            this.txtTest.Size = new System.Drawing.Size(283, 26);
+            this.txtTest.TabIndex = 15;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.txtTest);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.cboAccessLevel);
             this.Controls.Add(this.menuStrip1);
@@ -146,6 +155,7 @@
         private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
         public System.Windows.Forms.ComboBox cboAccessLevel;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox txtTest;
     }
 }
 

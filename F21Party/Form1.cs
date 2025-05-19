@@ -26,7 +26,10 @@ namespace F21Party
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            string password = "123";
+            //PwEncryption pwEncryption = new PwEncryption();
+            MessageBox.Show(PwEncryption.Encrypt(password));
+            txtTest.Text = PwEncryption.Encrypt(password);
         }
 
         private void createToolStripMenuItem_Click(object sender, EventArgs e)
