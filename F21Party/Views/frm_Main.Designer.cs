@@ -47,10 +47,12 @@
             this.mnuDonation = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuItemRequests = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPartyItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTeam = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnLogIn = new System.Windows.Forms.Button();
+            this.mnuTeamManagment = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -177,7 +179,9 @@
             this.processToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.mnuDonation,
             this.mnuItemRequests,
-            this.mnuPartyItem});
+            this.mnuPartyItem,
+            this.mnuTeam,
+            this.mnuTeamManagment});
             this.processToolStripMenuItem.Name = "processToolStripMenuItem";
             this.processToolStripMenuItem.Size = new System.Drawing.Size(62, 27);
             this.processToolStripMenuItem.Text = "Party";
@@ -185,23 +189,30 @@
             // mnuDonation
             // 
             this.mnuDonation.Name = "mnuDonation";
-            this.mnuDonation.Size = new System.Drawing.Size(224, 28);
+            this.mnuDonation.Size = new System.Drawing.Size(227, 28);
             this.mnuDonation.Text = "Donation";
             this.mnuDonation.Click += new System.EventHandler(this.mnuDonation_Click);
             // 
             // mnuItemRequests
             // 
             this.mnuItemRequests.Name = "mnuItemRequests";
-            this.mnuItemRequests.Size = new System.Drawing.Size(224, 28);
+            this.mnuItemRequests.Size = new System.Drawing.Size(227, 28);
             this.mnuItemRequests.Text = "ItemRequests";
             this.mnuItemRequests.Click += new System.EventHandler(this.mnuItemRequests_Click);
             // 
             // mnuPartyItem
             // 
             this.mnuPartyItem.Name = "mnuPartyItem";
-            this.mnuPartyItem.Size = new System.Drawing.Size(224, 28);
+            this.mnuPartyItem.Size = new System.Drawing.Size(227, 28);
             this.mnuPartyItem.Text = "PartyItem";
             this.mnuPartyItem.Click += new System.EventHandler(this.mnuPartyItem_Click);
+            // 
+            // mnuTeam
+            // 
+            this.mnuTeam.Name = "mnuTeam";
+            this.mnuTeam.Size = new System.Drawing.Size(227, 28);
+            this.mnuTeam.Text = "Team";
+            this.mnuTeam.Click += new System.EventHandler(this.mnuTeam_Click);
             // 
             // label1
             // 
@@ -256,6 +267,13 @@
             this.btnLogIn.UseVisualStyleBackColor = false;
             this.btnLogIn.Click += new System.EventHandler(this.btnLogIn_Click);
             // 
+            // mnuTeamManagment
+            // 
+            this.mnuTeamManagment.Name = "mnuTeamManagment";
+            this.mnuTeamManagment.Size = new System.Drawing.Size(227, 28);
+            this.mnuTeamManagment.Text = "TeamManagment";
+            this.mnuTeamManagment.Click += new System.EventHandler(this.mnuTeamManagment_Click);
+            // 
             // frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -302,5 +320,7 @@
         public System.Windows.Forms.Button btnRegister;
         public System.Windows.Forms.Button btnLogIn;
         public System.Windows.Forms.ToolStripMenuItem mnuPartyItem;
+        private System.Windows.Forms.ToolStripMenuItem mnuTeam;
+        private System.Windows.Forms.ToolStripMenuItem mnuTeamManagment;
     }
 }

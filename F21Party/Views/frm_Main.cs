@@ -9,7 +9,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using F21Party.Donation;
 
 
 
@@ -141,6 +140,18 @@ namespace F21Party.Views
         private void mnuItemRequests_Click(object sender, EventArgs e)
         {
             frm_ItemRequestsList frm = new frm_ItemRequestsList();
+            frm.ShowDialog();
+        }
+
+        private void mnuTeam_Click(object sender, EventArgs e)
+        {
+            frm_TeamList frm = new frm_TeamList();
+            frm.ShowDialog();
+        }
+
+        private void mnuTeamManagment_Click(object sender, EventArgs e)
+        {
+            frm_TeamManagmentList frm = new frm_TeamManagmentList();
             frm.ShowDialog();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using F21Party.DBA;
-using F21Party.Donation;
 using F21Party.Views;
 using System;
 using System.Collections.Generic;
@@ -9,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace F21Party.Controllers.Party
+namespace F21Party.Controllers
 {
     internal class CtrlFrmDonationList
     {

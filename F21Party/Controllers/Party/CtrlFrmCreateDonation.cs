@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace F21Party.Controllers.Party
+namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateDonation
     {

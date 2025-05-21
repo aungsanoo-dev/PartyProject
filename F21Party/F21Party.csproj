@@ -77,6 +77,7 @@
     <Compile Include="Controllers\Party\ctl_ItemRequestsDetail.Designer.cs">
       <DependentUpon>ctl_ItemRequestsDetail.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\Party\CtrlFrmCreateTeam.cs" />
     <Compile Include="Controllers\Party\CtrlFrmItemRequestsList.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmPageList.cs" />
     <Compile Include="Controllers\Party\ctl_DonationDetail.cs">
@@ -104,7 +105,12 @@
     <Compile Include="Controllers\MasterData\AccountGridToggle.cs" />
     <Compile Include="Controllers\MasterData\PwEncryption.cs" />
     <Compile Include="Controllers\MasterData\UserGridToggle.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmTeamList.cs" />
+    <Compile Include="Controllers\Party\CtrlFrmCreateTeamManagment.cs" />
+    <Compile Include="Controllers\Party\CtrlTeamManagmentList.cs" />
     <Compile Include="Controllers\testdel.cs" />
+    <Compile Include="DBA\DbaTeamManagment.cs" />
+    <Compile Include="DBA\DbaTeam.cs" />
     <Compile Include="DBA\DbaDonation.cs" />
     <Compile Include="DBA\DbaDonationDetail.cs" />
     <Compile Include="DBA\DbaItemRequests.cs" />
@@ -192,6 +198,18 @@
     <Compile Include="Views\Party\frm_CreateItemRequests.Designer.cs">
       <DependentUpon>frm_CreateItemRequests.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Party\frm_CreateTeamManagment.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateTeamManagment.Designer.cs">
+      <DependentUpon>frm_CreateTeamManagment.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_TeamManagmentList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_TeamManagmentList.Designer.cs">
+      <DependentUpon>frm_TeamManagmentList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Views\Party\frm_ItemRequestsList.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -270,6 +288,18 @@
     <Compile Include="Views\MasterData\frm_LogIn.designer.cs">
       <DependentUpon>frm_LogIn.cs</DependentUpon>
     </Compile>
+    <Compile Include="Views\Party\frm_CreateTeam.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_CreateTeam.Designer.cs">
+      <DependentUpon>frm_CreateTeam.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Party\frm_TeamList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Party\frm_TeamList.Designer.cs">
+      <DependentUpon>frm_TeamList.cs</DependentUpon>
+    </Compile>
     <EmbeddedResource Include="Controllers\Party\ctl_DonationDetail.resx">
       <DependentUpon>ctl_DonationDetail.cs</DependentUpon>
     </EmbeddedResource>
@@ -322,6 +352,12 @@
     <EmbeddedResource Include="Views\Party\frm_CreateItemRequests.resx">
       <DependentUpon>frm_CreateItemRequests.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_CreateTeamManagment.resx">
+      <DependentUpon>frm_CreateTeamManagment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_TeamManagmentList.resx">
+      <DependentUpon>frm_TeamManagmentList.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Party\frm_ItemRequestsList.resx">
       <DependentUpon>frm_ItemRequestsList.cs</DependentUpon>
     </EmbeddedResource>
@@ -360,6 +396,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Views\MasterData\frm_LogIn.resx">
       <DependentUpon>frm_LogIn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_CreateTeam.resx">
+      <DependentUpon>frm_CreateTeam.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Party\frm_TeamList.resx">
+      <DependentUpon>frm_TeamList.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

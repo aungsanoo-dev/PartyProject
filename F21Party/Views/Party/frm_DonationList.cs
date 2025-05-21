@@ -7,11 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using F21Party.Controllers.Party;
+using F21Party.Controllers;
 using F21Party.DBA;
 
 
-namespace F21Party.Donation
+namespace F21Party.Views
 {
     public partial class frm_DonationList : Form
     {

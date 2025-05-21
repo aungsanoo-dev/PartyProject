@@ -7,25 +7,26 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using F21Party.DBA;
 using F21Party.Controllers;
+using F21Party.DBA;
 
 namespace F21Party.Views
 {
-    public partial class frm_CreatePartyItem : Form
+    public partial class frm_CreateTeam : Form
     {
-        private CtrlFrmCreatePartyItem ctrlFrmPartyItem;
-        public int ItemID = 0;
+        private CtrlFrmCreateTeam ctrlFrmCreateTeam;
+        public int TeamID;
         public bool IsEdit = false;
-        public frm_CreatePartyItem()
+        public int TotalPlayer = 0;
+        public frm_CreateTeam()
         {
             InitializeComponent();
-            ctrlFrmPartyItem = new CtrlFrmCreatePartyItem(this);
+            ctrlFrmCreateTeam = new CtrlFrmCreateTeam(this);
         }
 
-        private void frm_Item_Load(object sender, EventArgs e)
+        private void frm_CreateTeam_Load(object sender, EventArgs e)
         {
-            ctrlFrmPartyItem.ItemLoad();
+            txtTeamName.Focus();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -33,9 +34,9 @@ namespace F21Party.Views
             this.Close();
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void btnSave_Click(object sender, EventArgs e)
         {
-            ctrlFrmPartyItem.CreateClick();
+            ctrlFrmCreateTeam.SaveClick();
         }
     }
 }

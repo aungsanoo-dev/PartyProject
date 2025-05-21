@@ -26,8 +26,8 @@ namespace F21Party.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=KBZ-LPT-2759\\SQL2022EXPRESS;Initial Catalog=F21Party;Integrated Secur" +
-            "ity=True;TrustServerCertificate=True")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=.\\SQL2022Express;Initial Catalog=F21Party;Integrated Security=True;Tr" +
+            "ustServerCertificate=True")]
         public string F21PartyCon {
             get {
                 return ((string)(this["F21PartyCon"]));

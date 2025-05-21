@@ -20,7 +20,17 @@ namespace F21Party.DBA
         {
             try
             {
-                con = new SqlConnection(F21Party.Properties.Settings.Default.F21PartyCon);
+                SqlConnectionStringBuilder sqlConnectionStringBuilder = new SqlConnectionStringBuilder()
+                {
+                    DataSource = ".\\SQL2022Express",
+                    InitialCatalog = "F21Party",
+                    UserID = "sa",
+                    Password = "sasa@123",
+                    TrustServerCertificate = true
+                };
+                
+                //con = new SqlConnection(F21Party.Properties.Settings.Default.F21PartyCon);
+                con = new SqlConnection(sqlConnectionStringBuilder.ConnectionString);
                 if (con.State == ConnectionState.Open)
                     con.Close();
                 con.Open();

@@ -90,7 +90,7 @@ namespace F21Party.Controllers
                 return;
             }
 
-            string ItemID = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString();
+            string itemID = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString();
             DbaPartyItem dbaPartyItem = new DbaPartyItem();
             if (frmPartyItemList.dgvPartyItem.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
@@ -102,18 +102,10 @@ namespace F21Party.Controllers
             }
             else
             {
-                if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                if (MessageBox.Show("Are You Sure You Want To Delete?", "Delete Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    //spString = string.Format("SP_Select_PartyItem N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value), "0", "3");
-                    //DataTable DT = new DataTable();
-                    //DT = dbaConnection.SelectData(spString);
 
-                    //if (DT.Rows.Count > 0)
-                    //{
-                    //    MessageBox.Show("You cannont delete the Page which is currently used by the Permission!");
-                    //}
-
-                    dbaPartyItem.ITEMID = Convert.ToInt32(ItemID);
+                    dbaPartyItem.ITEMID = Convert.ToInt32(itemID);
                     dbaPartyItem.ACTION = 2;
                     dbaPartyItem.SaveData();
                     MessageBox.Show("Successfully Delete");

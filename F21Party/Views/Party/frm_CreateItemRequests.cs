@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using F21Party.DBA;
-using F21Party.Controllers.Party;
+using F21Party.Controllers;
 
 namespace F21Party.Views
 {

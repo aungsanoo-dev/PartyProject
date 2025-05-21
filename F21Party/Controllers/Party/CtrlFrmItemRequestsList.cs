@@ -1,5 +1,4 @@
 ﻿using F21Party.DBA;
-using F21Party.Donation;
 using F21Party.Views;
 using System;
 using System.Collections.Generic;
@@ -67,6 +66,12 @@ namespace F21Party.Controllers
             //frmItemRequestsList.dgvItemRequests.Columns[8].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 15;
 
             dbaConnection.ToolStripTextBoxData(frmItemRequestsList.tstSearchWith, SPString, "RequestDate");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("ItemRequests"))
+            {
+                frmItemRequestsList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                frmItemRequestsList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
 
         public void ShowItemRequestsDetail()
@@ -137,6 +142,12 @@ namespace F21Party.Controllers
 
         public void TsbNewClick()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("ItemRequests"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             frm_CreateItemRequests frm = new frm_CreateItemRequests();
             frm.ShowDialog();
             SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
@@ -172,6 +183,12 @@ namespace F21Party.Controllers
 
         public void TsbDelete()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("ItemRequests"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             string ItemRequestsID = frmItemRequestsList.dgvItemRequests.CurrentRow.Cells["RequestID"].Value.ToString();
             DbaItemRequests dbaItemRequests = new DbaItemRequests();
             DbaItemRequestsDetail dbaItemRequestsDetail = new DbaItemRequestsDetail();
