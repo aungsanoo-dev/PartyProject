@@ -14,105 +14,104 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateAccess
     {
-        public frm_CreateAccess frmCreateAccess;// Declare the View
-        public frm_CreateAccessAuthority frmCreateAccessAuthority;// Declare the View for Authority
-        public CtrlFrmCreateAccess(frm_CreateAccess createAccessForm)
-        {
-            frmCreateAccess = createAccessForm; // Create the View
-        }
-        public CtrlFrmCreateAccess(frm_CreateAccessAuthority createAccessAuthorityForm)
-        {
-            frmCreateAccessAuthority = createAccessAuthorityForm; // Create the View
-        }
-
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaAccess dbaAccessSetting = new DbaAccess();
-        public bool _IsEdit;
+        private readonly frm_CreateAccess _frmCreateAccess;// Declare the View
+        private readonly frm_CreateAccessAuthority _frmCreateAccessAuthority;// Declare the View for Authority
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaAccess _dbaAccessSetting = new DbaAccess();
+        //private bool _IsEdit;
         private int _AccessID;
         private int _AccessAuthorityID;
         private int _Authority;
+        private string _spString;
+        public CtrlFrmCreateAccess(frm_CreateAccess createAccessForm)
+        {
+            _frmCreateAccess = createAccessForm; // Create the View
+        }
+        public CtrlFrmCreateAccess(frm_CreateAccessAuthority createAccessAuthorityForm)
+        {
+            _frmCreateAccessAuthority = createAccessAuthorityForm; // Create the View
+        }
         
         public void ShowCombo(dynamic form)
         {
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
-            string _LogInAccessDisplay = "";
-            _LogInAccessDisplay = form.cboLogInAccess.DisplayMember;
+            string logInAccessDisplay = "";
+            logInAccessDisplay = form.cboLogInAccess.DisplayMember;
             // Define columns
-            DTCombo.Columns.Add("AccessText");
-            DTCombo.Columns.Add("AccessValue");
+            dtCombo.Columns.Add("AccessText");
+            dtCombo.Columns.Add("AccessValue");
 
             // Add default selection
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "---Select---";
-            Dr["AccessValue"] = "";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "---Select---";
+            dr["AccessValue"] = "";
+            dtCombo.Rows.Add(dr);
 
             // Add True
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "True";
-            Dr["AccessValue"] = "True";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "True";
+            dr["AccessValue"] = "True";
+            dtCombo.Rows.Add(dr);
 
             // Add False
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "False";
-            Dr["AccessValue"] = "False";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "False";
+            dr["AccessValue"] = "False";
+            dtCombo.Rows.Add(dr);
 
             // Bind to ComboBox
             form.cboLogInAccess.DisplayMember = "AccessText";
             form.cboLogInAccess.ValueMember = "AccessValue";
-            form.cboLogInAccess.DataSource = DTCombo;
+            form.cboLogInAccess.DataSource = dtCombo;
             
-            form.cboLogInAccess.SelectedValue = _LogInAccessDisplay;
+            form.cboLogInAccess.SelectedValue = logInAccessDisplay;
            
         }
 
         public void CreateClick()
         {
-            DataTable DT = new DataTable();
-            string spString = "";
-            _AccessID = frmCreateAccess._AccessID;
+            DataTable dt = new DataTable();
+            _AccessID = _frmCreateAccess.AccessID;
             //_IsEdit = frmCreateAccessAuthority._IsEdit;
             //_AccessAuthorityID = frmCreateAccessAuthority._AccessID;
-            _Authority = frmCreateAccess._Authority;
+            _Authority = _frmCreateAccess.Authority;
 
-            if (frmCreateAccess.txtAccessLevel.Text.Trim().ToString() == string.Empty)
+            if (_frmCreateAccess.txtAccessLevel.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type FullName.");
-                frmCreateAccess.txtAccessLevel.Focus();
+                _frmCreateAccess.txtAccessLevel.Focus();
             }
-            else if (frmCreateAccess.cboLogInAccess.SelectedValue.ToString() == "")
+            else if (_frmCreateAccess.cboLogInAccess.SelectedValue.ToString() == "")
             {
                 MessageBox.Show("Please Choose LogIn Access.");
-                frmCreateAccess.cboLogInAccess.Focus();
+                _frmCreateAccess.cboLogInAccess.Focus();
             }
             else
             {
                 // For Access
-                spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Regex.Replace(frmCreateAccess.txtAccessLevel.Text.Trim(), @"\s+", " "),
+                _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Regex.Replace(_frmCreateAccess.txtAccessLevel.Text.Trim(), @"\s+", " "),
                 "0", "2");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _AccessID != Convert.ToInt32(DT.Rows[0]["AccessID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _AccessID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
                 {
                     MessageBox.Show("This AccessLevel is Already Exist");
-                    frmCreateAccess.txtAccessLevel.Focus();
-                    frmCreateAccess.txtAccessLevel.SelectAll();
+                    _frmCreateAccess.txtAccessLevel.Focus();
+                    _frmCreateAccess.txtAccessLevel.SelectAll();
                 }
                 else
                 {
-                    dbaAccessSetting.AID = Convert.ToInt32(_AccessID);
-                    dbaAccessSetting.ALEVEL = Regex.Replace(frmCreateAccess.txtAccessLevel.Text.Trim(), @"\s+", " ");
-                    dbaAccessSetting.LIACCESS = frmCreateAccess.cboLogInAccess.SelectedValue.ToString();
-                    dbaAccessSetting.AUTHORITY = Convert.ToInt32(_Authority);
+                    _dbaAccessSetting.AID = Convert.ToInt32(_AccessID);
+                    _dbaAccessSetting.ALEVEL = Regex.Replace(_frmCreateAccess.txtAccessLevel.Text.Trim(), @"\s+", " ");
+                    _dbaAccessSetting.LIACCESS = _frmCreateAccess.cboLogInAccess.SelectedValue.ToString();
+                    _dbaAccessSetting.AUTHORITY = Convert.ToInt32(_Authority);
 
-                    dbaAccessSetting.ACTION = 0;
-                    dbaAccessSetting.SaveData();
+                    _dbaAccessSetting.ACTION = 0;
+                    _dbaAccessSetting.SaveData();
                     MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                    frmCreateAccess.Close();
+                    _frmCreateAccess.Close();
 
                     //if (_IsEdit)
                     //{
@@ -152,54 +151,53 @@ namespace F21Party.Controllers
 
         public void EditClick()
         {
-            DataTable DT = new DataTable();
-            string spString = "";
+            DataTable dt = new DataTable();
             //_IsEdit = frmCreateAccessAuthority._IsEdit;
-            _AccessAuthorityID = frmCreateAccessAuthority._AccessID;
+            _AccessAuthorityID = _frmCreateAccessAuthority.AccessID;
 
-            if (frmCreateAccessAuthority.txtAccessLevel.Text.Trim().ToString() == string.Empty)
+            if (_frmCreateAccessAuthority.txtAccessLevel.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type FullName.");
-                frmCreateAccessAuthority.txtAccessLevel.Focus();
+                _frmCreateAccessAuthority.txtAccessLevel.Focus();
             }
-            else if (frmCreateAccessAuthority.cboLogInAccess.SelectedValue.ToString() == "")
+            else if (_frmCreateAccessAuthority.cboLogInAccess.SelectedValue.ToString() == "")
             {
                 MessageBox.Show("Please Choose LogIn Access.");
-                frmCreateAccessAuthority.cboLogInAccess.Focus();
+                _frmCreateAccessAuthority.cboLogInAccess.Focus();
             }
-            else if(frmCreateAccessAuthority.txtAuthority.Text.Trim().ToString() == string.Empty)
+            else if(_frmCreateAccessAuthority.txtAuthority.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Authority.(e.g 1,2,3...etc)");
-                frmCreateAccessAuthority.txtAuthority.Focus();
+                _frmCreateAccessAuthority.txtAuthority.Focus();
             }
-            else if (!int.TryParse(frmCreateAccessAuthority.txtAuthority.Text.Trim(), out _))
+            else if (!int.TryParse(_frmCreateAccessAuthority.txtAuthority.Text.Trim(), out _))
             {
                 MessageBox.Show("Authority must be a valid number.");
             }
             else
             {
-                spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Regex.Replace(frmCreateAccessAuthority.txtAuthority.Text.Trim(), @"\s+", " "),"0", "5");
+                _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Regex.Replace(_frmCreateAccessAuthority.txtAuthority.Text.Trim(), @"\s+", " "),"0", "5");
 
-                DT = dbaConnection.SelectData(spString);
+                dt = _dbaConnection.SelectData(_spString);
 
                 // For Authority
-                if (DT.Rows.Count > 0 && _AccessAuthorityID != Convert.ToInt32(DT.Rows[0]["AccessID"]))
+                if (dt.Rows.Count > 0 && _AccessAuthorityID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
                 {
                     MessageBox.Show("This Authority is Already Exist");
-                    frmCreateAccessAuthority.txtAccessLevel.Focus();
-                    frmCreateAccessAuthority.txtAccessLevel.SelectAll();
+                    _frmCreateAccessAuthority.txtAccessLevel.Focus();
+                    _frmCreateAccessAuthority.txtAccessLevel.SelectAll();
                 }
                 else
                 {
-                    dbaAccessSetting.AID = Convert.ToInt32(_AccessAuthorityID);
-                    dbaAccessSetting.ALEVEL = Regex.Replace(frmCreateAccessAuthority.txtAccessLevel.Text.Trim(), @"\s+", " ");
-                    dbaAccessSetting.LIACCESS = frmCreateAccessAuthority.cboLogInAccess.SelectedValue.ToString();
-                    dbaAccessSetting.AUTHORITY = Convert.ToInt32(frmCreateAccessAuthority.txtAuthority.Text.Trim());
-                    dbaAccessSetting.ACTION = 1;
-                    dbaAccessSetting.SaveData();
+                    _dbaAccessSetting.AID = Convert.ToInt32(_AccessAuthorityID);
+                    _dbaAccessSetting.ALEVEL = Regex.Replace(_frmCreateAccessAuthority.txtAccessLevel.Text.Trim(), @"\s+", " ");
+                    _dbaAccessSetting.LIACCESS = _frmCreateAccessAuthority.cboLogInAccess.SelectedValue.ToString();
+                    _dbaAccessSetting.AUTHORITY = Convert.ToInt32(_frmCreateAccessAuthority.txtAuthority.Text.Trim());
+                    _dbaAccessSetting.ACTION = 1;
+                    _dbaAccessSetting.SaveData();
 
                     MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                    frmCreateAccessAuthority.Close();
+                    _frmCreateAccessAuthority.Close();
                 }
             }
         }

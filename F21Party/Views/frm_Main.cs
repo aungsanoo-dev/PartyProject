@@ -16,11 +16,11 @@ namespace F21Party.Views
 {
     public partial class frm_Main : Form
     {
-        CtrlFrmMain ctrlFrmMain; // Declare the controller
+        private readonly CtrlFrmMain _ctrlFrmMain; // Declare the controller
         public frm_Main()
         {
             InitializeComponent();
-            ctrlFrmMain = new CtrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
+            _ctrlFrmMain = new CtrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
             //ctrlFrmPermissionList = new CtrlFrmPermissionList(this);
         }
         public void RefreshMenu()
@@ -33,18 +33,18 @@ namespace F21Party.Views
             Program.UserAuthority = 0;
             Program.PublicArrWriteAccessPages = Array.Empty<string>();
             Program.PublicArrReadAccessPages = Array.Empty<string>();
-            ctrlFrmMain.ShowMenu("");
+            _ctrlFrmMain.ShowMenu("");
 
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
-            ctrlFrmMain.ShowMenu("");
+            _ctrlFrmMain.ShowMenu("");
             this.ActiveControl = null;
         }
 
         private void mnuLogin_Click(object sender, EventArgs e)
         {
-            ctrlFrmMain.LoginAccount();
+            _ctrlFrmMain.LoginAccount();
         }
 
         private void mnuExit_Click(object sender, EventArgs e)
@@ -103,7 +103,7 @@ namespace F21Party.Views
 
         private void btnLogIn_Click(object sender, EventArgs e)
         {
-            ctrlFrmMain.LoginAccount();
+            _ctrlFrmMain.LoginAccount();
         }
 
         private void btnRegister_Click(object sender, EventArgs e)
@@ -116,7 +116,7 @@ namespace F21Party.Views
         {
             if (Program.UserID == 0)
             {
-                ctrlFrmMain.LoginAccount();
+                _ctrlFrmMain.LoginAccount();
             }
             else
             {

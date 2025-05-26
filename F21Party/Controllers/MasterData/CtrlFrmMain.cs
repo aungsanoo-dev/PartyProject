@@ -15,28 +15,28 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmMain
     {
-        public Views.frm_Main frmMain; // Declare the View
+        private readonly frm_Main _frmMain; // Declare the View
         
-        public CtrlFrmMain(Views.frm_Main mainForm)
+        public CtrlFrmMain(frm_Main mainForm)
         {
-            frmMain = mainForm; // Create the View
+            _frmMain = mainForm; // Create the View
         }
 
-        public void ShowMenu(string AccessLevel)
+        public void ShowMenu(string accessLevel)
         {
-            string[] Arr_AccessLevel = AccessLevel.Split(',');
-            for (int i = 1; i < frmMain.menuStrip1.Items.Count; i++)
+            string[] arrAccessLevel = accessLevel.Split(',');
+            for (int i = 1; i < _frmMain.menuStrip1.Items.Count; i++)
             {
-                ToolStripMenuItem MainMenu = (ToolStripMenuItem)frmMain.menuStrip1.Items[i];
-                foreach (ToolStripItem SubMenu in MainMenu.DropDownItems)
+                ToolStripMenuItem mainMenu = (ToolStripMenuItem)_frmMain.menuStrip1.Items[i];
+                foreach (ToolStripItem subMenu in mainMenu.DropDownItems)
                 {
-                    SubMenu.Enabled = false;
-                    foreach (string Menu in Arr_AccessLevel)
+                    subMenu.Enabled = false;
+                    foreach (string Menu in arrAccessLevel)
                     {
                         //MessageBox.Show(SubMenu.Name);
-                        if (SubMenu.Name.ToString() == ("mnu" + Menu.ToString()))
+                        if (subMenu.Name.ToString() == ("mnu" + Menu.ToString()))
                         {
-                            SubMenu.Enabled = true;
+                            subMenu.Enabled = true;
                             //MessageBox.Show("Hello");
                             break;
                         }
@@ -61,12 +61,12 @@ namespace F21Party.Controllers
         //}
         public void LoginAccount()
         {
-            if (frmMain.mnuLogIn.Text == "Logout" || frmMain.btnLogIn.Text == "Logout")
+            if (_frmMain.mnuLogIn.Text == "Logout" || _frmMain.btnLogIn.Text == "Logout")
             {
                 if (MessageBox.Show("Are You Sure You Want To Logout", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    frmMain.mnuLogIn.Text = "LogIn";
-                    frmMain.btnLogIn.Text = "LogIn";
+                    _frmMain.mnuLogIn.Text = "LogIn";
+                    _frmMain.btnLogIn.Text = "LogIn";
                     Program.UserID = 0;
                     Program.UserAccessID = 0;
                     Program.UserAccessLevel = "";
@@ -80,10 +80,10 @@ namespace F21Party.Controllers
             
 
             DbaConnection dbaConnection = new DbaConnection();
-            DataTable DT = new DataTable();
-            DataTable DTPage = new DataTable();
+            DataTable dt = new DataTable();
+            DataTable dtPage = new DataTable();
             DataTable dtAccess = new DataTable();
-            DataTable DTAccessPage = new DataTable();
+            DataTable dtAccessPage = new DataTable();
 
             // Reuse the same login form
             frm_LogIn frmLogIn = new frm_LogIn();
@@ -110,17 +110,17 @@ namespace F21Party.Controllers
                     break; // Cancelled
                 }
 
-                string UserName = frmLogIn.txtUserName.Text.Trim();
-                string Password = PwEncryption.Encrypt(frmLogIn.txtPassword.Text.Trim());
+                string userName = frmLogIn.txtUserName.Text.Trim();
+                string password = PwEncryption.Encrypt(frmLogIn.txtPassword.Text.Trim());
 
-                if (string.IsNullOrWhiteSpace(UserName))
+                if (string.IsNullOrWhiteSpace(userName))
                 {
                     MessageBox.Show("Please Type User Name");
                     focusPasswordNextTime = false;
                     continue;
                 }
 
-                if (string.IsNullOrWhiteSpace(Password))
+                if (string.IsNullOrWhiteSpace(password))
                 {
                     MessageBox.Show("Please Type Password");
                     focusPasswordNextTime = true;
@@ -128,11 +128,11 @@ namespace F21Party.Controllers
                 }
 
                 string spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
-                    UserName, Password, "", "1");
+                    userName, password, "", "1");
 
-                DT = dbaConnection.SelectData(spString);
+                dt = dbaConnection.SelectData(spString);
 
-                if (DT.Rows.Count == 0)
+                if (dt.Rows.Count == 0)
                 {
                     MessageBox.Show("Invalid UserName And Password");
                     focusPasswordNextTime = false;
@@ -140,12 +140,12 @@ namespace F21Party.Controllers
                 }
 
                 // Get User AccessID
-                Program.UserAccessID = Convert.ToInt32(DT.Rows[0]["AccessID"]);
+                Program.UserAccessID = Convert.ToInt32(dt.Rows[0]["AccessID"]);
 
                 // For AccessLevel
-                string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
+                string spAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
                     "", 1);
-                dtAccess = dbaConnection.SelectData(SPAccess);
+                dtAccess = dbaConnection.SelectData(spAccess);
 
                 Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
 
@@ -159,23 +159,23 @@ namespace F21Party.Controllers
 
                 // Set global user information
                 Program.UserAccessLevel = dtAccess.Rows[0]["AccessLevel"].ToString();
-                Program.UserID = Convert.ToInt32(DT.Rows[0]["UserID"]);
+                Program.UserID = Convert.ToInt32(dt.Rows[0]["UserID"]);
 
                 // For Pages
-                string SPpage = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
+                string spPage = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
                 //string SPpage = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
-                DTPage = dbaConnection.SelectData(SPpage);
+                dtPage = dbaConnection.SelectData(spPage);
 
                 // To Check Read and Write Value
-                List<string> ReadWrite = new List<string>();
+                List<string> readWrite = new List<string>();
 
                 // For AccessLevel
-                foreach (DataRow row in DTPage.Rows)
+                foreach (DataRow row in dtPage.Rows)
                 {
-                    ReadWrite.Add(row["PermissionName"].ToString()); // To check if Read and Write are exist
+                    readWrite.Add(row["PermissionName"].ToString()); // To check if Read and Write are exist
                 }
 
-                if (!ReadWrite.Contains("Read") && !ReadWrite.Contains("Write"))
+                if (!readWrite.Contains("Read") && !readWrite.Contains("Write"))
                 {
                     MessageBox.Show("Error in Database. Read and Write Accesses aren't found");
                     Program.UserAccessID = 0;
@@ -185,51 +185,51 @@ namespace F21Party.Controllers
                 }
 
                 // For AccessLevel (Write)
-                List<string> WriteAccessPages = new List<string>();
-                foreach (DataRow row in DTPage.Rows)
+                List<string> writeAccessPages = new List<string>();
+                foreach (DataRow row in dtPage.Rows)
                 {
-                    string SPLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", 
+                    string spLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", 
                         Program.UserAccessID, row["PageName"].ToString(), "Write", 3);
 
-                    DTAccessPage = dbaConnection.SelectData(SPLevel);
-                    if (DTAccessPage == null || DTAccessPage.Rows.Count == 0)
+                    dtAccessPage = dbaConnection.SelectData(spLevel);
+                    if (dtAccessPage == null || dtAccessPage.Rows.Count == 0)
                     {
                         continue;
                     }
-                    if (DTAccessPage.Rows[0]["AccessValue"].ToString() == "True")
+                    if (dtAccessPage.Rows[0]["AccessValue"].ToString() == "True")
                     {
-                        WriteAccessPages.Add(DTAccessPage.Rows[0]["PageName"].ToString());
+                        writeAccessPages.Add(dtAccessPage.Rows[0]["PageName"].ToString());
                     }
                 }
-                string WritePagesString = string.Join(",", WriteAccessPages.Distinct()); // Page Name Values
-                Program.PublicArrWriteAccessPages = WritePagesString.Split(',');
+                string writePagesString = string.Join(",", writeAccessPages.Distinct()); // Page Name Values
+                Program.PublicArrWriteAccessPages = writePagesString.Split(',');
 
                 // For AccessLevel (Read)
-                List<string> ReadAccessPages = new List<string>();
-                foreach (DataRow row in DTPage.Rows)
+                List<string> readAccessPages = new List<string>();
+                foreach (DataRow row in dtPage.Rows)
                 {
-                    string SPLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'",
+                    string spLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'",
                         Program.UserAccessID, row["PageName"].ToString(), "Read", 3);
 
-                    DTAccessPage = dbaConnection.SelectData(SPLevel);
-                    if (DTAccessPage == null || DTAccessPage.Rows.Count == 0)
+                    dtAccessPage = dbaConnection.SelectData(spLevel);
+                    if (dtAccessPage == null || dtAccessPage.Rows.Count == 0)
                     {
                         continue;
                     }
-                    if (DTAccessPage.Rows[0]["AccessValue"].ToString() == "True")
+                    if (dtAccessPage.Rows[0]["AccessValue"].ToString() == "True")
                     {
-                        ReadAccessPages.Add(DTAccessPage.Rows[0]["PageName"].ToString());
+                        readAccessPages.Add(dtAccessPage.Rows[0]["PageName"].ToString());
                     }
                 }
-                string ReadPagesString = string.Join(",", ReadAccessPages.Distinct()); // Page Name Values
-                Program.PublicArrReadAccessPages = ReadPagesString.Split(',');
+                string readPagesString = string.Join(",", readAccessPages.Distinct()); // Page Name Values
+                Program.PublicArrReadAccessPages = readPagesString.Split(',');
 
 
-                frmMain.mnuLogIn.Text = "Logout";
-                frmMain.btnLogIn.Text = "Logout";
+                _frmMain.mnuLogIn.Text = "Logout";
+                _frmMain.btnLogIn.Text = "Logout";
                 //MessageBox.Show(Program.UserAccessLevel.ToString());
                 //MessageBox.Show(Program.UserAuthority.ToString());
-                ShowMenu(ReadPagesString);
+                ShowMenu(readPagesString);
                 break;
             }
         }

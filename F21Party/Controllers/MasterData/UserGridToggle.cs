@@ -15,19 +15,21 @@ namespace F21Party.Controllers
 {
     internal class UserGridToggle
     {
-        public frm_AccountList parentForm;
-        private DataGridView originalGrid;
-        private DataGridView extraUserGrid;
+        private readonly frm_AccountList _parentForm;
+        private readonly DataGridView _originalGrid;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private DataGridView _extraUserGrid;
+        private string _spString;
         
         public UserGridToggle(frm_AccountList accountForm, DataGridView originalGrid)
         {
-            parentForm = accountForm;
-            this.originalGrid = originalGrid;
+            _parentForm = accountForm;
+            this._originalGrid = originalGrid;
         }
         
         public void ToggleExtraGrid()
         {
-            if (!Program.PublicArrReadAccessPages.Contains("User"))
+            if (!Program.PublicArrReadAccessPages.Contains("Users"))
             {
                 MessageBox.Show("You don't have 'Read' Access on User!");
                 return;
@@ -35,66 +37,66 @@ namespace F21Party.Controllers
             
             // If extraGrid does not exist or is not currently added to the form,
             // add it and adjust the layout.
-            if (extraUserGrid == null || !parentForm.Controls.Contains(extraUserGrid))
+            if (_extraUserGrid == null || !_parentForm.Controls.Contains(_extraUserGrid))
             {
-                if (extraUserGrid == null)
+                if (_extraUserGrid == null)
                 {
-                    extraUserGrid = new DataGridView();
-                    extraUserGrid.Name = "dgvExtraUser";
+                    _extraUserGrid = new DataGridView();
+                    _extraUserGrid.Name = "dgvExtraUser";
                     // Optionally: configure extraGrid (columns, default settings, etc.)
                 }
 
                 // Set the original grid's docking to Top and give it half the form's height.
-                originalGrid.Dock = DockStyle.Top;
-                originalGrid.Height = parentForm.ClientSize.Height / 2;
+                _originalGrid.Dock = DockStyle.Top;
+                _originalGrid.Height = _parentForm.ClientSize.Height / 2;
 
                 // Set the extra grid to fill the remaining space.
-                extraUserGrid.Dock = DockStyle.Fill;
+                _extraUserGrid.Dock = DockStyle.Fill;
 
                 // Add the extra grid to the form.
-                parentForm.Controls.Add(extraUserGrid);
+                _parentForm.Controls.Add(_extraUserGrid);
                 // Ensure the extra grid appears below the original grid.
-                extraUserGrid.BringToFront();
+                _extraUserGrid.BringToFront();
 
                 // Fill extraGrid with data:
                 // Instantiate your data access object.
-                DbaConnection dbaConnection = new DbaConnection();
+                //DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+                _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
+                _extraUserGrid.DataSource = _dbaConnection.SelectData(_spString);
                 // Configure the extra grid's appearance.
-                extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                _extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-                extraUserGrid.CellPainting -= ExtraUserGrid_CellPainting;
-                extraUserGrid.CellPainting += ExtraUserGrid_CellPainting;
+                _extraUserGrid.CellPainting -= ExtraUserGrid_CellPainting;
+                _extraUserGrid.CellPainting += ExtraUserGrid_CellPainting;
 
-                extraUserGrid.CellClick -= ExtraUserGrid_CellClick;
-                extraUserGrid.CellClick += ExtraUserGrid_CellClick;
+                _extraUserGrid.CellClick -= ExtraUserGrid_CellClick;
+                _extraUserGrid.CellClick += ExtraUserGrid_CellClick;
 
                 //extraUserGrid.CellValueChanged += ExtraUserGrid_CellValueChanged;
 
                 // Optionally adjust the columns if the data contains at least six columns:
-                if (extraUserGrid.Columns.Count >= 7)
+                if (_extraUserGrid.Columns.Count >= 7)
                 {
-                    extraUserGrid.Columns[0].FillWeight = 6;
-                    extraUserGrid.Columns[1].FillWeight = 6;
-                    extraUserGrid.Columns[2].FillWeight = 18;
-                    extraUserGrid.Columns[3].FillWeight = 30;
-                    extraUserGrid.Columns[4].FillWeight = 18;
-                    extraUserGrid.Columns[5].Visible = false;
-                    extraUserGrid.Columns[6].FillWeight = 10;
-                    extraUserGrid.Columns[7].FillWeight = 12;
+                    _extraUserGrid.Columns[0].FillWeight = 6;
+                    _extraUserGrid.Columns[1].FillWeight = 6;
+                    _extraUserGrid.Columns[2].FillWeight = 18;
+                    _extraUserGrid.Columns[3].FillWeight = 30;
+                    _extraUserGrid.Columns[4].FillWeight = 18;
+                    _extraUserGrid.Columns[5].Visible = false;
+                    _extraUserGrid.Columns[6].FillWeight = 10;
+                    _extraUserGrid.Columns[7].FillWeight = 12;
                 }
-                parentForm.tsbUser.Text = "Close";
+                _parentForm.tsbUser.Text = "Close";
                 
                 
             }
             else // If the extra grid is already added, remove it and reset the layout.
             {
-                parentForm.Controls.Remove(extraUserGrid);
-                originalGrid.Dock = DockStyle.Fill;
-                parentForm.tsbUser.Text = "Users";
+                _parentForm.Controls.Remove(_extraUserGrid);
+                _originalGrid.Dock = DockStyle.Fill;
+                _parentForm.tsbUser.Text = "Users";
             }
         }
         //private void ExtraUserGrid_CellValueChanged(object sender, DataGridViewCellEventArgs e)
@@ -103,7 +105,7 @@ namespace F21Party.Controllers
         //}
         public void DoubleToggleExtraGrid()
         {
-            if (!Program.PublicArrReadAccessPages.Contains("User"))
+            if (!Program.PublicArrReadAccessPages.Contains("Users"))
             {
                 MessageBox.Show("You don't have 'Read' Access on User!");
                 return;
@@ -111,49 +113,49 @@ namespace F21Party.Controllers
 
             // If extraGrid does not exist or is not currently added to the form,
             // add it and adjust the layout.
-            if (extraUserGrid == null || !parentForm.Controls.Contains(extraUserGrid))
+            if (_extraUserGrid == null || !_parentForm.Controls.Contains(_extraUserGrid))
             {
-                if (extraUserGrid == null)
+                if (_extraUserGrid == null)
                 {
-                    extraUserGrid = new DataGridView();
-                    extraUserGrid.Name = "dgvExtraUser";
+                    _extraUserGrid = new DataGridView();
+                    _extraUserGrid.Name = "dgvExtraUser";
                     // Optionally: configure extraGrid (columns, default settings, etc.)
                 }
 
                 // Set the original grid's docking to Top and give it half the form's height.
-                originalGrid.Dock = DockStyle.Top;
-                originalGrid.Height = parentForm.ClientSize.Height / 2;
+                _originalGrid.Dock = DockStyle.Top;
+                _originalGrid.Height = _parentForm.ClientSize.Height / 2;
 
                 // Set the extra grid to fill the remaining space.
-                extraUserGrid.Dock = DockStyle.Fill;
+                _extraUserGrid.Dock = DockStyle.Fill;
 
                 // Add the extra grid to the form.
-                parentForm.Controls.Add(extraUserGrid);
+                _parentForm.Controls.Add(_extraUserGrid);
                 // Ensure the extra grid appears below the original grid.
-                extraUserGrid.BringToFront();
+                _extraUserGrid.BringToFront();
 
                 // Fill extraGrid with data:
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+                _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
+                _extraUserGrid.DataSource = dbaConnection.SelectData(_spString);
                 // Configure the extra grid's appearance.
-                extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+                _extraUserGrid.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
 
                 // Optionally adjust the columns if the data contains at least six columns:
-                if (extraUserGrid.Columns.Count >= 7)
+                if (_extraUserGrid.Columns.Count >= 7)
                 {
-                    extraUserGrid.Columns[0].FillWeight = 6;
-                    extraUserGrid.Columns[1].FillWeight = 6;
-                    extraUserGrid.Columns[2].FillWeight = 18;
-                    extraUserGrid.Columns[3].FillWeight = 30;
-                    extraUserGrid.Columns[4].FillWeight = 18;
-                    extraUserGrid.Columns[5].Visible = false;
-                    extraUserGrid.Columns[6].FillWeight = 10;
-                    extraUserGrid.Columns[7].FillWeight = 12;
+                    _extraUserGrid.Columns[0].FillWeight = 6;
+                    _extraUserGrid.Columns[1].FillWeight = 6;
+                    _extraUserGrid.Columns[2].FillWeight = 18;
+                    _extraUserGrid.Columns[3].FillWeight = 30;
+                    _extraUserGrid.Columns[4].FillWeight = 18;
+                    _extraUserGrid.Columns[5].Visible = false;
+                    _extraUserGrid.Columns[6].FillWeight = 10;
+                    _extraUserGrid.Columns[7].FillWeight = 12;
                 }
 
                 
@@ -164,10 +166,10 @@ namespace F21Party.Controllers
                 //}
 
                 // Assume extraUserGrid.DataSource is a DataTable.
-                DataTable originalTable = ((DataTable)extraUserGrid.DataSource).Copy();
+                DataTable originalTable = ((DataTable)_extraUserGrid.DataSource).Copy();
 
                 // Get the UserID value from the currently double-clicked row in dgvUserSetting.
-                var selectedUserID = parentForm.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString();
+                var selectedUserID = _parentForm.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString();
 
                 // Use the DataTable's Select method to filter rows that match the selected UserID.
                 DataRow[] filteredRows = originalTable.Select("UserID = '" + selectedUserID + "'");
@@ -176,14 +178,14 @@ namespace F21Party.Controllers
                 {
                     // If there is at least one matching row, copy the filtered rows into a new DataTable.
                     DataTable filteredTable = filteredRows.CopyToDataTable();
-                    extraUserGrid.DataSource = filteredTable;
+                    _extraUserGrid.DataSource = filteredTable;
                 }
                 else
                 {
                     // If no rows match the filter, clear the DataSource.
-                    extraUserGrid.DataSource = null;
+                    _extraUserGrid.DataSource = null;
                 }
-                parentForm.tsbUser.Text = "Close";
+                _parentForm.tsbUser.Text = "Close";
 
             }
             else // If the extra grid is already added, remove it and reset the layout.
@@ -192,15 +194,15 @@ namespace F21Party.Controllers
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+                _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
                 // Set the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
+                _extraUserGrid.DataSource = dbaConnection.SelectData(_spString);
 
                 // Assume extraUserGrid.DataSource is a DataTable.
-                DataTable originalTable = ((DataTable)extraUserGrid.DataSource).Copy();
+                DataTable originalTable = ((DataTable)_extraUserGrid.DataSource).Copy();
 
                 // Get the UserID value from the currently double-clicked row in dgvUserSetting.
-                var selectedUserID = parentForm.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString();
+                var selectedUserID = _parentForm.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString();
 
                 // Use the DataTable's Select method to filter rows that match the selected UserID.
                 DataRow[] filteredRows = originalTable.Select("UserID = '" + selectedUserID + "'");
@@ -209,14 +211,14 @@ namespace F21Party.Controllers
                 {
                     // If there is at least one matching row, copy the filtered rows into a new DataTable.
                     DataTable filteredTable = filteredRows.CopyToDataTable();
-                    extraUserGrid.DataSource = filteredTable;
+                    _extraUserGrid.DataSource = filteredTable;
                 }
                 else
                 {
                     // If no rows match the filter, clear the DataSource.
-                    extraUserGrid.DataSource = null;
+                    _extraUserGrid.DataSource = null;
                 }
-                parentForm.tsbUser.Text = "Close";
+                _parentForm.tsbUser.Text = "Close";
 
             }
         }
@@ -250,7 +252,7 @@ namespace F21Party.Controllers
             //}
             if (e.ColumnIndex == 6 && e.RowIndex >= 0)
             {
-                object value = extraUserGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
+                object value = _extraUserGrid.Rows[e.RowIndex].Cells[e.ColumnIndex].Value;
                 if (value != null && value.ToString() == "False")
                 {
                     e.PaintBackground(e.ClipBounds, true);
@@ -299,16 +301,16 @@ namespace F21Party.Controllers
                         
                         frm_CreateAccount frmCreateAccount = new frm_CreateAccount();
 
-                        frmCreateAccount._UserID = Convert.ToInt32(extraUserGrid.CurrentRow.Cells["UserID"].Value.ToString());
-                        frmCreateAccount.txtFullName.Text = extraUserGrid.CurrentRow.Cells["FullName"].Value.ToString();
-                        frmCreateAccount.txtAddress.Text = extraUserGrid.CurrentRow.Cells["Address"].Value.ToString();
-                        frmCreateAccount.txtPhone.Text = extraUserGrid.CurrentRow.Cells["Phone"].Value.ToString();
-                        frmCreateAccount.cboPosition.DisplayMember = extraUserGrid.CurrentRow.Cells["PositionID"].Value.ToString();
+                        frmCreateAccount.UserID = Convert.ToInt32(_extraUserGrid.CurrentRow.Cells["UserID"].Value.ToString());
+                        frmCreateAccount.txtFullName.Text = _extraUserGrid.CurrentRow.Cells["FullName"].Value.ToString();
+                        frmCreateAccount.txtAddress.Text = _extraUserGrid.CurrentRow.Cells["Address"].Value.ToString();
+                        frmCreateAccount.txtPhone.Text = _extraUserGrid.CurrentRow.Cells["Phone"].Value.ToString();
+                        frmCreateAccount.cboPosition.DisplayMember = _extraUserGrid.CurrentRow.Cells["PositionID"].Value.ToString();
 
                         frmCreateAccount.btnCreate.Text = "Add";
                         frmCreateAccount.ShowDialog();
 
-                        parentForm.RefreshAccountList();
+                        _parentForm.RefreshAccountList();
                         RefreshExtraGrid();
                         //ToggleExtraGrid();
                         //ToggleExtraGrid();
@@ -321,14 +323,14 @@ namespace F21Party.Controllers
 
         public void RefreshExtraGrid()
         {
-            if (extraUserGrid != null && parentForm.Controls.Contains(extraUserGrid))
+            if (_extraUserGrid != null && _parentForm.Controls.Contains(_extraUserGrid))
             {
                 // Instantiate your data access object.
                 DbaConnection dbaConnection = new DbaConnection();
                 // Create your stored procedure string.
-                string spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+                _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
                 // Refresh the DataSource of the extra grid.
-                extraUserGrid.DataSource = dbaConnection.SelectData(spString);
+                _extraUserGrid.DataSource = dbaConnection.SelectData(_spString);
             }
         }
     }

@@ -14,36 +14,36 @@ namespace F21Party.Views
 {
     public partial class frm_AccessList : Form
     {
-        private CtrlFrmAccessList ctrlFrmAccessList; // Declare the controller
+        private readonly CtrlFrmAccessList _ctrlFrmAccessList; // Declare the controller
         public frm_AccessList()
         {
             InitializeComponent();
-            ctrlFrmAccessList = new CtrlFrmAccessList(this); // Create the controller and pass itself to ctrlFrmMain()
+            _ctrlFrmAccessList = new CtrlFrmAccessList(this); // Create the controller and pass itself to ctrlFrmMain()
         }
 
         private void frm_AccessList_Load(object sender, EventArgs e)
         {
-            ctrlFrmAccessList.ShowData();
+            _ctrlFrmAccessList.ShowData();
         }
 
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccessList.TsbNew();
+            _ctrlFrmAccessList.TsbNew();
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccessList.ShowEntry();
+            _ctrlFrmAccessList.ShowEntry();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccessList.TsbDelete();
+            _ctrlFrmAccessList.TsbDelete();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
-            ctrlFrmAccessList.TsbSearch();
+            _ctrlFrmAccessList.TsbSearch();
         }
 
         private void tsbExit_Click(object sender, EventArgs e)
@@ -51,5 +51,19 @@ namespace F21Party.Views
             this.Close();
         }
 
+        private void tsmAccessLevel_Click(object sender, EventArgs e)
+        {
+            _ctrlFrmAccessList.TsmSearchLabelClick("AccessLevel");
+        }
+
+        private void tsmLogInAccess_Click(object sender, EventArgs e)
+        {
+            _ctrlFrmAccessList.TsmSearchLabelClick("LogInAccess");
+        }
+
+        private void tsmAuthority_Click(object sender, EventArgs e)
+        {
+            _ctrlFrmAccessList.TsmSearchLabelClick("Authority");
+        }
     }
 }

@@ -14,53 +14,53 @@ namespace F21Party.Views
 {
     public partial class frm_AccountList : Form
     {
-        private CtrlFrmAccountList ctrlFrmAccountList; // Declare the controller
-        private UserGridToggle userGridToggle; // Declare new DGV
+        private readonly CtrlFrmAccountList _ctrlFrmAccountList; // Declare the controller
+        private readonly UserGridToggle _userGridToggle; // Declare new DGV
         public frm_AccountList()
         {
             InitializeComponent();
-            ctrlFrmAccountList = new CtrlFrmAccountList(this); // Create the controller and pass itself to ctrlFrmMain()
-            userGridToggle = new UserGridToggle(this,dgvAccountSetting);
+            _ctrlFrmAccountList = new CtrlFrmAccountList(this); // Create the controller and pass itself to ctrlFrmMain()
+            _userGridToggle = new UserGridToggle(this,dgvAccountSetting);
             this.dgvAccountSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAccountSetting_DataBindingComplete);
         }
 
 
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.TsbNew();
+            _ctrlFrmAccountList.TsbNew();
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.ShowEntry();
+            _ctrlFrmAccountList.ShowEntry();
         }
 
         private void dgvUserSetting_DoubleClick(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.EditOrShow(userGridToggle.DoubleToggleExtraGrid);
+            _ctrlFrmAccountList.EditOrShow(_userGridToggle.DoubleToggleExtraGrid);
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.TsbDelete();
-            userGridToggle.RefreshExtraGrid();
+            _ctrlFrmAccountList.TsbDelete();
+            _userGridToggle.RefreshExtraGrid();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.TsbSearch();
+            _ctrlFrmAccountList.TsbSearch();
         }
 
         
         private void frm_AccountList_Load(object sender, EventArgs e)
         {
-            ctrlFrmAccountList.ShowData();
+            _ctrlFrmAccountList.ShowData();
             
         }
 
         private void tsbUser_Click(object sender, EventArgs e)
         {
-            userGridToggle.ToggleExtraGrid();
+            _userGridToggle.ToggleExtraGrid();
         }
 
         private void tsbExit_Click(object sender, EventArgs e)
@@ -69,7 +69,7 @@ namespace F21Party.Views
         }
         private void dgvAccountSetting_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            ctrlFrmAccountList.HoverToolTip();
+            _ctrlFrmAccountList.HoverToolTip();
         }
 
         private void dgvAccountSetting_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -85,7 +85,17 @@ namespace F21Party.Views
 
         public void RefreshAccountList()
         {
-            ctrlFrmAccountList.ShowData();
+            _ctrlFrmAccountList.ShowData();
+        }
+
+        private void tsmUserName_Click(object sender, EventArgs e)
+        {
+            _ctrlFrmAccountList.TsmSearchLabelClick("UserName");
+        }
+
+        private void tsmAccessLevel_Click(object sender, EventArgs e)
+        {
+            _ctrlFrmAccountList.TsmSearchLabelClick("AccessLevel");
         }
     }
 }

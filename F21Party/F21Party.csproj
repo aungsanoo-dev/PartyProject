@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackupFunctions.cs" />
+    <Compile Include="Controllers\Function.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmAccessList.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmCreateAccess.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmCreatePage.cs" />
@@ -101,7 +102,6 @@
     <Compile Include="Controllers\MasterData\CtrlFrmCreateUser.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmLogIn.cs" />
     <Compile Include="Controllers\MasterData\CtrlFrmMain.cs" />
-    <Compile Include="Controllers\CtrlTest.cs" />
     <Compile Include="Controllers\MasterData\AccountGridToggle.cs" />
     <Compile Include="Controllers\MasterData\PwEncryption.cs" />
     <Compile Include="Controllers\MasterData\UserGridToggle.cs" />

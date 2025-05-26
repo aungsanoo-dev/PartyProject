@@ -41,18 +41,18 @@
             this.mnuPermissionType = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPosition = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPage = new System.Windows.Forms.ToolStripMenuItem();
-            this.mnuUser = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuUsers = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuAccounts = new System.Windows.Forms.ToolStripMenuItem();
             this.processToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuDonation = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuItemRequests = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuPartyItem = new System.Windows.Forms.ToolStripMenuItem();
             this.mnuTeam = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnuTeamManagment = new System.Windows.Forms.ToolStripMenuItem();
             this.label1 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnLogIn = new System.Windows.Forms.Button();
-            this.mnuTeamManagment = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -119,7 +119,7 @@
             this.mnuPermissionType,
             this.mnuPosition,
             this.mnuPage,
-            this.mnuUser,
+            this.mnuUsers,
             this.mnuAccounts});
             this.mnuMasterData.Name = "mnuMasterData";
             this.mnuMasterData.Size = new System.Drawing.Size(112, 27);
@@ -128,49 +128,49 @@
             // mnuAccess
             // 
             this.mnuAccess.Name = "mnuAccess";
-            this.mnuAccess.Size = new System.Drawing.Size(210, 28);
+            this.mnuAccess.Size = new System.Drawing.Size(224, 28);
             this.mnuAccess.Text = "Access";
             this.mnuAccess.Click += new System.EventHandler(this.mnuAccess_Click);
             // 
             // mnuPermission
             // 
             this.mnuPermission.Name = "mnuPermission";
-            this.mnuPermission.Size = new System.Drawing.Size(210, 28);
+            this.mnuPermission.Size = new System.Drawing.Size(224, 28);
             this.mnuPermission.Text = "Permission";
             this.mnuPermission.Click += new System.EventHandler(this.mnuPermission_Click);
             // 
             // mnuPermissionType
             // 
             this.mnuPermissionType.Name = "mnuPermissionType";
-            this.mnuPermissionType.Size = new System.Drawing.Size(210, 28);
+            this.mnuPermissionType.Size = new System.Drawing.Size(224, 28);
             this.mnuPermissionType.Text = "PermissionType";
             this.mnuPermissionType.Click += new System.EventHandler(this.mnuPermissionType_Click);
             // 
             // mnuPosition
             // 
             this.mnuPosition.Name = "mnuPosition";
-            this.mnuPosition.Size = new System.Drawing.Size(210, 28);
+            this.mnuPosition.Size = new System.Drawing.Size(224, 28);
             this.mnuPosition.Text = "Position";
             this.mnuPosition.Click += new System.EventHandler(this.mnuPosition_Click);
             // 
             // mnuPage
             // 
             this.mnuPage.Name = "mnuPage";
-            this.mnuPage.Size = new System.Drawing.Size(210, 28);
+            this.mnuPage.Size = new System.Drawing.Size(224, 28);
             this.mnuPage.Text = "Page";
             this.mnuPage.Click += new System.EventHandler(this.mnuPage_Click);
             // 
-            // mnuUser
+            // mnuUsers
             // 
-            this.mnuUser.Name = "mnuUser";
-            this.mnuUser.Size = new System.Drawing.Size(210, 28);
-            this.mnuUser.Text = "User";
-            this.mnuUser.Click += new System.EventHandler(this.mnuEmployee_Click);
+            this.mnuUsers.Name = "mnuUsers";
+            this.mnuUsers.Size = new System.Drawing.Size(224, 28);
+            this.mnuUsers.Text = "Users";
+            this.mnuUsers.Click += new System.EventHandler(this.mnuEmployee_Click);
             // 
             // mnuAccounts
             // 
             this.mnuAccounts.Name = "mnuAccounts";
-            this.mnuAccounts.Size = new System.Drawing.Size(210, 28);
+            this.mnuAccounts.Size = new System.Drawing.Size(224, 28);
             this.mnuAccounts.Text = "Accounts";
             this.mnuAccounts.Click += new System.EventHandler(this.mnuAccounts_Click);
             // 
@@ -213,6 +213,13 @@
             this.mnuTeam.Size = new System.Drawing.Size(227, 28);
             this.mnuTeam.Text = "Team";
             this.mnuTeam.Click += new System.EventHandler(this.mnuTeam_Click);
+            // 
+            // mnuTeamManagment
+            // 
+            this.mnuTeamManagment.Name = "mnuTeamManagment";
+            this.mnuTeamManagment.Size = new System.Drawing.Size(227, 28);
+            this.mnuTeamManagment.Text = "TeamManagment";
+            this.mnuTeamManagment.Click += new System.EventHandler(this.mnuTeamManagment_Click);
             // 
             // label1
             // 
@@ -267,13 +274,6 @@
             this.btnLogIn.UseVisualStyleBackColor = false;
             this.btnLogIn.Click += new System.EventHandler(this.btnLogIn_Click);
             // 
-            // mnuTeamManagment
-            // 
-            this.mnuTeamManagment.Name = "mnuTeamManagment";
-            this.mnuTeamManagment.Size = new System.Drawing.Size(227, 28);
-            this.mnuTeamManagment.Text = "TeamManagment";
-            this.mnuTeamManagment.Click += new System.EventHandler(this.mnuTeamManagment_Click);
-            // 
             // frm_Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -304,7 +304,7 @@
         public System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem mnuAccess;
         private System.Windows.Forms.ToolStripMenuItem mnuPermission;
-        private System.Windows.Forms.ToolStripMenuItem mnuUser;
+        private System.Windows.Forms.ToolStripMenuItem mnuUsers;
         private System.Windows.Forms.ToolStripMenuItem mnuAccounts;
         private System.Windows.Forms.ToolStripMenuItem processToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem mnuDonation;

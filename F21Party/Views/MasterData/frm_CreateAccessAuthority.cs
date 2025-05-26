@@ -13,24 +13,24 @@ namespace F21Party.Views
 {
     public partial class frm_CreateAccessAuthority : Form
     {
-        private CtrlFrmCreateAccess ctrlFrmCreateAccess; // Declare the View
-        public int _AccessID = 0;
-        public int _Authority = 0;
-        public bool _IsEdit = false;
+        private readonly CtrlFrmCreateAccess _ctrlFrmCreateAccess; // Declare the View
+        public int AccessID = 0;
+        //public int Authority = 0;
+        public bool IsEdit = false;
         public frm_CreateAccessAuthority()
         {
             InitializeComponent();
-            ctrlFrmCreateAccess = new CtrlFrmCreateAccess(this);
+            _ctrlFrmCreateAccess = new CtrlFrmCreateAccess(this);
         }
 
         private void frm_CreateAccessAuthority_Load(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccess.ShowCombo(this);
+            _ctrlFrmCreateAccess.ShowCombo(this);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateAccess.EditClick();
+            _ctrlFrmCreateAccess.EditClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
