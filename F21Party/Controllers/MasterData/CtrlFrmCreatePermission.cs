@@ -14,37 +14,36 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreatePermission
     {
-        public frm_CreatePermission frmCreatePermission;// Declare the View
+        private frm_CreatePermission _frmCreatePermission;// Declare the View
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaPermission _dbaPermissionSetting = new DbaPermission();
+        private bool _isEdit;
+        private int _permissionID;
+        private string _spString;
         public CtrlFrmCreatePermission(frm_CreatePermission createPermissionForm)
         {
-            frmCreatePermission = createPermissionForm; // Create the View
+            _frmCreatePermission = createPermissionForm; // Create the View
         }
 
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaPermission dbaPermissionSetting = new DbaPermission();
-        private bool _IsEdit;
-        private int _PermissionID;
-
-        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value, bool _IsEdit)
+        public void AddCombo(ComboBox cboCombo, string spString, string display, string value, bool isEdit)
         {
-            DataTable DTAC = new DataTable();
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtAccessSp = new DataTable();
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
 
-            DTCombo.Columns.Add(Display);
-            DTCombo.Columns.Add(Value);
+            dtCombo.Columns.Add(display);
+            dtCombo.Columns.Add(value);
 
-            Dr = DTCombo.NewRow();
-            Dr[Display] = "---Select---";
-            Dr[Value] = 0;
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr[display] = "---Select---";
+            dr[value] = 0;
+            dtCombo.Rows.Add(dr);
 
             // For Your Authority
-            string spAccess = "";
             DataTable dtAccess = new DataTable();
-            spAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID, "0", "1");
-            dtAccess = dbaConnection.SelectData(spAccess);
+            _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID, "0", "1");
+            dtAccess = _dbaConnection.SelectData(_spString);
 
             //if (Program.UserID != 0)
             //{
@@ -53,79 +52,59 @@ namespace F21Party.Controllers
 
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
-                Adpt.Fill(DTAC);
-                for (int i = 0; i < DTAC.Rows.Count; i++)
+                _dbaConnection.DataBaseConn();
+                SqlDataAdapter Adpt = new SqlDataAdapter(spString, _dbaConnection.con);
+                Adpt.Fill(dtAccessSp);
+                for (int i = 0; i < dtAccessSp.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
+                    dr = dtCombo.NewRow();
 
-                    if (frmCreatePermission.cboAccessLevel.DisplayMember == "AccessLevel" && Display == "AccessLevel")
+                    if (_frmCreatePermission.cboAccessLevel.DisplayMember == "AccessLevel" && display == "AccessLevel")
                     {
                         goto Bottom;
                     }
 
                     // For Your Selected Authority
-                    string spAccess2 = "";
                     DataTable dtAccess2 = new DataTable();
-                    if (Display == "AccessLevel" && frmCreatePermission.cboAccessLevel.DisplayMember != "")
+                    if (display == "AccessLevel" && _frmCreatePermission.cboAccessLevel.DisplayMember != "")
                     {
-                        spAccess2 = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Convert.ToInt32(frmCreatePermission.cboAccessLevel.DisplayMember), "0", "1");
+                        _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Convert.ToInt32(_frmCreatePermission.cboAccessLevel.DisplayMember), "0", "1");
 
-                        dtAccess2 = dbaConnection.SelectData(spAccess2);
+                        dtAccess2 = _dbaConnection.SelectData(_spString);
                     }
 
-                    //if (Program.UserAuthority == 1 && Display == "AccessLevel")
-                    //{
-                    //    // SuperAdmin Access is only visible when it is edited by SuperAdmin to itself
-                    //    //MessageBox.Show(frmCreatePermission.cboAccessLevel.DisplayMember.ToString());
-                    //    if (_IsEdit && Convert.ToInt32(dtAccess2.Rows[0]["Authority"]) == Program.UserAuthority)
-                    //    {
-
-                    //    }
-                    //    else
-                    //    {
-                    //        if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin.
-                    //        {
-                    //            continue;
-                    //        }
-                    //    }
-                    //}
-                    if (_IsEdit)
+                    if (isEdit)
                     {
-                        if (Program.UserAuthority != 1 && Display == "AccessLevel")
+                        if (Program.UserAuthority != 1 && display == "AccessLevel")
                         {
-                            if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin.
+                            if (Convert.ToInt32(dtAccessSp.Rows[i][value]) == 1) // 1 is SuperAdmin.
                             {
                                 continue;
                             }
                         }
 
-                        if (Display == "AccessLevel" && Convert.ToInt32(dtAccess2.Rows[0]["Authority"]) >= Program.UserAuthority)
+                        if (display == "AccessLevel" && Convert.ToInt32(dtAccess2.Rows[0]["Authority"]) >= Program.UserAuthority)
                         {
-                            //MessageBox.Show(Convert.ToInt32(frmCreateAccount.cboAccessLevel.DisplayMember).ToString());
-
-                            if (Convert.ToInt32(DTAC.Rows[i]["Authority"]) < Program.UserAuthority) // AccessID comparison
+                            if (Convert.ToInt32(dtAccessSp.Rows[i]["Authority"]) < Program.UserAuthority) // AccessID comparison
                             {
                                 continue; // Remove Specific Accesslevel from Combo box.
                             }
                         }
-
                     }
                     else
                     {
-                        if (Program.UserAuthority != 0 && Display == "AccessLevel")
+                        if (Program.UserAuthority != 0 && display == "AccessLevel")
                         {
-                            if (Convert.ToInt32(DTAC.Rows[i][Value]) < Program.UserAuthority) // AccessID comparison
+                            if (Convert.ToInt32(dtAccessSp.Rows[i][value]) < Program.UserAuthority) // AccessID comparison
                             {
                                 continue; // Remove Specific Accesslevel from Combo box.
                             }
                         }
 
-                        if (Program.UserAuthority == 0 && Display == "AccessLevel")
+                        if (Program.UserAuthority == 0 && display == "AccessLevel")
                         {
                             MessageBox.Show(Program.UserAuthority.ToString());
-                            if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1 || Convert.ToInt32(DTAC.Rows[i][Value]) == 2) // 1 is SuperAdmin. 2 is Admin.
+                            if (Convert.ToInt32(dtAccessSp.Rows[i][value]) == 1 || Convert.ToInt32(dtAccessSp.Rows[i][value]) == 2) // 1 is SuperAdmin. 2 is Admin.
                             {
                                 continue;
                             }
@@ -134,13 +113,13 @@ namespace F21Party.Controllers
 
                 Bottom:
 
-                    Dr[Display] = DTAC.Rows[i][Display];
-                    Dr[Value] = DTAC.Rows[i][Value];
-                    DTCombo.Rows.Add(Dr);
+                    dr[display] = dtAccessSp.Rows[i][display];
+                    dr[value] = dtAccessSp.Rows[i][value];
+                    dtCombo.Rows.Add(dr);
                 }
-                cboCombo.DisplayMember = Display;
-                cboCombo.ValueMember = Value;
-                cboCombo.DataSource = DTCombo;
+                cboCombo.DisplayMember = display;
+                cboCombo.ValueMember = value;
+                cboCombo.DataSource = dtCombo;
             }
 
             catch (Exception ex)
@@ -150,181 +129,176 @@ namespace F21Party.Controllers
 
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
         public void ShowAccessValue()
         {
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
-            string _LogInAccessDisplay = "";
-            _LogInAccessDisplay = frmCreatePermission.cboAccessValue.DisplayMember;
+            string logInAccessDisplay = _frmCreatePermission.cboAccessValue.DisplayMember;
             // Define columns
-            DTCombo.Columns.Add("AccessText");
-            DTCombo.Columns.Add("AccessValue");
+            dtCombo.Columns.Add("AccessText");
+            dtCombo.Columns.Add("AccessValue");
 
             // Add default selection
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "---Select---";
-            Dr["AccessValue"] = "";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "---Select---";
+            dr["AccessValue"] = "";
+            dtCombo.Rows.Add(dr);
 
             // Add True
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "True";
-            Dr["AccessValue"] = "True";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "True";
+            dr["AccessValue"] = "True";
+            dtCombo.Rows.Add(dr);
 
             // Add False
-            Dr = DTCombo.NewRow();
-            Dr["AccessText"] = "False";
-            Dr["AccessValue"] = "False";
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr["AccessText"] = "False";
+            dr["AccessValue"] = "False";
+            dtCombo.Rows.Add(dr);
 
             // Bind to ComboBox
-            frmCreatePermission.cboAccessValue.DisplayMember = "AccessText";
-            frmCreatePermission.cboAccessValue.ValueMember = "AccessValue";
-            frmCreatePermission.cboAccessValue.DataSource = DTCombo;
+            _frmCreatePermission.cboAccessValue.DisplayMember = "AccessText";
+            _frmCreatePermission.cboAccessValue.ValueMember = "AccessValue";
+            _frmCreatePermission.cboAccessValue.DataSource = dtCombo;
 
-            frmCreatePermission.cboAccessValue.SelectedValue = _LogInAccessDisplay;
+            _frmCreatePermission.cboAccessValue.SelectedValue = logInAccessDisplay;
 
         }
-        public void ShowCombo(bool _IsEdit)
+        public void ShowCombo(bool _isEdit)
         {
-            string spString;
+            //string spString;
 
             // For AccessLevel Combobox
-            string _AccessLevelDisplay = "";
-            _AccessLevelDisplay = frmCreatePermission.cboAccessLevel.DisplayMember;
-            if (_AccessLevelDisplay == string.Empty)
-                _AccessLevelDisplay = "0";
+            string accessLevelDisplay = _frmCreatePermission.cboAccessLevel.DisplayMember;
+            if (accessLevelDisplay == string.Empty)
+                accessLevelDisplay = "0";
 
-            spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmCreatePermission.cboAccessLevel, spString, "AccessLevel", "AccessID", _IsEdit);
+            AddCombo(_frmCreatePermission.cboAccessLevel, _spString, "AccessLevel", "AccessID", _isEdit);
 
-            frmCreatePermission.cboAccessLevel.SelectedValue = Convert.ToInt32(_AccessLevelDisplay); //This is in the box value you see
+            _frmCreatePermission.cboAccessLevel.SelectedValue = Convert.ToInt32(accessLevelDisplay); //This is in the box value you see
 
             // For PageName Combobox
-            string _PageNameDisplay = "";
-            _PageNameDisplay = frmCreatePermission.cboPageName.DisplayMember;
-            if (_PageNameDisplay == string.Empty)
-                _PageNameDisplay = "0";
+            string pageNameDisplay = _frmCreatePermission.cboPageName.DisplayMember;
+            if (pageNameDisplay == string.Empty)
+                pageNameDisplay = "0";
 
-            spString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmCreatePermission.cboPageName, spString, "PageName", "PageID", _IsEdit);
+            AddCombo(_frmCreatePermission.cboPageName, _spString, "PageName", "PageID", _isEdit);
 
-            frmCreatePermission.cboPageName.SelectedValue = Convert.ToInt32(_PageNameDisplay); //This is in the box value you see
+            _frmCreatePermission.cboPageName.SelectedValue = Convert.ToInt32(pageNameDisplay); //This is in the box value you see
 
             // For PermissionType Combobox
-            string _PermissionTypeDisplay = "";
-            _PermissionTypeDisplay = frmCreatePermission.cboPermissionType.DisplayMember;
-            if (_PermissionTypeDisplay == string.Empty)
-                _PermissionTypeDisplay = "0";
+            string permissionTypeDisplay = _frmCreatePermission.cboPermissionType.DisplayMember;
+            if (permissionTypeDisplay == string.Empty)
+                permissionTypeDisplay = "0";
 
-            spString = string.Format("SP_Select_PermissionType N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_PermissionType N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmCreatePermission.cboPermissionType, spString, "PermissionName", "PermissionTypeID", _IsEdit);
+            AddCombo(_frmCreatePermission.cboPermissionType, _spString, "PermissionName", "PermissionTypeID", _isEdit);
 
-            frmCreatePermission.cboPermissionType.SelectedValue = Convert.ToInt32(_PermissionTypeDisplay); //This is in the box value you see
+            _frmCreatePermission.cboPermissionType.SelectedValue = Convert.ToInt32(permissionTypeDisplay); //This is in the box value you see
 
             ShowAccessValue();
         }
 
         public void SaveClick()
         {
-            DataTable DT = new DataTable();
-            string spString = "";
-            _IsEdit = frmCreatePermission.IsEdit;
-            _PermissionID = frmCreatePermission.PermissionID;
+            DataTable dt = new DataTable();
+            _isEdit = _frmCreatePermission.IsEdit;
+            _permissionID = _frmCreatePermission.PermissionID;
 
-            if (frmCreatePermission.cboAccessLevel.SelectedValue.ToString() == "0")
+            if (_frmCreatePermission.cboAccessLevel.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose AccessLevel.");
-                frmCreatePermission.cboAccessLevel.Focus();
+                _frmCreatePermission.cboAccessLevel.Focus();
             }
-            else if (frmCreatePermission.cboPageName.SelectedValue.ToString() == "0")
+            else if (_frmCreatePermission.cboPageName.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Page Name.");
-                frmCreatePermission.cboPageName.Focus();
+                _frmCreatePermission.cboPageName.Focus();
             }
-            else if (frmCreatePermission.cboPermissionType.SelectedValue.ToString() == "0")
+            else if (_frmCreatePermission.cboPermissionType.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Permission Type.");
-                frmCreatePermission.cboPermissionType.Focus();
+                _frmCreatePermission.cboPermissionType.Focus();
             }
-            else if (frmCreatePermission.cboAccessValue.SelectedValue.ToString() == "")
+            else if (_frmCreatePermission.cboAccessValue.SelectedValue.ToString() == "")
             {
                 MessageBox.Show("Please Choose Access Value.");
-                frmCreatePermission.cboAccessLevel.Focus();
+                _frmCreatePermission.cboAccessLevel.Focus();
             }
             else
             {
-                spString = string.Format("SP_Select_Permission N'{0}',N'{1}',N'{2}',N'{3}'"
-                ,frmCreatePermission.cboAccessLevel.SelectedValue.ToString()
-                ,frmCreatePermission.cboPageName.SelectedValue.ToString()
-                ,frmCreatePermission.cboPermissionType.SelectedValue.ToString(), "1");
+                _spString = string.Format("SP_Select_Permission N'{0}',N'{1}',N'{2}',N'{3}'"
+                ,_frmCreatePermission.cboAccessLevel.SelectedValue.ToString()
+                ,_frmCreatePermission.cboPageName.SelectedValue.ToString()
+                ,_frmCreatePermission.cboPermissionType.SelectedValue.ToString(), "1");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _PermissionID != Convert.ToInt32(DT.Rows[0]["PermissionID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _permissionID != Convert.ToInt32(dt.Rows[0]["PermissionID"]))
                 {
                     MessageBox.Show("This Permission is Already Exist");
-                    frmCreatePermission.cboAccessLevel.Focus();
-                    frmCreatePermission.cboPageName.Focus();
-                    frmCreatePermission.cboPermissionType.Focus();
+                    _frmCreatePermission.cboAccessLevel.Focus();
+                    _frmCreatePermission.cboPageName.Focus();
+                    _frmCreatePermission.cboPermissionType.Focus();
 
                 }
                 else
                 {
-                    if(_IsEdit)
+                    if(_isEdit)
                     {
-                        if (Convert.ToInt32(frmCreatePermission.cboAccessLevel.SelectedValue) == Program.UserAccessID && frmCreatePermission.cboAccessValue.SelectedValue.ToString() != frmCreatePermission.accessValue)
+                        if (Convert.ToInt32(_frmCreatePermission.cboAccessLevel.SelectedValue) == Program.UserAccessID && _frmCreatePermission.cboAccessValue.SelectedValue.ToString() != _frmCreatePermission.AccessValue)
                         {
                             if (MessageBox.Show("You have to Logout your account if you want to change AccessValue for your Access!", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
-                                dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_PermissionID);
-                                dbaPermissionSetting.ACCESSID = Convert.ToInt32(frmCreatePermission.cboAccessLevel.SelectedValue.ToString());
-                                dbaPermissionSetting.PAGEID = Convert.ToInt32(frmCreatePermission.cboPageName.SelectedValue.ToString());
-                                dbaPermissionSetting.PERMISSIONTYPEID = Convert.ToInt32(frmCreatePermission.cboPermissionType.SelectedValue.ToString());
-                                dbaPermissionSetting.ACCESSVALUE = frmCreatePermission.cboAccessValue.SelectedValue.ToString();
+                                _dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_permissionID);
+                                _dbaPermissionSetting.ACCESSID = Convert.ToInt32(_frmCreatePermission.cboAccessLevel.SelectedValue.ToString());
+                                _dbaPermissionSetting.PAGEID = Convert.ToInt32(_frmCreatePermission.cboPageName.SelectedValue.ToString());
+                                _dbaPermissionSetting.PERMISSIONTYPEID = Convert.ToInt32(_frmCreatePermission.cboPermissionType.SelectedValue.ToString());
+                                _dbaPermissionSetting.ACCESSVALUE = _frmCreatePermission.cboAccessValue.SelectedValue.ToString();
 
-                                dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_PermissionID);
-                                dbaPermissionSetting.ACTION = 1;
-                                dbaPermissionSetting.SaveData();
+                                _dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_permissionID);
+                                _dbaPermissionSetting.ACTION = 1;
+                                _dbaPermissionSetting.SaveData();
                                 //MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                                frmCreatePermission.DialogResult = DialogResult.OK;
+                                _frmCreatePermission.DialogResult = DialogResult.OK;
                                 return;
                             }
                             else
                             {
-                                frmCreatePermission.DialogResult = DialogResult.None;
+                                _frmCreatePermission.DialogResult = DialogResult.None;
                                 return;
                             }
                         }
                     }
                     
-                    dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_PermissionID);
-                    dbaPermissionSetting.ACCESSID = Convert.ToInt32(frmCreatePermission.cboAccessLevel.SelectedValue.ToString());
-                    dbaPermissionSetting.PAGEID = Convert.ToInt32(frmCreatePermission.cboPageName.SelectedValue.ToString());
-                    dbaPermissionSetting.PERMISSIONTYPEID = Convert.ToInt32(frmCreatePermission.cboPermissionType.SelectedValue.ToString());
-                    dbaPermissionSetting.ACCESSVALUE = frmCreatePermission.cboAccessValue.SelectedValue.ToString();
+                    _dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_permissionID);
+                    _dbaPermissionSetting.ACCESSID = Convert.ToInt32(_frmCreatePermission.cboAccessLevel.SelectedValue.ToString());
+                    _dbaPermissionSetting.PAGEID = Convert.ToInt32(_frmCreatePermission.cboPageName.SelectedValue.ToString());
+                    _dbaPermissionSetting.PERMISSIONTYPEID = Convert.ToInt32(_frmCreatePermission.cboPermissionType.SelectedValue.ToString());
+                    _dbaPermissionSetting.ACCESSVALUE = _frmCreatePermission.cboAccessValue.SelectedValue.ToString();
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
-                        dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_PermissionID);
-                        dbaPermissionSetting.ACTION = 1;
-                        dbaPermissionSetting.SaveData();
+                        _dbaPermissionSetting.PERMISSIONID = Convert.ToInt32(_permissionID);
+                        _dbaPermissionSetting.ACTION = 1;
+                        _dbaPermissionSetting.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePermission.Close();
+                        _frmCreatePermission.Close();
                     }
                     else
                     {
-                        dbaPermissionSetting.ACTION = 0;
-                        dbaPermissionSetting.SaveData();
+                        _dbaPermissionSetting.ACTION = 0;
+                        _dbaPermissionSetting.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePermission.Close();
+                        _frmCreatePermission.Close();
                     }
                 }
             }

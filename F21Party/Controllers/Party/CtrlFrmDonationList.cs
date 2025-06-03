@@ -12,132 +12,77 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmDonationList
     {
-        public frm_DonationList frmDonationList;
+        private readonly frm_DonationList _frmDonationList;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private DataGridViewRow _expandedRow = null;
+        private UserControl _donationDetail;
+        private UserControl _activeDonationDetail = null;
+        private Point? _lastClickedCell = null;
+        private string _spString = "";
         public CtrlFrmDonationList(frm_DonationList donationListForm)
         {
-            frmDonationList = donationListForm;
+            _frmDonationList = donationListForm;
         }
 
-        DbaConnection dbaConnection = new DbaConnection();
-        UserControl DonationDetail;
-
-        // For Mouse down event
-        public UserControl activeDonationDetail = null;
-        public DataGridViewRow expandedRow = null;
-        //public bool clickedToggle = false;
-
-        public Point? lastClickedCell = null;
-
-        string SPString = "";
 
         public void RemoveDelete()
         {
             if(Program.UserAuthority != 1)
             {
-                frmDonationList.toolStripSeparator3.Visible = false;
-                frmDonationList.tsbDelete.Visible = false;
+                _frmDonationList.toolStripSeparator3.Visible = false;
+                _frmDonationList.tsbDelete.Visible = false;
             }
             else
             {
-                frmDonationList.toolStripSeparator3.Visible = true;
-                frmDonationList.tsbDelete.Visible = true;
+                _frmDonationList.toolStripSeparator3.Visible = true;
+                _frmDonationList.tsbDelete.Visible = true;
             }
         }
         public void ShowDonation()
         {
-            DataGridViewTextBoxColumn DGCol = new DataGridViewTextBoxColumn();
-            DGCol.DefaultCellStyle.NullValue = "+";
-            DGCol.HeaderText = "";
-            DGCol.Width = 30;
-            DGCol.ReadOnly = true;
-            DGCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            frmDonationList.dgvDonation.Columns.Add(DGCol);
+            DataGridViewTextBoxColumn dgCol = new DataGridViewTextBoxColumn();
+            dgCol.DefaultCellStyle.NullValue = "+";
+            dgCol.HeaderText = "";
+            dgCol.Width = 30;
+            dgCol.ReadOnly = true;
+            dgCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _frmDonationList.dgvDonation.Columns.Add(dgCol);
 
-            SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmDonationList.dgvDonation.DataSource = dbaConnection.SelectData(SPString);
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmDonationList.dgvDonation.DataSource = _dbaConnection.SelectData(_spString);
 
-            frmDonationList.dgvDonation.Columns[1].Width = (frmDonationList.dgvDonation.Width / 100) * 10;
-            frmDonationList.dgvDonation.Columns[2].Visible = false;
-            frmDonationList.dgvDonation.Columns[3].Width = (frmDonationList.dgvDonation.Width / 100) * 20;
-            frmDonationList.dgvDonation.Columns[4].Visible = false;
-            frmDonationList.dgvDonation.Columns[5].Width = (frmDonationList.dgvDonation.Width / 100) * 35;
-            frmDonationList.dgvDonation.Columns[6].Width = (frmDonationList.dgvDonation.Width / 100) * 35;
-            //frmDonationList.dgvDonation.Columns[7].Width = (frmDonationList.dgvDonation.Width / 100) * 30;
-            //frmDonationList.dgvDonation.Columns[8].Width = (frmDonationList.dgvDonation.Width / 100) * 15;
+            _frmDonationList.dgvDonation.Columns[1].Width = (_frmDonationList.dgvDonation.Width / 100) * 10;
+            _frmDonationList.dgvDonation.Columns[2].Visible = false;
+            _frmDonationList.dgvDonation.Columns[3].Width = (_frmDonationList.dgvDonation.Width / 100) * 20;
+            _frmDonationList.dgvDonation.Columns[4].Visible = false;
+            _frmDonationList.dgvDonation.Columns[5].Width = (_frmDonationList.dgvDonation.Width / 100) * 35;
+            _frmDonationList.dgvDonation.Columns[6].Width = (_frmDonationList.dgvDonation.Width / 100) * 35;
 
-            dbaConnection.ToolStripTextBoxData(frmDonationList.tstSearchWith, SPString, "DonationDate");
+            _dbaConnection.ToolStripTextBoxData(_frmDonationList.tstSearchWith, _spString, "DonationDate");
+
+            if (!Program.PublicArrWriteAccessPages.Contains("Donation"))
+            {
+                _frmDonationList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
         }
 
         public void ShowDonationDetail()
         {
             //UserControl Form
-            DonationDetail = new ctl_DonationDetail();
-            DonationDetail.Hide();
-            frmDonationList.Controls.Add(DonationDetail);
-            frmDonationList.Controls.SetChildIndex(DonationDetail, 0);
+            _donationDetail = new ctl_DonationDetail();
+            _donationDetail.Hide();
+            _frmDonationList.Controls.Add(_donationDetail);
+            _frmDonationList.Controls.SetChildIndex(_donationDetail, 0);
 
         }
 
-        //public void ShowDonationDetail(DataGridViewRow row)
-        //{
-        //    //UserControl Form
-        //    DonationDetail = new ctl_DonationDetail();
-        //    DonationDetail.Hide();
-        //    frmDonationList.Controls.Add(DonationDetail);
-        //    frmDonationList.Controls.SetChildIndex(DonationDetail, 0);
-
-        //    //DonationDetail.Show();
-        //    activeDonationDetail = (ctl_DonationDetail)DonationDetail;
-        //    expandedRow = row;
-        //}
-
-        //public void DgvDonationCellClick(DataGridViewCellEventArgs e)
-        //{
-        //    if(e.RowIndex == -1)
-        //    {
-        //        return;
-        //    }
-
-        //    if (e.ColumnIndex == 0)
-        //    {
-        //        if (frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex].Value == null)
-        //            frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex].Value = "+";
-
-        //        if (frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex].Value.ToString().Trim() == "+")
-        //        {
-        //            Rectangle cellBounds = frmDonationList.dgvDonation.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
-        //            Point offsetLocation = new Point(cellBounds.X, cellBounds.Y + cellBounds.Height);
-        //            offsetLocation.Offset(frmDonationList.dgvDonation.Location);
-        //            DonationDetail.Location = offsetLocation;
-        //            int DonationID = (Convert.ToInt32(frmDonationList.dgvDonation.CurrentRow.Cells["DonationID"].Value.ToString()));
-
-        //            DataGridView DGV = ((F21Party.Controllers.ctl_DonationDetail)(DonationDetail)).dgvDonationDetail;
-        //            SPString = string.Format("SP_Select_DonationDetail N'{0}',N'{1}',N'{2}'", DonationID, "0", "0");
-        //            DGV.DataSource = dbaConnection.SelectData(SPString);
-        //            DGV.Columns[0].Visible = false;
-        //            DGV.Columns[1].Visible = false;
-        //            DGV.Columns[2].Width = (DGV.Width / 100) * 50;
-        //            DGV.Columns[3].Width = (DGV.Width / 100) * 20;
-        //            DGV.Columns[4].Width = (DGV.Width / 100) * 20;
-
-        //            DonationDetail.Show();
-        //            frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex].Value = "-";
-        //        }
-        //        else
-        //        {
-        //            DonationDetail.Hide();
-        //            frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex].Value = "+";
-        //        }
-        //    }
-        //}
-
         public void DgvDonationCellClick(DataGridViewCellEventArgs e)
         {
-            lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
+            _lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
             if (e.RowIndex == -1 || e.ColumnIndex == -1) 
                 return;
 
-            var cell = frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex];
+            var cell = _frmDonationList.dgvDonation[e.ColumnIndex, e.RowIndex];
             if (e.ColumnIndex == 0)
             {
                 if (cell.Value == null)
@@ -145,89 +90,94 @@ namespace F21Party.Controllers
 
                 if (cell.Value.ToString().Trim() == "+")
                 {
-                    Rectangle cellBounds = frmDonationList.dgvDonation.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                    Rectangle cellBounds = _frmDonationList.dgvDonation.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                     Point offsetLocation = new Point(cellBounds.X, cellBounds.Y + cellBounds.Height);
-                    offsetLocation.Offset(frmDonationList.dgvDonation.Location);
+                    offsetLocation.Offset(_frmDonationList.dgvDonation.Location);
 
                     // Create or use the existing control
-                    if (DonationDetail == null)
-                        DonationDetail = new ctl_DonationDetail();
+                    if (_donationDetail == null)
+                        _donationDetail = new ctl_DonationDetail();
 
-                    DonationDetail.Location = offsetLocation;
+                    _donationDetail.Location = offsetLocation;
 
                     // Access specific properties through cast
-                    var detailControl = (ctl_DonationDetail)DonationDetail;
+                    var detailControl = (ctl_DonationDetail)_donationDetail;
+                    int donationID = Convert.ToInt32(_frmDonationList.dgvDonation.Rows[e.RowIndex].Cells["DonationID"].Value.ToString());
+                    _spString = string.Format("SP_Select_DonationDetail N'{0}',N'{1}',N'{2}'", donationID, "0", "0");
 
-                    int DonationID = Convert.ToInt32(frmDonationList.dgvDonation.Rows[e.RowIndex].Cells["DonationID"].Value.ToString());
-                    string SPString = string.Format("SP_Select_DonationDetail N'{0}',N'{1}',N'{2}'", DonationID, "0", "0");
+                    var dgv = detailControl.dgvDonationDetail;
+                    dgv.DataSource = _dbaConnection.SelectData(_spString);
+                    dgv.Columns[0].Visible = false;
+                    dgv.Columns[1].Visible = false;
+                    dgv.Columns[2].Width = (dgv.Width / 100) * 50;
+                    dgv.Columns[3].Width = (dgv.Width / 100) * 20;
+                    dgv.Columns[4].Width = (dgv.Width / 100) * 15;
 
-                    var DGV = detailControl.dgvDonationDetail;
-                    DGV.DataSource = dbaConnection.SelectData(SPString);
-                    DGV.Columns[0].Visible = false;
-                    DGV.Columns[1].Visible = false;
-                    DGV.Columns[2].Width = (DGV.Width / 100) * 50;
-                    DGV.Columns[3].Width = (DGV.Width / 100) * 20;
-                    DGV.Columns[4].Width = (DGV.Width / 100) * 15;
-
-                    frmDonationList.Controls.Add(DonationDetail);
-                    frmDonationList.Controls.SetChildIndex(DonationDetail, 0);
-                    DonationDetail.Show();
+                    _frmDonationList.Controls.Add(_donationDetail);
+                    _frmDonationList.Controls.SetChildIndex(_donationDetail, 0);
+                    _donationDetail.Show();
 
                     cell.Value = "-";
-                    activeDonationDetail = DonationDetail;
-                    expandedRow = frmDonationList.dgvDonation.Rows[e.RowIndex];
+                    _activeDonationDetail = _donationDetail;
+                    _expandedRow = _frmDonationList.dgvDonation.Rows[e.RowIndex];
                 }
                 else
                 {
-                    frmDonationList.Controls.Remove(DonationDetail);
+                    _frmDonationList.Controls.Remove(_donationDetail);
                     cell.Value = "+";
-                    activeDonationDetail = null;
-                    expandedRow = null;
+                    _activeDonationDetail = null;
+                    _expandedRow = null;
                 }
             }
         }
         public void TsbNewClick()
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Donation"))
+            {
+                MessageBox.Show("You don't have 'Write' Access!");
+                return;
+            }
+
             frm_CreateDonation frm = new frm_CreateDonation();
             frm.ShowDialog();
-            SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmDonationList.dgvDonation.DataSource = dbaConnection.SelectData(SPString);
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmDonationList.dgvDonation.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void TsmDonationDateClick()
         {
-            frmDonationList.tslLabel.Text = "DonationDate";
-            SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmDonationList.tstSearchWith, SPString, "DonationDate");
+            _frmDonationList.tslLabel.Text = "DonationDate";
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmDonationList.tstSearchWith, _spString, "DonationDate");
         }
 
         public void TsmFullNameClick()
         {
-            frmDonationList.tslLabel.Text = "FullName";
-            SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmDonationList.tstSearchWith, SPString, "FullName");
+            _frmDonationList.tslLabel.Text = "FullName";
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmDonationList.tstSearchWith, _spString, "FullName");
         }
 
         public void TsmSearchWithChanged()
         {
-            if (frmDonationList.tslLabel.Text == "DonationDate")
+            if (_frmDonationList.tslLabel.Text == "DonationDate")
             {
-                SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", frmDonationList.tstSearchWith.Text.Trim().ToString(), "0", "3");
+                _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _frmDonationList.tstSearchWith.Text.Trim().ToString(), "0", "3");
             }
-            else if (frmDonationList.tslLabel.Text == "FullName")
+            else if (_frmDonationList.tslLabel.Text == "FullName")
             {
-                SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", frmDonationList.tstSearchWith.Text.Trim().ToString(), "0", "4");
+                _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _frmDonationList.tstSearchWith.Text.Trim().ToString(), "0", "4");
             }
-            frmDonationList.dgvDonation.DataSource = dbaConnection.SelectData(SPString);
+            _frmDonationList.dgvDonation.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void TsbDelete()
         {
-            string DonationID = frmDonationList.dgvDonation.CurrentRow.Cells["DonationID"].Value.ToString();
+            string donationID = _frmDonationList.dgvDonation.CurrentRow.Cells["DonationID"].Value.ToString();
             DbaDonation dbaDonation = new DbaDonation();
             DbaDonationDetail dbaDonationDetail = new DbaDonationDetail();
 
-            if (frmDonationList.dgvDonation.CurrentRow.Cells[1].Value.ToString() == string.Empty)
+            if (_frmDonationList.dgvDonation.CurrentRow.Cells[1].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
@@ -235,18 +185,18 @@ namespace F21Party.Controllers
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    dbaDonation.DID = Convert.ToInt32(DonationID);
+                    dbaDonation.DID = Convert.ToInt32(donationID);
                     dbaDonation.ACTION = 1;
                     dbaDonation.SaveData();
 
-                    dbaDonationDetail.DID = Convert.ToInt32(DonationID);
+                    dbaDonationDetail.DID = Convert.ToInt32(donationID);
                     dbaDonationDetail.ACTION = 1;
                     dbaDonationDetail.SaveData();
                     MessageBox.Show("Successfully Delete");
                     RemoveDelete();
 
-                    SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-                    frmDonationList.dgvDonation.DataSource = dbaConnection.SelectData(SPString);
+                    _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+                    _frmDonationList.dgvDonation.DataSource = _dbaConnection.SelectData(_spString);
                     //ShowDonationDetail();
                 }
             }
@@ -256,39 +206,37 @@ namespace F21Party.Controllers
         public void FrmDonationMouseDown(MouseEventArgs e)
         {
             
-            if (activeDonationDetail != null)
+            if (_activeDonationDetail != null)
             {
-                //lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
-
                 // Convert mouse click point to DataGridView client coords
-                Point dgvPoint = frmDonationList.dgvDonation.PointToClient(Cursor.Position);
+                Point dgvPoint = _frmDonationList.dgvDonation.PointToClient(Cursor.Position);
 
-                var hit = frmDonationList.dgvDonation.HitTest(dgvPoint.X, dgvPoint.Y);
+                var hit = _frmDonationList.dgvDonation.HitTest(dgvPoint.X, dgvPoint.Y);
 
                 // If click was on the same toggle cell, skip hiding here
-                if (lastClickedCell.HasValue
-                    && hit.ColumnIndex == lastClickedCell.Value.X
-                    && hit.RowIndex == lastClickedCell.Value.Y)
+                if (_lastClickedCell.HasValue
+                    && hit.ColumnIndex == _lastClickedCell.Value.X
+                    && hit.RowIndex == _lastClickedCell.Value.Y)
                 {
                     // Click was on the toggle cell itself, so do nothing here
                     return;
                 }
 
-                Point clickPoint = frmDonationList.PointToScreen(e.Location);
-                Rectangle bounds = activeDonationDetail.RectangleToScreen(
-                    activeDonationDetail.ClientRectangle);
+                Point clickPoint = _frmDonationList.PointToScreen(e.Location);
+                Rectangle bounds = _activeDonationDetail.RectangleToScreen(
+                    _activeDonationDetail.ClientRectangle);
 
                 if (!bounds.Contains(clickPoint))
                 {
-                    frmDonationList.Controls.Remove(activeDonationDetail);
-                    activeDonationDetail = null;
+                    _frmDonationList.Controls.Remove(_activeDonationDetail);
+                    _activeDonationDetail = null;
 
-                    if (expandedRow != null)
+                    if (_expandedRow != null)
                     {
-                        expandedRow.Cells[0].Value = "+";
-                        expandedRow = null;
+                        _expandedRow.Cells[0].Value = "+";
+                        _expandedRow = null;
                     }
-                    lastClickedCell = null; // Reset after closing
+                    _lastClickedCell = null; // Reset after closing
                 }
             }
         }

@@ -14,18 +14,18 @@ namespace F21Party.Views
     public partial class frm_CreatePermissionType : Form
     {
 
-        private CtrlFrmCreatePermissionType ctrlFrmCreatePermissionType; // Declare the View
-        public int _PermissionTypeID = 0;
-        public bool _IsEdit = false;
+        private readonly CtrlFrmCreatePermissionType _ctrlFrmCreatePermissionType; // Declare the View
+        public int PermissionTypeID = 0;
+        public bool IsEdit = false;
         public frm_CreatePermissionType()
         {
             InitializeComponent();
-            ctrlFrmCreatePermissionType = new CtrlFrmCreatePermissionType(this);
+            _ctrlFrmCreatePermissionType = new CtrlFrmCreatePermissionType(this);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreatePermissionType.CreateClick();
+            _ctrlFrmCreatePermissionType.CreateClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

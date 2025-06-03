@@ -14,18 +14,18 @@ namespace F21Party.Views
 {
     public partial class frm_CreatePartyItem : Form
     {
-        private CtrlFrmCreatePartyItem ctrlFrmPartyItem;
+        private readonly CtrlFrmCreatePartyItem _ctrlFrmPartyItem;
         public int ItemID = 0;
         public bool IsEdit = false;
         public frm_CreatePartyItem()
         {
             InitializeComponent();
-            ctrlFrmPartyItem = new CtrlFrmCreatePartyItem(this);
+            _ctrlFrmPartyItem = new CtrlFrmCreatePartyItem(this);
         }
 
         private void frm_Item_Load(object sender, EventArgs e)
         {
-            ctrlFrmPartyItem.ItemLoad();
+            _ctrlFrmPartyItem.ItemLoad();
         }
 
         private void btnClose_Click(object sender, EventArgs e)
@@ -35,7 +35,7 @@ namespace F21Party.Views
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmPartyItem.CreateClick();
+            _ctrlFrmPartyItem.CreateClick();
         }
     }
 }

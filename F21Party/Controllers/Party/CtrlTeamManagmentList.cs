@@ -11,39 +11,38 @@ namespace F21Party.Controllers
 {
     internal class CtrlTeamManagmentList
     {
-        public frm_TeamManagmentList frmTeamManagmentList;
+        private readonly frm_TeamManagmentList _frmTeamManagmentList;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaTeamManagment _dbaTeamManagment = new DbaTeamManagment();
+        private readonly DbaTeam _dbaTeam = new DbaTeam();
+        private string _spString = "";
 
         public CtrlTeamManagmentList(frm_TeamManagmentList teamManagmentListForm)
         {
-            frmTeamManagmentList = teamManagmentListForm;
+            _frmTeamManagmentList = teamManagmentListForm;
         }
 
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaTeamManagment dbaTeamManagment = new DbaTeamManagment();
-        DbaTeam dbaTeam = new DbaTeam();
-        string spString = "";
 
         public void ShowData()
         {
-            spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmTeamManagmentList.dgvTeamManagment.DataSource = dbaConnection.SelectData(spString);
+            _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmTeamManagmentList.dgvTeamManagment.DataSource = _dbaConnection.SelectData(_spString);
 
-            frmTeamManagmentList.dgvTeamManagment.Columns[0].Width = (frmTeamManagmentList.dgvTeamManagment.Width / 100) * 20;
-            frmTeamManagmentList.dgvTeamManagment.Columns[1].Visible = false;
-            frmTeamManagmentList.dgvTeamManagment.Columns[2].Visible = false;
-            //frmTeamManagmentList.dgvTeamManagment.Columns[3].Visible = false;
-            frmTeamManagmentList.dgvTeamManagment.Columns[3].Width = (frmTeamManagmentList.dgvTeamManagment.Width / 100) * 40;
-            frmTeamManagmentList.dgvTeamManagment.Columns[4].Visible = false;
-            frmTeamManagmentList.dgvTeamManagment.Columns[5].Width = (frmTeamManagmentList.dgvTeamManagment.Width / 100) * 40;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[0].Width = (_frmTeamManagmentList.dgvTeamManagment.Width / 100) * 20;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[1].Visible = false;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[2].Visible = false;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[3].Width = (_frmTeamManagmentList.dgvTeamManagment.Width / 100) * 40;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[4].Visible = false;
+            _frmTeamManagmentList.dgvTeamManagment.Columns[5].Width = (_frmTeamManagmentList.dgvTeamManagment.Width / 100) * 40;
 
-            dbaConnection.ToolStripTextBoxData(frmTeamManagmentList.tstSearchWith, spString, "PlayerName");
-            frmTeamManagmentList.tslLabel.Text = "PlayerName";
+            _dbaConnection.ToolStripTextBoxData(_frmTeamManagmentList.tstSearchWith, _spString, "PlayerName");
+            _frmTeamManagmentList.tslLabel.Text = "PlayerName";
 
             if (!Program.PublicArrWriteAccessPages.Contains("TeamManagment"))
             {
-                frmTeamManagmentList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmTeamManagmentList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmTeamManagmentList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmTeamManagmentList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmTeamManagmentList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmTeamManagmentList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
             }
         }
 
@@ -55,17 +54,17 @@ namespace F21Party.Controllers
                 return;
             }
 
-            string AddValue = frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamName"].Value.ToString();
-            if (frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            //string AddValue = _frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamName"].Value.ToString();
+            if (_frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
             else
             {
                 frm_CreateTeamManagment frm = new frm_CreateTeamManagment();
-                frm.TeamManagmentID = Convert.ToInt32(frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamManagmentID"].Value.ToString());
-                frm.cboFullNames.DisplayMember = frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["UserID"].Value.ToString();
-                frm.cboTeam.DisplayMember = frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamID"].Value.ToString();
+                frm.TeamManagmentID = Convert.ToInt32(_frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamManagmentID"].Value.ToString());
+                frm.cboFullNames.DisplayMember = _frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["UserID"].Value.ToString();
+                frm.cboTeam.DisplayMember = _frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamID"].Value.ToString();
                 frm.IsEdit = true;
                 frm.ShowDialog();
                 ShowData();
@@ -93,9 +92,9 @@ namespace F21Party.Controllers
                 return;
             }
 
-            string TeamManagmentID = frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamManagmentID"].Value.ToString();
-            string TeamID = frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamID"].Value.ToString();
-            if (TeamManagmentID == string.Empty)
+            string teamManagmentID = _frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamManagmentID"].Value.ToString();
+            string teamID = _frmTeamManagmentList.dgvTeamManagment.CurrentRow.Cells["TeamID"].Value.ToString();
+            if (teamManagmentID == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
@@ -103,14 +102,14 @@ namespace F21Party.Controllers
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    dbaTeamManagment.TMID = Convert.ToInt32(TeamManagmentID);
-                    dbaTeamManagment.ACTION = 2;
-                    dbaTeamManagment.SaveData();
+                    _dbaTeamManagment.TMID = Convert.ToInt32(teamManagmentID);
+                    _dbaTeamManagment.ACTION = 2;
+                    _dbaTeamManagment.SaveData();
 
-                    dbaTeam.TID = Convert.ToInt32(TeamID);
-                    dbaTeam.TOTALPLAYER = 1;
-                    dbaTeam.ACTION = 4;
-                    dbaTeam.SaveData();
+                    _dbaTeam.TID = Convert.ToInt32(teamID);
+                    _dbaTeam.TOTALPLAYER = 1;
+                    _dbaTeam.ACTION = 4;
+                    _dbaTeam.SaveData();
                     MessageBox.Show("Successfully Delete");
                     ShowData();
                 }
@@ -119,22 +118,22 @@ namespace F21Party.Controllers
 
         public void TsmSearchLabelClick(string textLabel)
         {
-            frmTeamManagmentList.tslLabel.Text = textLabel;
-            spString = string.Format("SP_Select_Team N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmTeamManagmentList.tstSearchWith, spString, textLabel);
+            _frmTeamManagmentList.tslLabel.Text = textLabel;
+            _spString = string.Format("SP_Select_Team N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmTeamManagmentList.tstSearchWith, _spString, textLabel);
         }
 
         public void TsmSearch()
         {
-            if (frmTeamManagmentList.tslLabel.Text == "PlayerName")
+            if (_frmTeamManagmentList.tslLabel.Text == "PlayerName")
             {
-                spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", frmTeamManagmentList.tstSearchWith.Text.Trim().ToString(), "0", "2");
+                _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", _frmTeamManagmentList.tstSearchWith.Text.Trim().ToString(), "0", "2");
             }
-            else if (frmTeamManagmentList.tslLabel.Text == "TeamName")
+            else if (_frmTeamManagmentList.tslLabel.Text == "TeamName")
             {
-                spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", frmTeamManagmentList.tstSearchWith.Text.Trim().ToString(), "0", "3");
+                _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", _frmTeamManagmentList.tstSearchWith.Text.Trim().ToString(), "0", "3");
             }
-            frmTeamManagmentList.dgvTeamManagment.DataSource = dbaConnection.SelectData(spString);
+            _frmTeamManagmentList.dgvTeamManagment.DataSource = _dbaConnection.SelectData(_spString);
         }
     }
 }

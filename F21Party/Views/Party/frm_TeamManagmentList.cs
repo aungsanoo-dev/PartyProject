@@ -15,54 +15,52 @@ namespace F21Party.Views
 {
     public partial class frm_TeamManagmentList : Form
     {
-        private CtrlTeamManagmentList ctrlTeamManagmentList;
+        private readonly CtrlTeamManagmentList _ctrlTeamManagmentList;
 
         public frm_TeamManagmentList()
         {
             InitializeComponent();
-            ctrlTeamManagmentList = new CtrlTeamManagmentList(this);
+            _ctrlTeamManagmentList = new CtrlTeamManagmentList(this);
         }
 
         private void frm_TeamManagmentList_Load(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.ShowData();
+            _ctrlTeamManagmentList.ShowData();
         }
 
         private void dgvTeamManagment_DoubleClick(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.ShowEntry();
+            _ctrlTeamManagmentList.ShowEntry();
         }
 
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.TsbNew();
+            _ctrlTeamManagmentList.TsbNew();
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.ShowEntry();
+            _ctrlTeamManagmentList.ShowEntry();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.TsbDelete();
+            _ctrlTeamManagmentList.TsbDelete();
         }
-
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.TsmSearch();
+            _ctrlTeamManagmentList.TsmSearch();
         }
-
 
         private void tsmPlayerName_Click(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.TsmSearchLabelClick("PlayerName");
+            _ctrlTeamManagmentList.TsmSearchLabelClick("PlayerName");
         }
 
         private void tsmTeam_Click(object sender, EventArgs e)
         {
-            ctrlTeamManagmentList.TsmSearchLabelClick("TeamName");
+            _ctrlTeamManagmentList.TsmSearchLabelClick("TeamName");
         }
 
         private void tsbExit_Click(object sender, EventArgs e)

@@ -12,43 +12,48 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmPageList
     {
-        public frm_PageList frmPageList; // Declare the View
+        private readonly frm_PageList _frmPageList; // Declare the View
+        private string _spString = "";
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
         public CtrlFrmPageList(frm_PageList pageForm)
         {
-            frmPageList = pageForm; // Create the View
+            _frmPageList = pageForm; // Create the View
         }
-        string spString = "";
-        DbaConnection dbaConnection = new DbaConnection();
 
         public void ShowData()
         {
-            spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", "0", "0", "0");
-            frmPageList.dgvPageSetting.DataSource = dbaConnection.SelectData(spString);
-            frmPageList.dgvPageSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            _spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", "0", "0", "0");
+            _frmPageList.dgvPageSetting.DataSource = _dbaConnection.SelectData(_spString);
+            _frmPageList.dgvPageSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            frmPageList.dgvPageSetting.Columns[0].FillWeight = 35;
-            frmPageList.dgvPageSetting.Columns[1].Visible = false;
-            frmPageList.dgvPageSetting.Columns[2].FillWeight = 65;
+            _frmPageList.dgvPageSetting.Columns[0].FillWeight = 35;
+            _frmPageList.dgvPageSetting.Columns[1].Visible = false;
+            _frmPageList.dgvPageSetting.Columns[2].FillWeight = 65;
 
-            dbaConnection.ToolStripTextBoxData(frmPageList.tstSearchWith, spString, "PageName");
+            _dbaConnection.ToolStripTextBoxData(_frmPageList.tstSearchWith, _spString, "PageName");
 
             if (!Program.PublicArrWriteAccessPages.Contains("Page"))
             {
-                frmPageList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmPageList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmPageList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPageList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPageList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPageList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+            }
+            if(Program.UserAuthority != 1)
+            {
+                _frmPageList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
             }
         }
         public void ShowEntry()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
+            if (!Function.HasWriteAccess("Page")) return;
+
+            if (Program.UserAuthority != 1)
             {
-                MessageBox.Show("You don't have 'Write' Access!");
+                MessageBox.Show("Only Super Admin can edit Page!");
                 return;
             }
 
-
-            if (frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (_frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
@@ -56,15 +61,15 @@ namespace F21Party.Controllers
             {
                 frm_CreatePage frmCreatePage = new frm_CreatePage();
 
-                frmCreatePage._PageID = Convert.ToInt32(frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value);
-                frmCreatePage.txtPageName.Text = frmPageList.dgvPageSetting.CurrentRow.Cells["PageName"].Value.ToString();
+                frmCreatePage.PageID = Convert.ToInt32(_frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value);
+                frmCreatePage.txtPageName.Text = _frmPageList.dgvPageSetting.CurrentRow.Cells["PageName"].Value.ToString();
 
-                if (frmPageList.dgvPageSetting.CurrentRow.Cells["PageName"].Value.ToString() == "Page" && Program.UserAuthority != 1)
+                if (_frmPageList.dgvPageSetting.CurrentRow.Cells["PageName"].Value.ToString() == "Page" && Program.UserAuthority != 1)
                 {
                     frmCreatePage.txtPageName.Enabled = false;
                 }
 
-                frmCreatePage._IsEdit = true;
+                frmCreatePage.IsEdit = true;
                 frmCreatePage.btnCreate.Text = "Save";
                 frmCreatePage.ShowDialog();
                 ShowData();
@@ -73,11 +78,7 @@ namespace F21Party.Controllers
 
         public void TsbNew()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
-            {
-                MessageBox.Show("You don't have 'Write' Access!");
-                return;
-            }
+            if (!Function.HasWriteAccess("Page")) return;
 
             frm_CreatePage frmCreatePage = new frm_CreatePage();
             frmCreatePage.ShowDialog();
@@ -86,45 +87,34 @@ namespace F21Party.Controllers
 
         public void TsbSearch()
         {
-            spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", frmPageList.tstSearchWith.Text.Trim().ToString(), "0", "4");
-            frmPageList.dgvPageSetting.DataSource = dbaConnection.SelectData(spString);
+            _spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", _frmPageList.tstSearchWith.Text.Trim().ToString(), "0", "4");
+            _frmPageList.dgvPageSetting.DataSource = _dbaConnection.SelectData(_spString);
         }
         public void TsbDelete()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Page"))
-            {
-                MessageBox.Show("You don't have 'Write' Access!");
-                return;
-            }
+            if (!Function.HasWriteAccess("Page")) return;
 
             DbaPage dbaPage = new DbaPage();
-            if (frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+
+            _spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", Convert.ToInt32(_frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value), "0", "3");
+            DataTable dt = new DataTable();
+            dt = _dbaConnection.SelectData(_spString);
+
+            if (_frmPageList.dgvPageSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
-            else
+            else if(dt.Rows.Count > 0)
             {
-                if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    spString = string.Format("SP_Select_Page N'{0}', N'{1}', N'{2}'", Convert.ToInt32(frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value), "0", "3");
-                    DataTable DT = new DataTable();
-                    DT = dbaConnection.SelectData(spString);
-
-                    if (DT.Rows.Count > 0)
-                    {
-                        MessageBox.Show("You cannont delete the Page which is currently used by the Permission!");
-                    }
-                    else
-                    {
-                        dbaPage.PID = Convert.ToInt32(frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value.ToString());
-                        dbaPage.ACTION = 2;
-                        dbaPage.SaveData();
-                        MessageBox.Show("Successfully Delete");
-                        ShowData();
-                    }
-
-
-                }
+                MessageBox.Show("You cannont delete the Page which is currently used by the Permission!");
+            }
+            else if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                dbaPage.PID = Convert.ToInt32(_frmPageList.dgvPageSetting.CurrentRow.Cells["PageID"].Value.ToString());
+                dbaPage.ACTION = 2;
+                dbaPage.SaveData();
+                MessageBox.Show("Successfully Delete");
+                ShowData();
             }
         }
     }

@@ -49,7 +49,6 @@ namespace F21Party.Views
             this.btnClose.TabIndex = 11;
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // btnLogIn
             // 
@@ -61,14 +60,13 @@ namespace F21Party.Views
             this.btnLogIn.TabIndex = 10;
             this.btnLogIn.Text = "Log In";
             this.btnLogIn.UseVisualStyleBackColor = true;
-            this.btnLogIn.Click += new System.EventHandler(this.btnLogIn_Click);
             // 
             // txtPassword
             // 
             this.txtPassword.Location = new System.Drawing.Point(199, 116);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(264, 22);
+            this.txtPassword.Size = new System.Drawing.Size(262, 22);
             this.txtPassword.TabIndex = 9;
             this.txtPassword.UseSystemPasswordChar = true;
             this.txtPassword.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPassword_KeyDown);
@@ -102,12 +100,11 @@ namespace F21Party.Views
             // 
             // btnEye
             // 
-            this.btnEye.Location = new System.Drawing.Point(463, 116);
+            this.btnEye.Location = new System.Drawing.Point(461, 115);
             this.btnEye.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEye.Name = "btnEye";
-            this.btnEye.Size = new System.Drawing.Size(28, 28);
+            this.btnEye.Size = new System.Drawing.Size(32, 28);
             this.btnEye.TabIndex = 43;
-            this.btnEye.Text = "👁️";
             this.btnEye.UseVisualStyleBackColor = true;
             this.btnEye.Click += new System.EventHandler(this.btnEye_Click);
             // 
@@ -131,8 +128,6 @@ namespace F21Party.Views
             this.Name = "frm_LogIn";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "LogIn";
-            this.Load += new System.EventHandler(this.frm_LogIn_Load);
-            this.Shown += new System.EventHandler(this.frm_LogIn_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 

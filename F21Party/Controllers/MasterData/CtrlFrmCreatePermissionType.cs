@@ -13,63 +13,62 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreatePermissionType
     {
-        public frm_CreatePermissionType frmCreatePermissionType;// Declare the View
+        private readonly frm_CreatePermissionType _frmCreatePermissionType;// Declare the View
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaPermissionType _dbaPermissionTypeSetting = new DbaPermissionType();
+        private bool _isEdit;
+        private int _permissionTypeID;
+        private string _spString;
         public CtrlFrmCreatePermissionType(frm_CreatePermissionType createPermissionTypeForm)
         {
-            frmCreatePermissionType = createPermissionTypeForm; // Create the View
+            _frmCreatePermissionType = createPermissionTypeForm; // Create the View
         }
-
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaPermissionType dbaPermissionTypeSetting = new DbaPermissionType();
-        private bool _IsEdit;
-        private int _PermissionTypeID;
 
         public void CreateClick()
         {
-            DataTable DT = new DataTable();
-            string spString = "";
+            DataTable dt = new DataTable();
             //_IsEdit = frmCreatePermissionType._IsEdit;
-            _PermissionTypeID = frmCreatePermissionType._PermissionTypeID;
-            _IsEdit = frmCreatePermissionType._IsEdit;
+            _permissionTypeID = _frmCreatePermissionType.PermissionTypeID;
+            _isEdit = _frmCreatePermissionType.IsEdit;
 
-            if (frmCreatePermissionType.txtPermissionName.Text.Trim().ToString() == string.Empty)
+            if (_frmCreatePermissionType.txtPermissionName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type PermissionType Name");
-                frmCreatePermissionType.txtPermissionName.Focus();
+                _frmCreatePermissionType.txtPermissionName.Focus();
             }
             else
             {
                 // For PermissionType
-                spString = string.Format("SP_Select_PermissionType N'{0}',N'{1}',N'{2}'", Regex.Replace(frmCreatePermissionType.txtPermissionName.Text.Trim(), @"\s+", " "),
+                _spString = string.Format("SP_Select_PermissionType N'{0}',N'{1}',N'{2}'", Regex.Replace(_frmCreatePermissionType.txtPermissionName.Text.Trim(), @"\s+", " "),
                 "0", "2");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _PermissionTypeID != Convert.ToInt32(DT.Rows[0]["PermissionTypeID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _permissionTypeID != Convert.ToInt32(dt.Rows[0]["PermissionTypeID"]))
                 {
                     MessageBox.Show("This Permission Name is Already Exist");
-                    frmCreatePermissionType.txtPermissionName.Focus();
-                    frmCreatePermissionType.txtPermissionName.SelectAll();
+                    _frmCreatePermissionType.txtPermissionName.Focus();
+                    _frmCreatePermissionType.txtPermissionName.SelectAll();
                 }
                 else
                 {
-                    dbaPermissionTypeSetting.PID = Convert.ToInt32(_PermissionTypeID);
-                    dbaPermissionTypeSetting.PNAME = Regex.Replace(frmCreatePermissionType.txtPermissionName.Text.Trim(), @"\s+", " ");
+                    _dbaPermissionTypeSetting.PID = Convert.ToInt32(_permissionTypeID);
+                    _dbaPermissionTypeSetting.PNAME = Regex.Replace(_frmCreatePermissionType.txtPermissionName.Text.Trim(), @"\s+", " ");
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
-                        dbaPermissionTypeSetting.PID = Convert.ToInt32(_PermissionTypeID);
-                        dbaPermissionTypeSetting.ACTION = 1;
-                        dbaPermissionTypeSetting.SaveData();
+                        _dbaPermissionTypeSetting.PID = Convert.ToInt32(_permissionTypeID);
+                        _dbaPermissionTypeSetting.ACTION = 1;
+                        _dbaPermissionTypeSetting.SaveData();
 
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePermissionType.Close();
+                        _frmCreatePermissionType.Close();
                     }
                     else
                     {
-                        dbaPermissionTypeSetting.ACTION = 0;
-                        dbaPermissionTypeSetting.SaveData();
+                        _dbaPermissionTypeSetting.ACTION = 0;
+                        _dbaPermissionTypeSetting.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePermissionType.Close();
+                        _frmCreatePermissionType.Close();
                     }
                 }
             }

@@ -1,16 +1,17 @@
-﻿using System;
+﻿using F21Party.DBA;
+using F21Party.Views;
+using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
+using System.Data.SqlTypes;
+using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using F21Party.DBA;
-using F21Party.Views;
 using System.Xml.Linq;
-using System.Data.SqlTypes;
-using System.Text.RegularExpressions;
 
 namespace F21Party.Controllers
 {
@@ -25,6 +26,10 @@ namespace F21Party.Controllers
         private readonly DbaAccounts _dbaAccountSetting = new DbaAccounts();
         private readonly DbaUsers _dbaUserSetting = new DbaUsers();
 
+        private readonly Image _imageEye = new Bitmap(Properties.Resources.eye, new Size(16, 16));
+        private readonly Image _imageEyeSlash = new Bitmap(Properties.Resources.eye_slash, new Size(16, 16));
+        private bool _isPasswordVisible = false;
+
         //private int accesslevelindex;
         //private int positionlevelindex;
         private bool _isEdit;
@@ -35,6 +40,7 @@ namespace F21Party.Controllers
         public CtrlFrmCreateAccount(frm_CreateAccount createAccountForm)
         {
             _frmCreateAccount = createAccountForm; // Create the View
+            _frmCreateAccount.btnEye.Image = _imageEye; // Set the initial eye icon
         }
 
         public void AccessComboChange(bool isEdit)
@@ -77,15 +83,9 @@ namespace F21Party.Controllers
                     }
                 }
             }
-            //MessageBox.Show(frmCreateAccount.cboAccessLevel.DisplayMember);
-            //frmCreateAccount.cboAccessLevel.SelectedValue = "1003";
-
-
-
         }
         public void AddAccountClick()
         {
-            //frmMain obj_frmMain = new frmMain();
             DataTable dt = new DataTable();
             //_IsEdit = frmCreateAccount._IsEdit;
             _accountID = _frmCreateAccount.AccountID;
@@ -100,6 +100,11 @@ namespace F21Party.Controllers
             {
                 MessageBox.Show("Please Type UserName");
                 _frmCreateAccount.txtUserName.Focus();
+            }
+            else if (_frmCreateAccount.txtUserName.Text.Contains(" "))
+            {
+                MessageBox.Show("Spaces are not allowed in UserName.");
+                return;
             }
             else if (_frmCreateAccount.txtPassword.Text.Trim().ToString() == string.Empty)
             {
@@ -153,26 +158,9 @@ namespace F21Party.Controllers
                     _dbaUserSetting.SaveData();
                     MessageBox.Show("Successfully Add", "Successfully", MessageBoxButtons.OK);
                     _frmCreateAccount.Close();
-
-
-
-                    //spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "5");
-                    //frmAccountList.dgvAccountSetting.DataSource = dbaConnection.SelectData(spString);
-                    //frmAccountList.dgvAccountSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-
-                    //frmAccountList.dgvAccountSetting.Columns[0].FillWeight = 10;
-                    //frmAccountList.dgvAccountSetting.Columns[1].Visible = false;
-                    //frmAccountList.dgvAccountSetting.Columns[2].FillWeight = 10;
-                    //frmAccountList.dgvAccountSetting.Columns[3].FillWeight = 24;
-                    //frmAccountList.dgvAccountSetting.Columns[4].FillWeight = 24;
-                    //frmAccountList.dgvAccountSetting.Columns[5].FillWeight = 10;
-                    //frmAccountList.dgvAccountSetting.Columns[6].FillWeight = 22;
-
-                    //dbaConnection.ToolStripTextBoxData(frmAccountList.tstSearchWith, spString, "UserName");
                 }
             }
         }
-
 
         public void SaveClick()
         {
@@ -212,6 +200,11 @@ namespace F21Party.Controllers
                 {
                     MessageBox.Show("Please Type UserName");
                     _frmCreateAccount.txtUserName.Focus();
+                }
+                else if (_frmCreateAccount.txtUserName.Text.Contains(" "))
+                {
+                    MessageBox.Show("Spaces are not allowed in UserName.");
+                    return;
                 }
                 else if (_frmCreateAccount.txtPassword.Text.Trim().ToString() == string.Empty)
                 {
@@ -283,21 +276,8 @@ namespace F21Party.Controllers
                             _dbaAccountSetting.PASS = PwEncryption.Encrypt(Regex.Replace(_frmCreateAccount.txtPassword.Text.Trim(), @"\s+", " "));
                             _dbaAccountSetting.ACCESSID = Convert.ToInt32(_frmCreateAccount.cboAccessLevel.SelectedValue);
 
-
                             if (_isEdit)
                             {
-                                //dbaUserSetting.ACTION = 1;
-                                //dbaUserSetting.SaveData();
-
-
-                                //string SPAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "",
-                                //    "", 0);
-                                //DataTable DTAccess = dbaConnection.SelectData(SPAccess);
-
-                                //for(int i = 0; i <=  DTAccess.Rows.Count; i++)
-                                //{
-                                //    MessageBox.Show(DTAccess);
-                                //}
 
                                 _dbaAccountSetting.USERID = Convert.ToInt32(_userID);
                                 if (_dbaAccountSetting.USERID == Program.UserID)
@@ -319,8 +299,6 @@ namespace F21Party.Controllers
                                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
                                         _frmCreateAccount.Close();
                                     }
-
-                                    
                                 }
                                 else
                                 {
@@ -554,18 +532,17 @@ namespace F21Party.Controllers
         }
         public void EyeToggle()
         {
-            if(_frmCreateAccount.btnEye.Text == "👁️")
+            if(_isPasswordVisible)
             {
-                _frmCreateAccount.txtPassword.UseSystemPasswordChar = false;
-                //frmCreateAccount.txtPassword.PasswordChar = '\0';
-                _frmCreateAccount.btnEye.Text = "🚫";
+                _frmCreateAccount.txtPassword.UseSystemPasswordChar = true;
+                _frmCreateAccount.btnEye.Image = _imageEye;
             }
             else
             {
-                _frmCreateAccount.txtPassword.UseSystemPasswordChar = true;
-                //frmCreateAccount.txtPassword.PasswordChar = '*';
-                _frmCreateAccount.btnEye.Text = "👁️";
+                _frmCreateAccount.txtPassword.UseSystemPasswordChar = false;
+                _frmCreateAccount.btnEye.Image = _imageEyeSlash;
             }
+            _isPasswordVisible = !_isPasswordVisible;
         }
 
     }

@@ -14,74 +14,71 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateDonation
     {
-        public frm_CreateDonation frmCreateDonation;
+        private readonly frm_CreateDonation _frmCreateDonation;
+        private readonly DbaDonation _dbaDonation = new DbaDonation();
+        private readonly DbaDonationDetail _dbaDonationDetail = new DbaDonationDetail();
+        private readonly DbaPartyItem _dbaPartyItem = new DbaPartyItem();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DataTable _dTDonation = new DataTable();
+        private DataTable _dt = new DataTable();
+        private int _donationDetailID = 0;
+        private int _donationID = 0;
+        private string _spString = "";
+        private int _count = 0;
+        private int _addCount = 0;
 
         public CtrlFrmCreateDonation(frm_CreateDonation donationForm)
         {
-            frmCreateDonation = donationForm;
+            _frmCreateDonation = donationForm;
         }
 
-        DbaDonation dbaDonation = new DbaDonation();
-        DbaDonationDetail dbaDonationDetail = new DbaDonationDetail();
-        DbaPartyItem dbaPartyItem = new DbaPartyItem();
-        DbaConnection dbaConnection = new DbaConnection();
-
-        DataTable DT = new DataTable();
-        DataTable DTDonation = new DataTable();
-        int _DonationDetailID = 0;
-        int _DonationID = 0;
-        string SPString = "";
-        int Count = 0;
-        int addCount = 0;
-
-        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value)
+        public void AddCombo(ComboBox cboCombo, string spString, string display, string value)
         {
-            DataTable DTAC = new DataTable();
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtAccessSp = new DataTable();
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
+            dtCombo.Columns.Add(display);
+            dtCombo.Columns.Add(value);
 
-            DTCombo.Columns.Add(Display);
-            DTCombo.Columns.Add(Value);
-
-            Dr = DTCombo.NewRow();
-            Dr[Display] = "---Select---";
-            Dr[Value] = 0;
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr[display] = "---Select---";
+            dr[value] = 0;
+            dtCombo.Rows.Add(dr);
 
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
-                Adpt.Fill(DTAC);
-                for (int i = 0; i < DTAC.Rows.Count; i++)
+                _dbaConnection.DataBaseConn();
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, _dbaConnection.con);
+                adpt.Fill(dtAccessSp);
+                for (int i = 0; i < dtAccessSp.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
+                    dr = dtCombo.NewRow();
 
-                    if (Display == "FullName")
+                    if (display == "FullName")
                     {
-                        if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin UserID.
+                        if (Convert.ToInt32(dtAccessSp.Rows[i][value]) == 1) // 1 is SuperAdmin UserID.
                         {
                             continue;
                         }
                     }
 
-                    Dr[Display] = DTAC.Rows[i][Display];
-                    Dr[Value] = DTAC.Rows[i][Value];
-                    DTCombo.Rows.Add(Dr);
+                    dr[display] = dtAccessSp.Rows[i][display];
+                    dr[value] = dtAccessSp.Rows[i][value];
+                    dtCombo.Rows.Add(dr);
                 }
 
-                if(Display == "ItemName")
+                if(display == "ItemName")
                 {
-                    Dr = DTCombo.NewRow();
-                    Dr[Display] = "*NewItem*";
-                    Dr[Value] = -1;
-                    DTCombo.Rows.Add(Dr);
+                    dr = dtCombo.NewRow();
+                    dr[display] = "*NewItem*";
+                    dr[value] = -1;
+                    dtCombo.Rows.Add(dr);
                 }
                
-                cboCombo.DisplayMember = Display;
-                cboCombo.ValueMember = Value;
-                cboCombo.DataSource = DTCombo;
+                cboCombo.DisplayMember = display;
+                cboCombo.ValueMember = value;
+                cboCombo.DataSource = dtCombo;
             }
 
             catch (Exception ex)
@@ -91,218 +88,197 @@ namespace F21Party.Controllers
 
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
 
-        //public void ShowCombo()
-        //{
-        //    string _PositionDisplay = "";
-        //    string spString;
-        //    _PositionDisplay = frmCreateUser.cboPosition.DisplayMember;
-        //    if (_PositionDisplay == string.Empty)
-        //        _PositionDisplay = "0";
-
-        //    // For Position Combobox
-        //    spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-
-        //    AddCombo(frmCreateUser.cboPosition, spString, "PositionName", "PositionID");
-
-        //    frmCreateUser.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
-        //    //positionLevelIndex = frmCreateUser.cboPosition.SelectedIndex;
-
-        //}
         public void CreateTable()
         {
-            DTDonation.Rows.Clear();
-            DTDonation.Columns.Clear();
-            DTDonation.Columns.Add("ItemID");
-            DTDonation.Columns.Add("ItemName");
-            DTDonation.Columns.Add("Qty");
-            DTDonation.Columns.Add("Price");
-            DTDonation.Columns.Add("Total");
-            frmCreateDonation.dgvDonation.DataSource = DTDonation;
+            _dTDonation.Rows.Clear();
+            _dTDonation.Columns.Clear();
+            _dTDonation.Columns.Add("ItemID");
+            _dTDonation.Columns.Add("ItemName");
+            _dTDonation.Columns.Add("Qty");
+            _dTDonation.Columns.Add("Price");
+            _dTDonation.Columns.Add("Total");
+            _frmCreateDonation.dgvDonation.DataSource = _dTDonation;
         }
 
         public void ShowData()
         {
-            string spString;
-            string partyItemDisplay = "";
-            partyItemDisplay = frmCreateDonation.cboPartyItem.DisplayMember;
+            //string spString;
+            string partyItemDisplay = _frmCreateDonation.cboPartyItem.DisplayMember;
             if (partyItemDisplay == string.Empty)
                 partyItemDisplay = "0";
 
-            spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "5");
-            AddCombo(frmCreateDonation.cboPartyItem, spString, "ItemName", "ItemID");
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "5");
+            AddCombo(_frmCreateDonation.cboPartyItem, _spString, "ItemName", "ItemID");
 
-            frmCreateDonation.cboPartyItem.SelectedValue = Convert.ToInt32(partyItemDisplay);
+            _frmCreateDonation.cboPartyItem.SelectedValue = Convert.ToInt32(partyItemDisplay);
 
-            string usersDisplay = "";
-            usersDisplay = frmCreateDonation.cboFullNames.DisplayMember;
+            string usersDisplay = _frmCreateDonation.cboFullNames.DisplayMember;
             if (usersDisplay == string.Empty)
                 usersDisplay = "0";
 
-            spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "6");
-            AddCombo(frmCreateDonation.cboFullNames, spString, "FullName", "UserID");
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "6");
+            AddCombo(_frmCreateDonation.cboFullNames, _spString, "FullName", "UserID");
 
-            frmCreateDonation.cboFullNames.SelectedValue = Convert.ToInt32(usersDisplay);
+            _frmCreateDonation.cboFullNames.SelectedValue = Convert.ToInt32(usersDisplay);
 
-            frmCreateDonation.txtPrice.Enabled = false;
-            frmCreateDonation.txtQty.Enabled = false;
+            _frmCreateDonation.txtPrice.Enabled = false;
+            _frmCreateDonation.txtQty.Enabled = false;
 
         }
 
         public void ItemSelectedChanged()
         {
-            string spPartyItem = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", frmCreateDonation.cboPartyItem.SelectedValue.ToString(), "0", "7");
-            DT = dbaConnection.SelectData(spPartyItem);
-            if (DT.Rows.Count > 0)
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _frmCreateDonation.cboPartyItem.SelectedValue.ToString(), "0", "7");
+            _dt = _dbaConnection.SelectData(_spString);
+            if (_dt.Rows.Count > 0)
             {
-                frmCreateDonation.txtNewItem.Visible = false;
-                frmCreateDonation.txtPrice.Text = DT.Rows[0]["Price"].ToString();
-                frmCreateDonation.txtPrice.Enabled = false;
-                frmCreateDonation.txtQty.Text = "";
-                frmCreateDonation.txtQty.Enabled = true;
+                _frmCreateDonation.txtNewItem.Visible = false;
+                _frmCreateDonation.txtPrice.Text = _dt.Rows[0]["Price"].ToString();
+                _frmCreateDonation.txtPrice.Enabled = false;
+                _frmCreateDonation.txtQty.Text = "";
+                _frmCreateDonation.txtQty.Enabled = true;
             }
-            else if (frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "0")
+            else if (_frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "0")
             {
-                frmCreateDonation.txtNewItem.Visible = false;
-                frmCreateDonation.txtPrice.Text = "";
-                frmCreateDonation.txtPrice.Enabled = false;
-                frmCreateDonation.txtQty.Text = "";
-                frmCreateDonation.txtQty.Enabled = false;
+                _frmCreateDonation.txtNewItem.Visible = false;
+                _frmCreateDonation.txtPrice.Text = "";
+                _frmCreateDonation.txtPrice.Enabled = false;
+                _frmCreateDonation.txtQty.Text = "";
+                _frmCreateDonation.txtQty.Enabled = false;
             }
-            else if (frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
+            else if (_frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
             {
-                frmCreateDonation.txtNewItem.Visible = true;
-                frmCreateDonation.txtPrice.Text = "";
-                frmCreateDonation.txtPrice.Enabled = true;
-                frmCreateDonation.txtQty.Text = "";
-                frmCreateDonation.txtQty.Enabled = true;
-                frmCreateDonation.txtQty.Focus();
+                _frmCreateDonation.txtNewItem.Visible = true;
+                _frmCreateDonation.txtPrice.Text = "";
+                _frmCreateDonation.txtPrice.Enabled = true;
+                _frmCreateDonation.txtQty.Text = "";
+                _frmCreateDonation.txtQty.Enabled = true;
+                _frmCreateDonation.txtQty.Focus();
             }
             else
             {
-                frmCreateDonation.txtNewItem.Visible = false;
-                frmCreateDonation.txtPrice.Text = "";
-                frmCreateDonation.txtPrice.Enabled = true;
-                frmCreateDonation.txtQty.Text = "";
-                frmCreateDonation.txtQty.Enabled = true;
-                frmCreateDonation.txtQty.Focus();
+                _frmCreateDonation.txtNewItem.Visible = false;
+                _frmCreateDonation.txtPrice.Text = "";
+                _frmCreateDonation.txtPrice.Enabled = true;
+                _frmCreateDonation.txtQty.Text = "";
+                _frmCreateDonation.txtQty.Enabled = true;
+                _frmCreateDonation.txtQty.Focus();
             }
-            
-
         }
 
         public void CalculateTotal()
         {
-            int Total = 0;
-            if (DTDonation.Rows.Count > 0)
+            int total = 0;
+            if (_dTDonation.Rows.Count > 0)
             {
-                foreach (DataRow DR in DTDonation.Rows)
-                    Total += Convert.ToInt32(DR["Total"]);
+                foreach (DataRow dr in _dTDonation.Rows)
+                    total += Convert.ToInt32(dr["Total"]);
             }
-            frmCreateDonation.lblTotalAmount.Text = Total.ToString();
+            _frmCreateDonation.lblTotalAmount.Text = total.ToString();
         }
 
         public void AddClick()
         {
-            int Ok = 0;
-            if (Convert.ToInt32(frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == -1)
+            int ok = 0;
+            if (Convert.ToInt32(_frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == -1)
             {
-                string spPartyItem = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", frmCreateDonation.txtNewItem.Text.Trim().ToString(), "0", "8");
-                DT = dbaConnection.SelectData(spPartyItem);
-                if (DT.Rows.Count > 0)
+                _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _frmCreateDonation.txtNewItem.Text.Trim().ToString(), "0", "8");
+                _dt = _dbaConnection.SelectData(_spString);
+                if (_dt.Rows.Count > 0)
                 {
                     MessageBox.Show("This Item is already exist. Please choose in Item box!");
-                    frmCreateDonation.cboPartyItem.Focus();
+                    _frmCreateDonation.cboPartyItem.Focus();
                     return;
                 }
             }
 
-            if (Convert.ToInt32(frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == 0)
+            if (Convert.ToInt32(_frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == 0)
             {
                 MessageBox.Show("Please Choose Item");
-                frmCreateDonation.cboPartyItem.Focus();
+                _frmCreateDonation.cboPartyItem.Focus();
             }
-            else if(Convert.ToInt32(frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == -1 && frmCreateDonation.txtNewItem.Text.Trim().ToString() == string.Empty)
+            else if(Convert.ToInt32(_frmCreateDonation.cboPartyItem.SelectedValue.ToString()) == -1 && _frmCreateDonation.txtNewItem.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Item Name");
-                frmCreateDonation.txtNewItem.Focus();
+                _frmCreateDonation.txtNewItem.Focus();
             }
-            else if (frmCreateDonation.txtQty.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateDonation.txtQty.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Qty");
-                frmCreateDonation.txtQty.Focus();
+                _frmCreateDonation.txtQty.Focus();
             }
-            else if (int.TryParse(frmCreateDonation.txtQty.Text, out Ok) == false)
+            else if (int.TryParse(_frmCreateDonation.txtQty.Text, out ok) == false)
             {
                 MessageBox.Show("Qty Should Be Number");
-                frmCreateDonation.txtQty.Focus();
-                frmCreateDonation.txtQty.SelectAll();
+                _frmCreateDonation.txtQty.Focus();
+                _frmCreateDonation.txtQty.SelectAll();
             }
-            else if (Convert.ToInt32(frmCreateDonation.txtQty.Text.Trim().ToString()) <= 0 || Convert.ToInt32(frmCreateDonation.txtQty.Text.Trim().ToString()) > 10000)
+            else if (Convert.ToInt32(_frmCreateDonation.txtQty.Text.Trim().ToString()) <= 0 || Convert.ToInt32(_frmCreateDonation.txtQty.Text.Trim().ToString()) > 10000)
             {
                 MessageBox.Show("Qty Should Be Between 1 And 10-Thousand");
-                frmCreateDonation.txtQty.Focus();
-                frmCreateDonation.txtQty.SelectAll();
+                _frmCreateDonation.txtQty.Focus();
+                _frmCreateDonation.txtQty.SelectAll();
             }
-            else if (frmCreateDonation.txtPrice.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateDonation.txtPrice.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Price");
-                frmCreateDonation.txtPrice.Focus();
+                _frmCreateDonation.txtPrice.Focus();
             }
-            else if (int.TryParse(frmCreateDonation.txtPrice.Text, out Ok) == false)
+            else if (int.TryParse(_frmCreateDonation.txtPrice.Text, out ok) == false)
             {
                 MessageBox.Show("Price Should Be Number");
-                frmCreateDonation.txtPrice.Focus();
-                frmCreateDonation.txtPrice.SelectAll();
+                _frmCreateDonation.txtPrice.Focus();
+                _frmCreateDonation.txtPrice.SelectAll();
             }
-            else if (Convert.ToInt32(frmCreateDonation.txtPrice.Text.Trim().ToString()) < 1 || Convert.ToInt32(frmCreateDonation.txtPrice.Text.Trim().ToString()) > 10000000)
+            else if (Convert.ToInt32(_frmCreateDonation.txtPrice.Text.Trim().ToString()) < 1 || Convert.ToInt32(_frmCreateDonation.txtPrice.Text.Trim().ToString()) > 10000000)
             {
                 MessageBox.Show("Price Should Be Between 1 And 100-Lakh");
-                frmCreateDonation.txtPrice.Focus();
-                frmCreateDonation.txtPrice.SelectAll();
+                _frmCreateDonation.txtPrice.Focus();
+                _frmCreateDonation.txtPrice.SelectAll();
             }
             else
             {
-                if (DTDonation.Rows.Count > 0)
+                if (_dTDonation.Rows.Count > 0)
                 {
-                    DataRow[] Arr_DR;
-                    if (frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
+                    DataRow[] arrDr;
+                    if (_frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
                     {
-                        Arr_DR = DTDonation.Select("ItemName='" + Regex.Replace(frmCreateDonation.txtNewItem.Text.Trim(), @"\s+", " ") + "'");
+                        arrDr = _dTDonation.Select("ItemName='" + Regex.Replace(_frmCreateDonation.txtNewItem.Text.Trim(), @"\s+", " ") + "'");
                     }
                     else
                     {
-                        Arr_DR = DTDonation.Select("ItemID='" + frmCreateDonation.cboPartyItem.SelectedValue.ToString() + "'");
+                        arrDr = _dTDonation.Select("ItemID='" + _frmCreateDonation.cboPartyItem.SelectedValue.ToString() + "'");
                     }
 
-                    Count = Arr_DR.Length;
-                    if (Count != 0)
+                    _count = arrDr.Length;
+                    if (_count != 0)
                     {
                         MessageBox.Show("This Record Is Already Exist");
                         return;
                     }
                 }
-                DataRow DR = DTDonation.NewRow();
-                if (frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
+                DataRow dr = _dTDonation.NewRow();
+                if (_frmCreateDonation.cboPartyItem.SelectedValue.ToString() == "-1")
                 {
-                    DR["ItemID"] = "I" + addCount.ToString();
-                    DR["ItemName"] = Regex.Replace(frmCreateDonation.txtNewItem.Text.Trim(), @"\s+", " ");
+                    dr["ItemID"] = "I" + _addCount.ToString();
+                    dr["ItemName"] = Regex.Replace(_frmCreateDonation.txtNewItem.Text.Trim(), @"\s+", " ");
                 }
                 else
                 {
-                    DR["ItemID"] = frmCreateDonation.cboPartyItem.SelectedValue.ToString();
-                    DR["ItemName"] = frmCreateDonation.cboPartyItem.Text;
+                    dr["ItemID"] = _frmCreateDonation.cboPartyItem.SelectedValue.ToString();
+                    dr["ItemName"] = _frmCreateDonation.cboPartyItem.Text;
                 }
                 
-                DR["Qty"] = frmCreateDonation.txtQty.Text;
-                DR["Price"] = frmCreateDonation.txtPrice.Text;
-                DR["Total"] = Convert.ToInt32(frmCreateDonation.txtQty.Text) * Convert.ToInt32(frmCreateDonation.txtPrice.Text);
-                DTDonation.Rows.Add(DR);
-                frmCreateDonation.dgvDonation.DataSource = DTDonation;
-                addCount++;
+                dr["Qty"] = _frmCreateDonation.txtQty.Text;
+                dr["Price"] = _frmCreateDonation.txtPrice.Text;
+                dr["Total"] = Convert.ToInt32(_frmCreateDonation.txtQty.Text) * Convert.ToInt32(_frmCreateDonation.txtPrice.Text);
+                _dTDonation.Rows.Add(dr);
+                _frmCreateDonation.dgvDonation.DataSource = _dTDonation;
+                _addCount++;
                 //frmCreateDonation.cboPartyItem.SelectedIndex = 0;
                 ItemSelectedChanged();
                 CalculateTotal();
@@ -311,106 +287,106 @@ namespace F21Party.Controllers
 
         public void RemoveClick()
         {
-            if (DTDonation.Rows.Count <= 0)
+            if (_dTDonation.Rows.Count <= 0)
             {
                 MessageBox.Show("There Is No Data");
             }
-            else if (frmCreateDonation.dgvDonation.CurrentRow.Cells["ItemID"].Value.ToString() == string.Empty)
+            else if (_frmCreateDonation.dgvDonation.CurrentRow.Cells["ItemID"].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
             else
             {
-                DataRow[] Arr_DR = DTDonation.Select("ItemID='" + frmCreateDonation.dgvDonation.CurrentRow.Cells["ItemID"].Value.ToString() + "'");
-                DataRow DR = Arr_DR[0];
-                DR.Delete();
-                frmCreateDonation.dgvDonation.DataSource = DTDonation;
+                DataRow[] arrDr = _dTDonation.Select("ItemID='" + _frmCreateDonation.dgvDonation.CurrentRow.Cells["ItemID"].Value.ToString() + "'");
+                DataRow dr = arrDr[0];
+                dr.Delete();
+                _frmCreateDonation.dgvDonation.DataSource = _dTDonation;
                 CalculateTotal();
             }
         }
 
         public void DtpDateValueChanged()
         {
-            SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", frmCreateDonation.dtpDate.Text, "0", "2");
-            DT = dbaConnection.SelectData(SPString);
-            int DateDiff = Convert.ToInt32(DT.Rows[0]["No"]);
-            if (DateDiff > 0)
+            _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _frmCreateDonation.dtpDate.Text, "0", "2");
+            _dt = _dbaConnection.SelectData(_spString);
+            int dateDiff = Convert.ToInt32(_dt.Rows[0]["No"]);
+            if (dateDiff > 0)
             {
                 MessageBox.Show("Please Check DonationDate");
-                frmCreateDonation.dtpDate.Text = DateTime.Now.ToShortDateString();
+                _frmCreateDonation.dtpDate.Text = DateTime.Now.ToShortDateString();
             }
-            else if (DateDiff <= -7)
+            else if (dateDiff <= -7)
             {
                 MessageBox.Show("Please Check DonationDate");
-                frmCreateDonation.dtpDate.Text = DateTime.Now.ToShortDateString();
+                _frmCreateDonation.dtpDate.Text = DateTime.Now.ToShortDateString();
             }
         }
 
         public void SaveClick()
         {
-            _DonationID = frmCreateDonation.DonationID;
+            _donationID = _frmCreateDonation.DonationID;
             //_DonationDetailID = 
 
-            if (frmCreateDonation.cboFullNames.SelectedValue.ToString() == "0")
+            if (_frmCreateDonation.cboFullNames.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Users");
-                frmCreateDonation.cboFullNames.Focus();
+                _frmCreateDonation.cboFullNames.Focus();
             }
-            else if (DTDonation.Rows.Count <= 0)
+            else if (_dTDonation.Rows.Count <= 0)
             {
                 MessageBox.Show("There Is No Data");
             }
             else
             {
-                dbaDonation.DDATE = frmCreateDonation.dtpDate.Text;
+                _dbaDonation.DDATE = _frmCreateDonation.dtpDate.Text;
                 //dbaDonation.DNID = Convert.ToInt32(cboDonor.SelectedValue.ToString());
-                dbaDonation.TOTALAMT = Convert.ToInt32(frmCreateDonation.lblTotalAmount.Text);
-                dbaDonation.USERID = Convert.ToInt32(frmCreateDonation.cboFullNames.SelectedValue.ToString());
-                dbaDonation.ACTION = 0;
-                dbaDonation.SaveData();
+                _dbaDonation.TOTALAMT = Convert.ToInt32(_frmCreateDonation.lblTotalAmount.Text);
+                _dbaDonation.USERID = Convert.ToInt32(_frmCreateDonation.cboFullNames.SelectedValue.ToString());
+                _dbaDonation.ACTION = 0;
+                _dbaDonation.SaveData();
 
-                SPString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "1");
-                DT = dbaConnection.SelectData(SPString);
-                _DonationID = Convert.ToInt32(DT.Rows[0]["DonationID"].ToString());
+                _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", "0", "0", "1");
+                _dt = _dbaConnection.SelectData(_spString);
+                _donationID = Convert.ToInt32(_dt.Rows[0]["DonationID"].ToString());
 
 
-                for (int i = 0; i < DTDonation.Rows.Count; i++)
+                for (int i = 0; i < _dTDonation.Rows.Count; i++)
                 {
-                    if (DTDonation.Rows[i]["ItemID"].ToString().Contains("I"))
+                    if (_dTDonation.Rows[i]["ItemID"].ToString().Contains("I"))
                     {
-                        dbaPartyItem.ITEMID = 0;
-                        dbaPartyItem.ITEMNAME = DTDonation.Rows[i]["ItemName"].ToString();
-                        dbaPartyItem.QTY = Convert.ToInt32(DTDonation.Rows[i]["Qty"].ToString());
-                        dbaPartyItem.PRICE = Convert.ToInt32(DTDonation.Rows[i]["Price"].ToString());
-                        dbaPartyItem.ACTION = 0;
-                        dbaPartyItem.SaveData();
+                        _dbaPartyItem.ITEMID = 0;
+                        _dbaPartyItem.ITEMNAME = _dTDonation.Rows[i]["ItemName"].ToString();
+                        _dbaPartyItem.QTY = Convert.ToInt32(_dTDonation.Rows[i]["Qty"].ToString());
+                        _dbaPartyItem.PRICE = Convert.ToInt32(_dTDonation.Rows[i]["Price"].ToString());
+                        _dbaPartyItem.ACTION = 0;
+                        _dbaPartyItem.SaveData();
 
-                        string spSearchItem = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", DTDonation.Rows[i]["ItemName"].ToString(), "0", "8");
-                        DT = dbaConnection.SelectData(spSearchItem);
+                        _spString = string.Format("SP_Select_Donation N'{0}',N'{1}',N'{2}'", _dTDonation.Rows[i]["ItemName"].ToString(), "0", "8");
+                        _dt = _dbaConnection.SelectData(_spString);
 
-                        dbaDonationDetail.ITEMID = Convert.ToInt32(DT.Rows[0]["ItemID"].ToString());
+                        _dbaDonationDetail.ITEMID = Convert.ToInt32(_dt.Rows[0]["ItemID"].ToString());
                     }
                     else
                     {
-                        dbaPartyItem.ITEMID = Convert.ToInt32(DTDonation.Rows[i]["ItemID"].ToString());
-                        dbaPartyItem.QTY = Convert.ToInt32(DTDonation.Rows[i]["Qty"].ToString());
-                        dbaPartyItem.PRICE = Convert.ToInt32(DTDonation.Rows[i]["Price"].ToString());
-                        dbaPartyItem.ACTION = 3;
-                        dbaPartyItem.SaveData();
-                        dbaDonationDetail.ITEMID = Convert.ToInt32(DTDonation.Rows[i]["ItemID"].ToString());
+                        _dbaPartyItem.ITEMID = Convert.ToInt32(_dTDonation.Rows[i]["ItemID"].ToString());
+                        _dbaPartyItem.QTY = Convert.ToInt32(_dTDonation.Rows[i]["Qty"].ToString());
+                        _dbaPartyItem.PRICE = Convert.ToInt32(_dTDonation.Rows[i]["Price"].ToString());
+                        _dbaPartyItem.ACTION = 3;
+                        _dbaPartyItem.SaveData();
+                        _dbaDonationDetail.ITEMID = Convert.ToInt32(_dTDonation.Rows[i]["ItemID"].ToString());
                     }
 
-                    dbaDonationDetail.DDID = _DonationDetailID;
-                    dbaDonationDetail.DID = _DonationID;
+                    _dbaDonationDetail.DDID = _donationDetailID;
+                    _dbaDonationDetail.DID = _donationID;
                     
-                    dbaDonationDetail.DQTY = Convert.ToInt32(DTDonation.Rows[i]["Qty"].ToString());
-                    dbaDonationDetail.PRICE = Convert.ToInt32(DTDonation.Rows[i]["Price"].ToString());
-                    dbaDonationDetail.ACTION = 0;
-                    dbaDonationDetail.SaveData();
+                    _dbaDonationDetail.DQTY = Convert.ToInt32(_dTDonation.Rows[i]["Qty"].ToString());
+                    _dbaDonationDetail.PRICE = Convert.ToInt32(_dTDonation.Rows[i]["Price"].ToString());
+                    _dbaDonationDetail.ACTION = 0;
+                    _dbaDonationDetail.SaveData();
                 }
 
                 MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                frmCreateDonation.Close();
+                _frmCreateDonation.Close();
             }
         }
     }

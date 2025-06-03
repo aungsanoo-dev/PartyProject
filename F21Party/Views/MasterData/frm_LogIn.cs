@@ -13,38 +13,17 @@ namespace F21Party.Views
 {
     public partial class frm_LogIn : Form
     {
-        CtrlFrmLogIn ctrlFrmLogIn;
+        private readonly CtrlFrmLogIn _ctrlFrmLogIn;
 
         public frm_LogIn()
         {
             InitializeComponent();
-            ctrlFrmLogIn = new CtrlFrmLogIn(this);
-            
-        }
-
-        private void btnLogIn_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void frm_LogIn_Load(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void frm_LogIn_Shown(object sender, EventArgs e)
-        {
-            
+            _ctrlFrmLogIn = new CtrlFrmLogIn(this);
         }
 
         private void btnEye_Click(object sender, EventArgs e)
         {
-            ctrlFrmLogIn.EyeToggle();
+            _ctrlFrmLogIn.EyeToggle();
         }
 
         private void txtUserName_KeyDown(object sender, KeyEventArgs e)

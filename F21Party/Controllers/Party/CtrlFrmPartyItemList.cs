@@ -13,34 +13,33 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmPartyItemList
     {
-        public frm_PartyItemList frmPartyItemList;
+        private readonly frm_PartyItemList _frmPartyItemList;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private string _spString = "";
         public CtrlFrmPartyItemList(frm_PartyItemList partyItemListform)
         {
-            frmPartyItemList = partyItemListform;
+            _frmPartyItemList = partyItemListform;
         }
-
-        DbaConnection dbaConnection = new DbaConnection();
-        string spString = "";
 
         public void ShowData()
         {
-            spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmPartyItemList.dgvPartyItem.DataSource = dbaConnection.SelectData(spString);
+            _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmPartyItemList.dgvPartyItem.DataSource = _dbaConnection.SelectData(_spString);
 
-            frmPartyItemList.dgvPartyItem.Columns[0].Width = (frmPartyItemList.dgvPartyItem.Width / 100) * 10;
-            frmPartyItemList.dgvPartyItem.Columns[1].Visible = false;
-            frmPartyItemList.dgvPartyItem.Columns[2].Width = (frmPartyItemList.dgvPartyItem.Width / 100) * 50;
-            frmPartyItemList.dgvPartyItem.Columns[3].Width = (frmPartyItemList.dgvPartyItem.Width / 100) * 20;
-            frmPartyItemList.dgvPartyItem.Columns[4].Width = (frmPartyItemList.dgvPartyItem.Width / 100) * 20;
+            _frmPartyItemList.dgvPartyItem.Columns[0].Width = (_frmPartyItemList.dgvPartyItem.Width / 100) * 10;
+            _frmPartyItemList.dgvPartyItem.Columns[1].Visible = false;
+            _frmPartyItemList.dgvPartyItem.Columns[2].Width = (_frmPartyItemList.dgvPartyItem.Width / 100) * 50;
+            _frmPartyItemList.dgvPartyItem.Columns[3].Width = (_frmPartyItemList.dgvPartyItem.Width / 100) * 20;
+            _frmPartyItemList.dgvPartyItem.Columns[4].Width = (_frmPartyItemList.dgvPartyItem.Width / 100) * 20;
 
-            dbaConnection.ToolStripTextBoxData(frmPartyItemList.tstSearchWith, spString, "ItemName");
-            frmPartyItemList.tslLabel.Text = "ItemName";
+            _dbaConnection.ToolStripTextBoxData(_frmPartyItemList.tstSearchWith, _spString, "ItemName");
+            _frmPartyItemList.tslLabel.Text = "ItemName";
 
             if (!Program.PublicArrWriteAccessPages.Contains("PartyItem"))
             {
-                frmPartyItemList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmPartyItemList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmPartyItemList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPartyItemList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPartyItemList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmPartyItemList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
             }
         }
         public void ShowEntry()
@@ -51,17 +50,17 @@ namespace F21Party.Controllers
                 return;
             }
 
-            if (frmPartyItemList.dgvPartyItem.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (_frmPartyItemList.dgvPartyItem.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
             else
             {
                 frm_CreatePartyItem frmPartyItem = new frm_CreatePartyItem();
-                frmPartyItem.ItemID = Convert.ToInt32(frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString());
-                frmPartyItem.txtItemName.Text = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemName"].Value.ToString();
-                frmPartyItem.txtQty.Text = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Qty"].Value.ToString();
-                frmPartyItem.txtPrice.Text = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Price"].Value.ToString();
+                frmPartyItem.ItemID = Convert.ToInt32(_frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString());
+                frmPartyItem.txtItemName.Text = _frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemName"].Value.ToString();
+                frmPartyItem.txtQty.Text = _frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Qty"].Value.ToString();
+                frmPartyItem.txtPrice.Text = _frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Price"].Value.ToString();
                 frmPartyItem.IsEdit = true;
                 frmPartyItem.ShowDialog();
                 ShowData();
@@ -90,13 +89,13 @@ namespace F21Party.Controllers
                 return;
             }
 
-            string itemID = frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString();
+            string itemID = _frmPartyItemList.dgvPartyItem.CurrentRow.Cells["ItemID"].Value.ToString();
             DbaPartyItem dbaPartyItem = new DbaPartyItem();
-            if (frmPartyItemList.dgvPartyItem.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (_frmPartyItemList.dgvPartyItem.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
-            else if (frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Qty"].Value.ToString() != "0")
+            else if (_frmPartyItemList.dgvPartyItem.CurrentRow.Cells["Qty"].Value.ToString() != "0")
             {
                 MessageBox.Show("This Item Has Qty. Cannot Be Delete");
             }
@@ -116,26 +115,26 @@ namespace F21Party.Controllers
         public void TsbSearch()
         {
             
-            if (frmPartyItemList.tslLabel.Text == "ItemName")
+            if (_frmPartyItemList.tslLabel.Text == "ItemName")
             {
-               spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "2");
+               _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", _frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "2");
             }
-            else if (frmPartyItemList.tslLabel.Text == "Qty")
+            else if (_frmPartyItemList.tslLabel.Text == "Qty")
             {
-                spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "3");
+                _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", _frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "3");
             }
-            else if (frmPartyItemList.tslLabel.Text == "Price")
+            else if (_frmPartyItemList.tslLabel.Text == "Price")
             {
-                spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "4");
+                _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", _frmPartyItemList.tstSearchWith.Text.Trim().ToString(), "0", "4");
             }
-            frmPartyItemList.dgvPartyItem.DataSource = dbaConnection.SelectData(spString);
+            _frmPartyItemList.dgvPartyItem.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void TsmSearchLabelClick(string textLabel)
         {
-            frmPartyItemList.tslLabel.Text = textLabel;
-            spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmPartyItemList.tstSearchWith, spString, textLabel);
+            _frmPartyItemList.tslLabel.Text = textLabel;
+            _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmPartyItemList.tstSearchWith, _spString, textLabel);
         }
     }
 }

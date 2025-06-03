@@ -17,70 +17,62 @@ namespace F21Party.Controllers
 
     internal class CtrlFrmCreateTeamManagment
     {
-        public frm_CreateTeamManagment frmCreateTeamManagment;
+        private readonly frm_CreateTeamManagment _frmCreateTeamManagment;
+        private bool _full = false;
+        private readonly DbaTeamManagment _dbaTeamManagment = new DbaTeamManagment();
+        private readonly DbaTeam _dbaTeam = new DbaTeam();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private DataTable _dt = new DataTable();
+        private bool _isEdit = false;
+        private int _teamManagmentID = 0;
+        private string _teamDisplay = "";
+        private int _teamindex;
+        private string _spString = "";
 
         public CtrlFrmCreateTeamManagment(frm_CreateTeamManagment teamManagmentForm)
         {
-            frmCreateTeamManagment = teamManagmentForm;
+            _frmCreateTeamManagment = teamManagmentForm;
         }
 
-        public int i;
-        private bool _Full = false;
-        DbaTeamManagment dbaTeamManagment = new DbaTeamManagment();
-        DbaTeam dbaTeam = new DbaTeam();
-        DbaConnection dbaConnection = new DbaConnection();
-
-        DataTable dt = new DataTable();
-        //public int _TeamID = 0;
-        public bool _IsEdit = false;
-       // public int _UserID = 0;
-        public int _TeamManagmentID = 0;
-
-        string _TeamDisplay = "";
-        public int teamindex;
-
-        string spString = "";
-
-
-        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value)
+        public void AddCombo(ComboBox cboCombo, string spString, string display, string value)
         {
-            DataTable DTAC = new DataTable();
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtAccessSp = new DataTable();
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
 
-            DTCombo.Columns.Add(Display);
-            DTCombo.Columns.Add(Value);
+            dtCombo.Columns.Add(display);
+            dtCombo.Columns.Add(value);
 
-            Dr = DTCombo.NewRow();
-            Dr[Display] = "---Select---";
-            Dr[Value] = 0;
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr[display] = "---Select---";
+            dr[value] = 0;
+            dtCombo.Rows.Add(dr);
 
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
-                Adpt.Fill(DTAC);
-                for (int i = 0; i < DTAC.Rows.Count; i++)
+                _dbaConnection.DataBaseConn();
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, _dbaConnection.con);
+                adpt.Fill(dtAccessSp);
+                for (int i = 0; i < dtAccessSp.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
+                    dr = dtCombo.NewRow();
 
-                    if (Display == "FullName")
+                    if (display == "FullName")
                     {
-                        if (Convert.ToInt32(DTAC.Rows[i][Value]) == 1) // 1 is SuperAdmin UserID.
+                        if (Convert.ToInt32(dtAccessSp.Rows[i][value]) == 1) // 1 is SuperAdmin UserID.
                         {
                             continue;
                         }
                     }
 
-                    Dr[Display] = DTAC.Rows[i][Display];
-                    Dr[Value] = DTAC.Rows[i][Value];
-                    DTCombo.Rows.Add(Dr);
+                    dr[display] = dtAccessSp.Rows[i][display];
+                    dr[value] = dtAccessSp.Rows[i][value];
+                    dtCombo.Rows.Add(dr);
                 }
-                cboCombo.DisplayMember = Display;
-                cboCombo.ValueMember = Value;
-                cboCombo.DataSource = DTCombo;
+                cboCombo.DisplayMember = display;
+                cboCombo.ValueMember = value;
+                cboCombo.DataSource = dtCombo;
             }
 
             catch (Exception ex)
@@ -90,36 +82,36 @@ namespace F21Party.Controllers
 
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
-        public void indexloop()
+        public void Indexloop()
         {
-            if (teamindex == 0)
+            if (_teamindex == 0)
             {
-                AddCombo(frmCreateTeamManagment.cboTotal, spString, "TotalPlayer", "TeamID");
-                frmCreateTeamManagment.cboTotal.SelectedIndex = 0;
-                AddCombo(frmCreateTeamManagment.cboMax, spString, "MaxPlayer", "TeamID");
-                frmCreateTeamManagment.cboMax.SelectedIndex = 0;
+                AddCombo(_frmCreateTeamManagment.cboTotal, _spString, "TotalPlayer", "TeamID");
+                _frmCreateTeamManagment.cboTotal.SelectedIndex = 0;
+                AddCombo(_frmCreateTeamManagment.cboMax, _spString, "MaxPlayer", "TeamID");
+                _frmCreateTeamManagment.cboMax.SelectedIndex = 0;
             }
 
-            for (i = 1; i < frmCreateTeamManagment.cboTeam.Items.Count; i++)
+            for (int i = 1; i < _frmCreateTeamManagment.cboTeam.Items.Count; i++)
             {
 
-                if (teamindex == i)
+                if (_teamindex == i)
                 {
-                    AddCombo(frmCreateTeamManagment.cboTotal, spString, "TotalPlayer", "TeamID");
-                    frmCreateTeamManagment.cboTotal.SelectedIndex = i;
-                    AddCombo(frmCreateTeamManagment.cboMax, spString, "MaxPlayer", "TeamID");
-                    frmCreateTeamManagment.cboMax.SelectedIndex = i;
-                    if (Convert.ToInt32(frmCreateTeamManagment.cboTotal.Text) == Convert.ToInt32(frmCreateTeamManagment.cboMax.Text) && _TeamDisplay != frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
+                    AddCombo(_frmCreateTeamManagment.cboTotal, _spString, "TotalPlayer", "TeamID");
+                    _frmCreateTeamManagment.cboTotal.SelectedIndex = i;
+                    AddCombo(_frmCreateTeamManagment.cboMax, _spString, "MaxPlayer", "TeamID");
+                    _frmCreateTeamManagment.cboMax.SelectedIndex = i;
+                    if (Convert.ToInt32(_frmCreateTeamManagment.cboTotal.Text) == Convert.ToInt32(_frmCreateTeamManagment.cboMax.Text) && _teamDisplay != _frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
                     {
-                        MessageBox.Show(frmCreateTeamManagment.cboTeam.Text + " Is Full. Please Choose Other Team");
-                        _Full = true;
+                        MessageBox.Show(_frmCreateTeamManagment.cboTeam.Text + " Is Full. Please Choose Other Team");
+                        _full = true;
                     }
                     else
                     {
-                        _Full = false;
+                        _full = false;
                     }
 
                 }
@@ -128,96 +120,95 @@ namespace F21Party.Controllers
 
         public void TeamManagmentLoad()
         {
-            string usersDisplay = "";
-            usersDisplay = frmCreateTeamManagment.cboFullNames.DisplayMember;
+            string usersDisplay = _frmCreateTeamManagment.cboFullNames.DisplayMember;
             if (usersDisplay == string.Empty)
                 usersDisplay = "0";
 
-            spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "6");
-            AddCombo(frmCreateTeamManagment.cboFullNames, spString, "FullName", "UserID");
+            _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "6");
+            AddCombo(_frmCreateTeamManagment.cboFullNames, _spString, "FullName", "UserID");
 
-            frmCreateTeamManagment.cboFullNames.SelectedValue = Convert.ToInt32(usersDisplay);
+            _frmCreateTeamManagment.cboFullNames.SelectedValue = Convert.ToInt32(usersDisplay);
 
 
-            _TeamDisplay = frmCreateTeamManagment.cboTeam.DisplayMember;
-            if (_TeamDisplay == string.Empty)
-                _TeamDisplay = "0";
+            _teamDisplay = _frmCreateTeamManagment.cboTeam.DisplayMember;
+            if (_teamDisplay == string.Empty)
+                _teamDisplay = "0";
 
-            spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "5");
-            AddCombo(frmCreateTeamManagment.cboTeam, spString, "TeamName", "TeamID");
+            _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", "0", "0", "5");
+            AddCombo(_frmCreateTeamManagment.cboTeam, _spString, "TeamName", "TeamID");
 
-            frmCreateTeamManagment.cboTeam.SelectedValue = Convert.ToInt32(_TeamDisplay);
-            teamindex = frmCreateTeamManagment.cboTeam.SelectedIndex;
+            _frmCreateTeamManagment.cboTeam.SelectedValue = Convert.ToInt32(_teamDisplay);
+            _teamindex = _frmCreateTeamManagment.cboTeam.SelectedIndex;
 
-            AddCombo(frmCreateTeamManagment.cboTotal, spString, "TotalPlayer", "TeamID");
+            AddCombo(_frmCreateTeamManagment.cboTotal, _spString, "TotalPlayer", "TeamID");
 
-            AddCombo(frmCreateTeamManagment.cboMax, spString, "MaxPlayer", "TeamID");
-            indexloop();
+            AddCombo(_frmCreateTeamManagment.cboMax, _spString, "MaxPlayer", "TeamID");
+            Indexloop();
         }
 
         public void SaveClick()
         {
-            _TeamManagmentID = frmCreateTeamManagment.TeamManagmentID;
-            _IsEdit = frmCreateTeamManagment.IsEdit;
-            if (frmCreateTeamManagment.cboFullNames.SelectedValue.ToString() == "0")
+            _teamManagmentID = _frmCreateTeamManagment.TeamManagmentID;
+            _isEdit = _frmCreateTeamManagment.IsEdit;
+            if (_frmCreateTeamManagment.cboFullNames.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Player Name.");
-                frmCreateTeamManagment.cboFullNames.Focus();
+                _frmCreateTeamManagment.cboFullNames.Focus();
             }
-            else if (frmCreateTeamManagment.cboTeam.SelectedValue.ToString() == "0")
+            else if (_frmCreateTeamManagment.cboTeam.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Team");
-                frmCreateTeamManagment.cboTeam.Focus();
+                _frmCreateTeamManagment.cboTeam.Focus();
             }
-            else if (_Full && _TeamDisplay != frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
+            else if (_full && _teamDisplay != _frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
             {
-                MessageBox.Show(frmCreateTeamManagment.cboTeam.Text + " Is Full. Please Choose Other Team");
+                MessageBox.Show(_frmCreateTeamManagment.cboTeam.Text + " Is Full. Please Choose Other Team");
 
             }
             else
             {
-                spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", frmCreateTeamManagment.cboFullNames.SelectedValue.ToString(), "0", "4");
-                dt = dbaConnection.SelectData(spString);
-                if (dt.Rows.Count > 0 && _TeamManagmentID != Convert.ToInt32(dt.Rows[0]["TeamManagmentID"]))
+                _spString = string.Format("SP_Select_TeamManagment N'{0}',N'{1}',N'{2}'", _frmCreateTeamManagment.cboFullNames.SelectedValue.ToString(), "0", "4");
+                _dt = _dbaConnection.SelectData(_spString);
+                if (_dt.Rows.Count > 0 && _teamManagmentID != Convert.ToInt32(_dt.Rows[0]["TeamManagmentID"]))
                 {
                     MessageBox.Show("This Player Already Have Team!");
                     //frmCreateTeamManagment.txtPlayerName.Focus();
-                    frmCreateTeamManagment.cboFullNames.SelectAll();
+                    _frmCreateTeamManagment.cboFullNames.SelectAll();
                 }
                 else
                 {
-                    dbaTeamManagment.TMID = Convert.ToInt32(_TeamManagmentID);
-                    dbaTeamManagment.UID = Convert.ToInt32(frmCreateTeamManagment.cboFullNames.SelectedValue.ToString());
-                    dbaTeamManagment.TID = Convert.ToInt32(frmCreateTeamManagment.cboTeam.SelectedValue.ToString());
+                    _dbaTeamManagment.TMID = Convert.ToInt32(_teamManagmentID);
+                    _dbaTeamManagment.UID = Convert.ToInt32(_frmCreateTeamManagment.cboFullNames.SelectedValue.ToString());
+                    _dbaTeamManagment.TID = Convert.ToInt32(_frmCreateTeamManagment.cboTeam.SelectedValue.ToString());
 
-                    if (_TeamDisplay != frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
+                    if (_teamDisplay != _frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
                     {
-                        dbaTeam.TID = Convert.ToInt32(frmCreateTeamManagment.cboTeam.SelectedValue.ToString());
-                        dbaTeam.TOTALPLAYER = 1;
-                        dbaTeam.ACTION = 3;
-                        dbaTeam.SaveData();
+                        _dbaTeam.TID = Convert.ToInt32(_frmCreateTeamManagment.cboTeam.SelectedValue.ToString());
+                        _dbaTeam.TOTALPLAYER = 1;
+                        _dbaTeam.ACTION = 3;
+                        _dbaTeam.SaveData();
                     }
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
-                        if (_TeamDisplay != frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
+                        if (_teamDisplay != _frmCreateTeamManagment.cboTeam.SelectedValue.ToString())
                         {
-                            dbaTeam.TID = Convert.ToInt32(_TeamDisplay);
-                            dbaTeam.TOTALPLAYER = 1;
-                            dbaTeam.ACTION = 4;
-                            dbaTeam.SaveData();
+                            _dbaTeam.TID = Convert.ToInt32(_teamDisplay);
+                            _dbaTeam.TOTALPLAYER = 1;
+                            _dbaTeam.ACTION = 4;
+                            _dbaTeam.SaveData();
                         }
-                        dbaTeamManagment.ACTION = 1;
-                        dbaTeamManagment.SaveData();
+                        _dbaTeamManagment.ACTION = 1;
+                        _dbaTeamManagment.SaveData();
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmCreateTeamManagment.Close();
+                        _frmCreateTeamManagment.Close();
                     }
                     else
                     {
-                        dbaTeamManagment.ACTION = 0;
-                        dbaTeamManagment.SaveData();
+                        _dbaTeamManagment.ACTION = 0;
+                        _dbaTeamManagment.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreateTeamManagment.Close();
+                        _frmCreateTeamManagment.Close();
                     }
                 }
             }
@@ -225,8 +216,8 @@ namespace F21Party.Controllers
 
         public void CboSelectIndexChanged()
         {
-            teamindex = frmCreateTeamManagment.cboTeam.SelectedIndex;
-            indexloop();
+            _teamindex = _frmCreateTeamManagment.cboTeam.SelectedIndex;
+            Indexloop();
         }
 
 

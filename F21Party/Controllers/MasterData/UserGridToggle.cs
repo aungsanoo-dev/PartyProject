@@ -89,8 +89,9 @@ namespace F21Party.Controllers
                     _extraUserGrid.Columns[7].FillWeight = 12;
                 }
                 _parentForm.tsbUser.Text = "Close";
-                
-                
+
+                _extraUserGrid.ReadOnly = true;
+
             }
             else // If the extra grid is already added, remove it and reset the layout.
             {
@@ -158,7 +159,7 @@ namespace F21Party.Controllers
                     _extraUserGrid.Columns[7].FillWeight = 12;
                 }
 
-                
+                _extraUserGrid.ReadOnly = true;
                 //if (extraUserGrid.DataSource != null)
                 //{
                 //    parentForm.Controls.Remove(extraUserGrid);
@@ -225,6 +226,12 @@ namespace F21Party.Controllers
 
         private void ExtraUserGrid_CellPainting(object sender, DataGridViewCellPaintingEventArgs e)
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Accounts"))
+            {
+                return;
+            }
+
+
             //if (e.ColumnIndex == 6 && e.RowIndex >= 0)
             //{
             //    var grid = (DataGridView)sender;
@@ -278,6 +285,11 @@ namespace F21Party.Controllers
 
         private void ExtraUserGrid_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            if (!Program.PublicArrWriteAccessPages.Contains("Accounts"))
+            {
+                return;
+            }
+
             if (e.ColumnIndex == 6 && e.RowIndex >= 0)
             {
                 var grid = (DataGridView)sender;
@@ -306,6 +318,11 @@ namespace F21Party.Controllers
                         frmCreateAccount.txtAddress.Text = _extraUserGrid.CurrentRow.Cells["Address"].Value.ToString();
                         frmCreateAccount.txtPhone.Text = _extraUserGrid.CurrentRow.Cells["Phone"].Value.ToString();
                         frmCreateAccount.cboPosition.DisplayMember = _extraUserGrid.CurrentRow.Cells["PositionID"].Value.ToString();
+
+                        frmCreateAccount.txtFullName.Enabled = false;
+                        frmCreateAccount.txtAddress.Enabled = false;
+                        frmCreateAccount.txtPhone.Enabled = false;
+                        frmCreateAccount.cboPosition.Enabled = false;
 
                         frmCreateAccount.btnCreate.Text = "Add";
                         frmCreateAccount.ShowDialog();

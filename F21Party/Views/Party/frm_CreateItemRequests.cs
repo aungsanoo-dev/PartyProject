@@ -14,44 +14,43 @@ namespace F21Party.Views
 {
     public partial class frm_CreateItemRequests : Form
     {
-        private CtrlFrmCreateItemRequests ctrlFrmCreateItemRequests;
+        private readonly CtrlFrmCreateItemRequests _ctrlFrmCreateItemRequests;
         public int RequestsID = 0;
-        public bool IsEdit = false;
 
         public frm_CreateItemRequests()
         {
             InitializeComponent();
-            ctrlFrmCreateItemRequests = new CtrlFrmCreateItemRequests(this);
+            _ctrlFrmCreateItemRequests = new CtrlFrmCreateItemRequests(this);
         }
         private void frm_Order_Load(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.CreateTable();
-            ctrlFrmCreateItemRequests.ShowData();
+            _ctrlFrmCreateItemRequests.CreateTable();
+            _ctrlFrmCreateItemRequests.ShowData();
         }
 
         private void cboItem_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.ItemSelectedChanged();
+            _ctrlFrmCreateItemRequests.ItemSelectedChanged();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.AddClick();
+            _ctrlFrmCreateItemRequests.AddClick();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.RemoveClick();
+            _ctrlFrmCreateItemRequests.RemoveClick();
         }
 
         private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.DtpDateValueChanged();
+            _ctrlFrmCreateItemRequests.DtpDateValueChanged();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateItemRequests.SaveClick();
+            _ctrlFrmCreateItemRequests.SaveClick();
         }
     }
 }

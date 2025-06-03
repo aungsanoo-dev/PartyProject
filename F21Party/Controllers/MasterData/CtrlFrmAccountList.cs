@@ -73,6 +73,17 @@ namespace F21Party.Controllers
             {
                 frm_CreateAccount frmCreateAccount = new frm_CreateAccount();
 
+                if (!Program.PublicArrReadAccessPages.Contains("Users"))
+                {
+                    frmCreateAccount.txtFullName.UseSystemPasswordChar = true;
+                    frmCreateAccount.txtPhone.UseSystemPasswordChar = true;
+                    frmCreateAccount.txtMaskAddress.Visible = true;
+                    frmCreateAccount.txtAddress.Visible = false;
+                    frmCreateAccount.cboPosition.Visible = false;
+                    frmCreateAccount.cboMaskedPosition.Visible = true;
+                    frmCreateAccount.cboMaskedPosition.SelectedIndex = 0;
+                }
+
                 frmCreateAccount.UserID = Convert.ToInt32(_frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString());
                 frmCreateAccount.txtUserName.Text = _frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserName"].Value.ToString();
                 frmCreateAccount.txtPassword.Text = _frmAccountList.dgvAccountSetting.CurrentRow.Cells["Password"].Value.ToString();
@@ -143,28 +154,22 @@ namespace F21Party.Controllers
             {
                 MessageBox.Show("You cannont delete SuperAdmin account.");
             }
-            else
+            else if(_frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
             {
-                if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
-                 MessageBoxButtons.YesNo) == DialogResult.Yes)
-                {
-                    if (_frmAccountList.dgvAccountSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
-                    {
-                        MessageBox.Show("You cannot delete your own account!");
-                    }
-                    else if (Program.UserAuthority >= Convert.ToInt32(dtAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
-                    {
-                        MessageBox.Show("You cannont delete Higher or Same Authority Account!");
-                    }
-                    else
-                    {
-                        dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccountID"].Value.ToString());
-                        dbaAccountSetting.ACTION = 2;
-                        dbaAccountSetting.SaveData();
-                        MessageBox.Show("Successfully Delete");
-                        ShowData();
-                    }
-                }
+                MessageBox.Show("You cannot delete your own account!");
+            }
+            else if (Program.UserAuthority >= Convert.ToInt32(dtAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+            {
+                MessageBox.Show("You cannont delete Higher or Same Authority Account!");
+            }
+            else if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_frmAccountList.dgvAccountSetting.CurrentRow.Cells["AccountID"].Value.ToString());
+                dbaAccountSetting.ACTION = 2;
+                dbaAccountSetting.SaveData();
+                MessageBox.Show("Successfully Delete");
+                ShowData();
             }
         }
         public void TsbSearch()
@@ -177,7 +182,6 @@ namespace F21Party.Controllers
             {
                 _spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", _frmAccountList.tstSearchWith.Text.Trim().ToString(), "0", "0", "8");
             }
-
             _frmAccountList.dgvAccountSetting.DataSource = _dbaConnection.SelectData(_spString);
         }
 
@@ -228,7 +232,5 @@ namespace F21Party.Controllers
                 action();
             }
         }
-
-        
     }
 }

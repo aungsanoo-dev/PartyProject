@@ -13,25 +13,25 @@ namespace F21Party.Views
 {
     public partial class frm_CreatePermission : Form
     {
-        private CtrlFrmCreatePermission ctrlFrmCreatePermission; // Declare the View
+        private readonly CtrlFrmCreatePermission _ctrlFrmCreatePermission; // Declare the View
         public int PermissionID = 0;
         public bool IsEdit = false;
-        public string accessValue = "";
+        public string AccessValue = "";
         public frm_CreatePermission()
         {
             InitializeComponent();
-            ctrlFrmCreatePermission = new CtrlFrmCreatePermission(this);
+            _ctrlFrmCreatePermission = new CtrlFrmCreatePermission(this);
         }
 
         private void frm_CreatePermission_Load(object sender, EventArgs e)
         {
-            ctrlFrmCreatePermission.ShowCombo(IsEdit);
+            _ctrlFrmCreatePermission.ShowCombo(IsEdit);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
             //this.DialogResult = DialogResult.OK;
-            ctrlFrmCreatePermission.SaveClick();
+            _ctrlFrmCreatePermission.SaveClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

@@ -13,19 +13,19 @@ namespace F21Party.Views
 {
     public partial class frm_CreatePosition : Form
     {
-        private CtrlFrmCreatePosition ctrlFrmCreatePosition; // Declare the View
-        public int _PositionID = 0;
-        public bool _IsEdit = false;
+        private readonly CtrlFrmCreatePosition _ctrlFrmCreatePosition; // Declare the View
+        public int PositionID = 0;
+        public bool IsEdit = false;
 
         public frm_CreatePosition()
         {
             InitializeComponent();
-            ctrlFrmCreatePosition = new CtrlFrmCreatePosition(this);
+            _ctrlFrmCreatePosition = new CtrlFrmCreatePosition(this);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreatePosition.CreateClick();
+            _ctrlFrmCreatePosition.CreateClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

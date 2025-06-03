@@ -127,47 +127,44 @@ namespace F21Party.Controllers
             _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", _frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString(), "", 1);
             DataTable dtAccess = _dbaConnection.SelectData(_spString);
 
+            _spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "3"); // Check User with this Access
+            DataTable dtUser = new DataTable();
+            dtUser = _dbaConnection.SelectData(_spString);
+
+            _spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "6"); // Check Permission with this Access
+            DataTable dtPermission = new DataTable();
+            dtPermission = _dbaConnection.SelectData(_spString);
+
             if (_frmAccessList.dgvAccessSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
+            }
+            else if(dtUser.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the Access which is currently used by the User's Account!");
+            }
+            else if (dtPermission.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the Access which is currently used by the Permission!");
+            }
+            else if (Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1)
+            {
+                MessageBox.Show("You cannot delete SuperAdmin!");
+            }
+            else if (Program.UserAuthority >= Convert.ToInt32(dtAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
+            {
+                MessageBox.Show("You cannont delete Higher or Same Authority Account!");
             }
             else
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
                  MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    _spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "3"); // Check User with this Access
-                    DataTable dtUser = new DataTable();
-                    dtUser = _dbaConnection.SelectData(_spString);
-
-                    _spString = string.Format("SP_Select_Access N'{0}', N'{1}', N'{2}'", Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value), "0", "6"); // Check Permission with this Access
-                    DataTable dtPermission = new DataTable();
-                    dtPermission = _dbaConnection.SelectData(_spString);
-
-                    if (dtUser.Rows.Count > 0)
-                    {
-                        MessageBox.Show("You cannont delete the Access which is currently used by the User's Account!");
-                    }
-                    else if(dtPermission.Rows.Count > 0)
-                    {
-                        MessageBox.Show("You cannont delete the Access which is currently used by the Permission!");
-                    }
-                    else if (Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["Authority"].Value) == 1)
-                    {
-                        MessageBox.Show("You cannot delete SuperAdmin!");
-                    }
-                    else if (Program.UserAuthority >= Convert.ToInt32(dtAccess.Rows[0]["Authority"]) && Program.UserAuthority != 1)
-                    {
-                        MessageBox.Show("You cannont delete Higher or Same Authority Account!");
-                    }
-                    else
-                    {
-                        dbaAccessSetting.AID = Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString());
-                        dbaAccessSetting.ACTION = 2;
-                        dbaAccessSetting.SaveData();
-                        MessageBox.Show("Successfully Delete");
-                        ShowData();
-                    }
+                    dbaAccessSetting.AID = Convert.ToInt32(_frmAccessList.dgvAccessSetting.CurrentRow.Cells["AccessID"].Value.ToString());
+                    dbaAccessSetting.ACTION = 2;
+                    dbaAccessSetting.SaveData();
+                    MessageBox.Show("Successfully Delete");
+                    ShowData();
                 }
             }
         }

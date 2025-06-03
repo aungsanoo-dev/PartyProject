@@ -14,7 +14,7 @@ namespace F21Party.DBA
     class DbaConnection
     {
         public SqlConnection con;
-        DataSet DS = new DataSet();
+        //DataSet DS = new DataSet();
 
         public void DataBaseConn()
         {
@@ -43,12 +43,12 @@ namespace F21Party.DBA
 
         public DataTable SelectData(string spString)
         {
-            DataTable DT = new DataTable();
+            DataTable dt = new DataTable();
             try
             {
                 DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, con);
-                Adpt.Fill(DT);
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, con);
+                adpt.Fill(dt);
             }
             catch (Exception ex)
             {
@@ -58,26 +58,26 @@ namespace F21Party.DBA
             {
                 con.Close();
             }
-            return DT;
+            return dt;
         }
 
-        public void ToolStripTextBoxData(ToolStripTextBox tstToolStrip, string spString, string FieldName)
+        public void ToolStripTextBoxData(ToolStripTextBox tstToolStrip, string spString, string fieldName)
         {
-            DataTable DT = new DataTable();
-            AutoCompleteStringCollection Source = new AutoCompleteStringCollection();
+            DataTable dt = new DataTable();
+            AutoCompleteStringCollection source = new AutoCompleteStringCollection();
             try
             {
                 DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, con);
-                Adpt.Fill(DT);
-                if (DT.Rows.Count > 0)
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, con);
+                adpt.Fill(dt);
+                if (dt.Rows.Count > 0)
                 {
                     tstToolStrip.AutoCompleteCustomSource.Clear();
-                    for (int i = 0; i < DT.Rows.Count; i++)
+                    for (int i = 0; i < dt.Rows.Count; i++)
                     {
-                        Source.Add(DT.Rows[i][FieldName].ToString());
+                        source.Add(dt.Rows[i][fieldName].ToString());
                     }
-                    tstToolStrip.AutoCompleteCustomSource = Source;
+                    tstToolStrip.AutoCompleteCustomSource = source;
                     tstToolStrip.Text = "";
                     tstToolStrip.Focus();
                 }

@@ -13,63 +13,63 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreatePage
     {
-        public frm_CreatePage frmCreatePage;// Declare the View
+        private readonly frm_CreatePage _frmCreatePage;// Declare the View
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaPage _dbaPage = new DbaPage();
+        private bool _isEdit;
+        private int _pageID;
+        private string _spString;
         public CtrlFrmCreatePage(frm_CreatePage createPageForm)
         {
-            frmCreatePage = createPageForm; // Create the View
+            _frmCreatePage = createPageForm; // Create the View
         }
-
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaPage dbaPage = new DbaPage();
-        private bool _IsEdit;
-        private int _PageID;
 
         public void CreateClick()
         {
-            DataTable DT = new DataTable();
-            string spString = "";
+            DataTable dt = new DataTable();
+            //string spString = "";
             //_IsEdit = frmCreatePage._IsEdit;
-            _PageID = frmCreatePage._PageID;
-            _IsEdit = frmCreatePage._IsEdit;
+            _pageID = _frmCreatePage.PageID;
+            _isEdit = _frmCreatePage.IsEdit;
 
-            if (frmCreatePage.txtPageName.Text.Trim().ToString() == string.Empty)
+            if (_frmCreatePage.txtPageName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Page Name");
-                frmCreatePage.txtPageName.Focus();
+                _frmCreatePage.txtPageName.Focus();
             }
             else
             {
                 // For Page
-                spString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", Regex.Replace(frmCreatePage.txtPageName.Text.Trim(), @"\s+", " "),
+                _spString = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", Regex.Replace(_frmCreatePage.txtPageName.Text.Trim(), @"\s+", " "),
                 "0", "2");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _PageID != Convert.ToInt32(DT.Rows[0]["PageID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _pageID != Convert.ToInt32(dt.Rows[0]["PageID"]))
                 {
                     MessageBox.Show("This PageName is Already Exist");
-                    frmCreatePage.txtPageName.Focus();
-                    frmCreatePage.txtPageName.SelectAll();
+                    _frmCreatePage.txtPageName.Focus();
+                    _frmCreatePage.txtPageName.SelectAll();
                 }
                 else
                 {
-                    dbaPage.PID = Convert.ToInt32(_PageID);
-                    dbaPage.PNAME = Regex.Replace(frmCreatePage.txtPageName.Text.Trim(), @"\s+", " ");
+                    _dbaPage.PID = Convert.ToInt32(_pageID);
+                    _dbaPage.PNAME = Regex.Replace(_frmCreatePage.txtPageName.Text.Trim(), @"\s+", " ");
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
-                        dbaPage.PID = Convert.ToInt32(_PageID);
-                        dbaPage.ACTION = 1;
-                        dbaPage.SaveData();
+                        _dbaPage.PID = Convert.ToInt32(_pageID);
+                        _dbaPage.ACTION = 1;
+                        _dbaPage.SaveData();
 
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePage.Close();
+                        _frmCreatePage.Close();
                     }
                     else
                     {
-                        dbaPage.ACTION = 0;
-                        dbaPage.SaveData();
+                        _dbaPage.ACTION = 0;
+                        _dbaPage.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreatePage.Close();
+                        _frmCreatePage.Close();
                     }
                 }
             }

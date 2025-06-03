@@ -12,85 +12,78 @@ namespace F21Party.Controllers
 { 
     internal class CtrlFrmItemRequestsList
     {
-        public frm_ItemRequestsList frmItemRequestsList;
+        private readonly frm_ItemRequestsList _frmItemRequestsList;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private UserControl _itemRequestsDetail;
+        private UserControl _activeItemRequestsDetail = null;
+        private DataGridViewRow _expandedRow = null;
+        private Point? _lastClickedCell = null;
+        private string _spString = "";
         public CtrlFrmItemRequestsList(frm_ItemRequestsList requestsListForm)
         {
-            frmItemRequestsList = requestsListForm;
+            _frmItemRequestsList = requestsListForm;
         }
-
-        DbaConnection dbaConnection = new DbaConnection();
-        UserControl ItemRequestsDetail;
-
-        // For Mouse down event
-        public UserControl activeItemRequestsDetail = null;
-        public DataGridViewRow expandedRow = null;
-
-        public Point? lastClickedCell = null;
-
-        string SPString = "";
 
         public void RemoveDelete()
         {
             if (Program.UserAuthority != 1)
             {
-                frmItemRequestsList.toolStripSeparator3.Visible = false;
-                frmItemRequestsList.tsbDelete.Visible = false;
+                _frmItemRequestsList.toolStripSeparator3.Visible = false;
+                _frmItemRequestsList.tsbDelete.Visible = false;
             }
             else
             {
-                frmItemRequestsList.toolStripSeparator3.Visible = true;
-                frmItemRequestsList.tsbDelete.Visible = true;
+                _frmItemRequestsList.toolStripSeparator3.Visible = true;
+                _frmItemRequestsList.tsbDelete.Visible = true;
             }
         }
 
         public void ShowItemRequests()
         {
-            DataGridViewTextBoxColumn DGCol = new DataGridViewTextBoxColumn();
-            DGCol.DefaultCellStyle.NullValue = "+";
-            DGCol.HeaderText = "";
-            DGCol.Width = 30;
-            DGCol.ReadOnly = true;
-            DGCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            frmItemRequestsList.dgvItemRequests.Columns.Add(DGCol);
+            DataGridViewTextBoxColumn dgCol = new DataGridViewTextBoxColumn();
+            dgCol.DefaultCellStyle.NullValue = "+";
+            dgCol.HeaderText = "";
+            dgCol.Width = 30;
+            dgCol.ReadOnly = true;
+            dgCol.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            _frmItemRequestsList.dgvItemRequests.Columns.Add(dgCol);
 
-            SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmItemRequestsList.dgvItemRequests.DataSource = dbaConnection.SelectData(SPString);
+            _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmItemRequestsList.dgvItemRequests.DataSource = _dbaConnection.SelectData(_spString);
 
-            frmItemRequestsList.dgvItemRequests.Columns[1].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 10;
-            frmItemRequestsList.dgvItemRequests.Columns[2].Visible = false;
-            frmItemRequestsList.dgvItemRequests.Columns[3].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 20;
-            frmItemRequestsList.dgvItemRequests.Columns[4].Visible = false;
-            frmItemRequestsList.dgvItemRequests.Columns[5].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 35;
-            frmItemRequestsList.dgvItemRequests.Columns[6].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 35;
-            //frmItemRequestsList.dgvItemRequests.Columns[7].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 30;
-            //frmItemRequestsList.dgvItemRequests.Columns[8].Width = (frmItemRequestsList.dgvItemRequests.Width / 100) * 15;
+            _frmItemRequestsList.dgvItemRequests.Columns[1].Width = (_frmItemRequestsList.dgvItemRequests.Width / 100) * 10;
+            _frmItemRequestsList.dgvItemRequests.Columns[2].Visible = false;
+            _frmItemRequestsList.dgvItemRequests.Columns[3].Width = (_frmItemRequestsList.dgvItemRequests.Width / 100) * 20;
+            _frmItemRequestsList.dgvItemRequests.Columns[4].Visible = false;
+            _frmItemRequestsList.dgvItemRequests.Columns[5].Width = (_frmItemRequestsList.dgvItemRequests.Width / 100) * 35;
+            _frmItemRequestsList.dgvItemRequests.Columns[6].Width = (_frmItemRequestsList.dgvItemRequests.Width / 100) * 35;
 
-            dbaConnection.ToolStripTextBoxData(frmItemRequestsList.tstSearchWith, SPString, "RequestDate");
+            _dbaConnection.ToolStripTextBoxData(_frmItemRequestsList.tstSearchWith, _spString, "RequestDate");
 
             if (!Program.PublicArrWriteAccessPages.Contains("ItemRequests"))
             {
-                frmItemRequestsList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmItemRequestsList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmItemRequestsList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmItemRequestsList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
             }
         }
 
         public void ShowItemRequestsDetail()
         {
             //UserControl Form
-            ItemRequestsDetail = new ctl_ItemRequestsDetail();
-            ItemRequestsDetail.Hide();
-            frmItemRequestsList.Controls.Add(ItemRequestsDetail);
-            frmItemRequestsList.Controls.SetChildIndex(ItemRequestsDetail, 0);
+            _itemRequestsDetail = new ctl_ItemRequestsDetail();
+            _itemRequestsDetail.Hide();
+            _frmItemRequestsList.Controls.Add(_itemRequestsDetail);
+            _frmItemRequestsList.Controls.SetChildIndex(_itemRequestsDetail, 0);
 
         }
 
         public void DgvItemRequestsCellClick(DataGridViewCellEventArgs e)
         {
-            lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
+            _lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
             if (e.RowIndex == -1 || e.ColumnIndex == -1) 
                 return;
 
-            var cell = frmItemRequestsList.dgvItemRequests[e.ColumnIndex, e.RowIndex];
+            var cell = _frmItemRequestsList.dgvItemRequests[e.ColumnIndex, e.RowIndex];
             if (e.ColumnIndex == 0)
             {
                 if (cell.Value == null)
@@ -98,44 +91,43 @@ namespace F21Party.Controllers
 
                 if (cell.Value.ToString().Trim() == "+")
                 {
-                    Rectangle cellBounds = frmItemRequestsList.dgvItemRequests.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+                    Rectangle cellBounds = _frmItemRequestsList.dgvItemRequests.GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
                     Point offsetLocation = new Point(cellBounds.X, cellBounds.Y + cellBounds.Height);
-                    offsetLocation.Offset(frmItemRequestsList.dgvItemRequests.Location);
+                    offsetLocation.Offset(_frmItemRequestsList.dgvItemRequests.Location);
 
                     // Create or use the existing control
-                    if (ItemRequestsDetail == null)
-                        ItemRequestsDetail = new ctl_ItemRequestsDetail();
+                    if (_itemRequestsDetail == null)
+                        _itemRequestsDetail = new ctl_ItemRequestsDetail();
 
-                    ItemRequestsDetail.Location = offsetLocation;
+                    _itemRequestsDetail.Location = offsetLocation;
 
                     // Access specific properties through cast
-                    var detailControl = (ctl_ItemRequestsDetail)ItemRequestsDetail;
+                    var detailControl = (ctl_ItemRequestsDetail)_itemRequestsDetail;
+                    int itemRequestsID = Convert.ToInt32(_frmItemRequestsList.dgvItemRequests.Rows[e.RowIndex].Cells["RequestID"].Value.ToString());
+                    _spString = string.Format("SP_Select_ItemRequestsDetail N'{0}',N'{1}',N'{2}'", itemRequestsID, "0", "0");
 
-                    int ItemRequestsID = Convert.ToInt32(frmItemRequestsList.dgvItemRequests.Rows[e.RowIndex].Cells["RequestID"].Value.ToString());
-                    string SPString = string.Format("SP_Select_ItemRequestsDetail N'{0}',N'{1}',N'{2}'", ItemRequestsID, "0", "0");
+                    var dgv = detailControl.dgvItemRequestsDetail;
+                    dgv.DataSource = _dbaConnection.SelectData(_spString);
+                    dgv.Columns[0].Visible = false;
+                    dgv.Columns[1].Visible = false;
+                    dgv.Columns[2].Width = (dgv.Width / 100) * 50;
+                    dgv.Columns[3].Width = (dgv.Width / 100) * 20;
+                    dgv.Columns[4].Width = (dgv.Width / 100) * 15;
 
-                    var DGV = detailControl.dgvItemRequestsDetail;
-                    DGV.DataSource = dbaConnection.SelectData(SPString);
-                    DGV.Columns[0].Visible = false;
-                    DGV.Columns[1].Visible = false;
-                    DGV.Columns[2].Width = (DGV.Width / 100) * 50;
-                    DGV.Columns[3].Width = (DGV.Width / 100) * 20;
-                    DGV.Columns[4].Width = (DGV.Width / 100) * 15;
-
-                    frmItemRequestsList.Controls.Add(ItemRequestsDetail);
-                    frmItemRequestsList.Controls.SetChildIndex(ItemRequestsDetail, 0);
-                    ItemRequestsDetail.Show();
+                    _frmItemRequestsList.Controls.Add(_itemRequestsDetail);
+                    _frmItemRequestsList.Controls.SetChildIndex(_itemRequestsDetail, 0);
+                    _itemRequestsDetail.Show();
 
                     cell.Value = "-";
-                    activeItemRequestsDetail = ItemRequestsDetail;
-                    expandedRow = frmItemRequestsList.dgvItemRequests.Rows[e.RowIndex];
+                    _activeItemRequestsDetail = _itemRequestsDetail;
+                    _expandedRow = _frmItemRequestsList.dgvItemRequests.Rows[e.RowIndex];
                 }
                 else
                 {
-                    frmItemRequestsList.Controls.Remove(ItemRequestsDetail);
+                    _frmItemRequestsList.Controls.Remove(_itemRequestsDetail);
                     cell.Value = "+";
-                    activeItemRequestsDetail = null;
-                    expandedRow = null;
+                    _activeItemRequestsDetail = null;
+                    _expandedRow = null;
                 }
             }
         }
@@ -150,35 +142,35 @@ namespace F21Party.Controllers
 
             frm_CreateItemRequests frm = new frm_CreateItemRequests();
             frm.ShowDialog();
-            SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            frmItemRequestsList.dgvItemRequests.DataSource = dbaConnection.SelectData(SPString);
+            _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _frmItemRequestsList.dgvItemRequests.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void TsmRequestDateClick()
         {
-            frmItemRequestsList.tslLabel.Text = "RequestDate";
-            SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmItemRequestsList.tstSearchWith, SPString, "RequestDate");
+            _frmItemRequestsList.tslLabel.Text = "RequestDate";
+            _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmItemRequestsList.tstSearchWith, _spString, "RequestDate");
         }
 
         public void TsmFullNameClick()
         {
-            frmItemRequestsList.tslLabel.Text = "FullName";
-            SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-            dbaConnection.ToolStripTextBoxData(frmItemRequestsList.tstSearchWith, SPString, "FullName");
+            _frmItemRequestsList.tslLabel.Text = "FullName";
+            _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _dbaConnection.ToolStripTextBoxData(_frmItemRequestsList.tstSearchWith, _spString, "FullName");
         }
 
         public void TsmSearchWithChanged()
         {
-            if (frmItemRequestsList.tslLabel.Text == "RequestDate")
+            if (_frmItemRequestsList.tslLabel.Text == "RequestDate")
             {
-                SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", frmItemRequestsList.tstSearchWith.Text.Trim().ToString(), "0", "3");
+                _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", _frmItemRequestsList.tstSearchWith.Text.Trim().ToString(), "0", "3");
             }
-            else if (frmItemRequestsList.tslLabel.Text == "FullName")
+            else if (_frmItemRequestsList.tslLabel.Text == "FullName")
             {
-                SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", frmItemRequestsList.tstSearchWith.Text.Trim().ToString(), "0", "4");
+                _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", _frmItemRequestsList.tstSearchWith.Text.Trim().ToString(), "0", "4");
             }
-            frmItemRequestsList.dgvItemRequests.DataSource = dbaConnection.SelectData(SPString);
+            _frmItemRequestsList.dgvItemRequests.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void TsbDelete()
@@ -189,11 +181,11 @@ namespace F21Party.Controllers
                 return;
             }
 
-            string ItemRequestsID = frmItemRequestsList.dgvItemRequests.CurrentRow.Cells["RequestID"].Value.ToString();
+            string itemRequestsID = _frmItemRequestsList.dgvItemRequests.CurrentRow.Cells["RequestID"].Value.ToString();
             DbaItemRequests dbaItemRequests = new DbaItemRequests();
             DbaItemRequestsDetail dbaItemRequestsDetail = new DbaItemRequestsDetail();
 
-            if (frmItemRequestsList.dgvItemRequests.CurrentRow.Cells[1].Value.ToString() == string.Empty)
+            if (_frmItemRequestsList.dgvItemRequests.CurrentRow.Cells[1].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
             }
@@ -201,18 +193,18 @@ namespace F21Party.Controllers
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    dbaItemRequests.RID = Convert.ToInt32(ItemRequestsID);
+                    dbaItemRequests.RID = Convert.ToInt32(itemRequestsID);
                     dbaItemRequests.ACTION = 1;
                     dbaItemRequests.SaveData();
 
-                    dbaItemRequestsDetail.RID = Convert.ToInt32(ItemRequestsID);
+                    dbaItemRequestsDetail.RID = Convert.ToInt32(itemRequestsID);
                     dbaItemRequestsDetail.ACTION = 1;
                     dbaItemRequestsDetail.SaveData();
                     MessageBox.Show("Successfully Delete");
                     RemoveDelete();
 
-                    SPString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-                    frmItemRequestsList.dgvItemRequests.DataSource = dbaConnection.SelectData(SPString);
+                    _spString = string.Format("SP_Select_ItemRequests N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+                    _frmItemRequestsList.dgvItemRequests.DataSource = _dbaConnection.SelectData(_spString);
                     //ShowItemRequestsDetail();
                 }
             }
@@ -221,39 +213,37 @@ namespace F21Party.Controllers
         public void FrmItemRequestsMouseDown(MouseEventArgs e)
         {
 
-            if (activeItemRequestsDetail != null)
+            if (_activeItemRequestsDetail != null)
             {
-                //lastClickedCell = new Point(e.ColumnIndex, e.RowIndex);
-
                 // Convert mouse click point to DataGridView client coords
-                Point dgvPoint = frmItemRequestsList.dgvItemRequests.PointToClient(Cursor.Position);
+                Point dgvPoint = _frmItemRequestsList.dgvItemRequests.PointToClient(Cursor.Position);
 
-                var hit = frmItemRequestsList.dgvItemRequests.HitTest(dgvPoint.X, dgvPoint.Y);
+                var hit = _frmItemRequestsList.dgvItemRequests.HitTest(dgvPoint.X, dgvPoint.Y);
 
                 // If click was on the same toggle cell, skip hiding here
-                if (lastClickedCell.HasValue
-                    && hit.ColumnIndex == lastClickedCell.Value.X
-                    && hit.RowIndex == lastClickedCell.Value.Y)
+                if (_lastClickedCell.HasValue
+                    && hit.ColumnIndex == _lastClickedCell.Value.X
+                    && hit.RowIndex == _lastClickedCell.Value.Y)
                 {
                     // Click was on the toggle cell itself, so do nothing here
                     return;
                 }
 
-                Point clickPoint = frmItemRequestsList.PointToScreen(e.Location);
-                Rectangle bounds = activeItemRequestsDetail.RectangleToScreen(
-                    activeItemRequestsDetail.ClientRectangle);
+                Point clickPoint = _frmItemRequestsList.PointToScreen(e.Location);
+                Rectangle bounds = _activeItemRequestsDetail.RectangleToScreen(
+                    _activeItemRequestsDetail.ClientRectangle);
 
                 if (!bounds.Contains(clickPoint))
                 {
-                    frmItemRequestsList.Controls.Remove(activeItemRequestsDetail);
-                    activeItemRequestsDetail = null;
+                    _frmItemRequestsList.Controls.Remove(_activeItemRequestsDetail);
+                    _activeItemRequestsDetail = null;
 
-                    if (expandedRow != null)
+                    if (_expandedRow != null)
                     {
-                        expandedRow.Cells[0].Value = "+";
-                        expandedRow = null;
+                        _expandedRow.Cells[0].Value = "+";
+                        _expandedRow = null;
                     }
-                    lastClickedCell = null; // Reset after closing
+                    _lastClickedCell = null; // Reset after closing
                 }
             }
         }

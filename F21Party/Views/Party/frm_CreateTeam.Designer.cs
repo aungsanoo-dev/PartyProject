@@ -80,7 +80,7 @@ namespace F21Party.Views
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(68, 105);
+            this.label2.Location = new System.Drawing.Point(103, 105);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(49, 16);
             this.label2.TabIndex = 9;
@@ -98,11 +98,11 @@ namespace F21Party.Views
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(68, 158);
+            this.label4.Location = new System.Drawing.Point(75, 159);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(83, 16);
+            this.label4.Size = new System.Drawing.Size(77, 16);
             this.label4.TabIndex = 17;
-            this.label4.Text = "Max Dweller:";
+            this.label4.Text = "Max Player:";
             // 
             // txtMaxPlayer
             // 

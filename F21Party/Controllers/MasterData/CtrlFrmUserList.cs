@@ -13,62 +13,44 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmUserList
     {
-        public frm_UserList frmUserList; // Declare the View
+        private readonly frm_UserList _frmUserList; // Declare the View
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private string _spString = "";
         public CtrlFrmUserList(frm_UserList userForm)
         {
-            frmUserList = userForm; // Create the View
+            _frmUserList = userForm; // Create the View
         }
-        string spString = "";
-        DbaConnection dbaConnection = new DbaConnection();
-
-       
 
         public void ShowData()
         {
-            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
-            frmUserList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
-            frmUserList.dgvUserSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", "0", "0", "0", "7");
+            _frmUserList.dgvUserSetting.DataSource = _dbaConnection.SelectData(_spString);
+            _frmUserList.dgvUserSetting.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            frmUserList.dgvUserSetting.Columns[0].FillWeight = 6;
-            frmUserList.dgvUserSetting.Columns[1].FillWeight = 6;
-            frmUserList.dgvUserSetting.Columns[2].FillWeight = 16;
-            frmUserList.dgvUserSetting.Columns[3].FillWeight = 25;
-            frmUserList.dgvUserSetting.Columns[4].FillWeight = 25;
-            frmUserList.dgvUserSetting.Columns[5].Visible = false;
-            frmUserList.dgvUserSetting.Columns[6].FillWeight = 6;
-            frmUserList.dgvUserSetting.Columns[7].FillWeight = 16;
+            _frmUserList.dgvUserSetting.Columns[0].FillWeight = 6;
+            _frmUserList.dgvUserSetting.Columns[1].FillWeight = 6;
+            _frmUserList.dgvUserSetting.Columns[2].FillWeight = 16;
+            _frmUserList.dgvUserSetting.Columns[3].FillWeight = 25;
+            _frmUserList.dgvUserSetting.Columns[4].FillWeight = 25;
+            _frmUserList.dgvUserSetting.Columns[5].Visible = false;
+            _frmUserList.dgvUserSetting.Columns[6].FillWeight = 6;
+            _frmUserList.dgvUserSetting.Columns[7].FillWeight = 16;
 
-            //frmAccountList.dgvUserSetting.Columns[6].FillWeight = 22;
-
-            //if (!frmUserList.dgvUserSetting.Columns.Contains("HasAccount"))
-            //{
-            //    hasAccount.HeaderText = "Has Account";
-            //    hasAccount.Name = "HasAccount";
-            //    hasAccount.FillWeight = 16;
-
-            //    frmUserList.dgvUserSetting.Columns.Add(hasAccount);
-            //}
-
-
-            dbaConnection.ToolStripTextBoxData(frmUserList.tstSearchWith, spString, "FullName");
+            _dbaConnection.ToolStripTextBoxData(_frmUserList.tstSearchWith, _spString, "FullName");
 
             if (!Program.PublicArrWriteAccessPages.Contains("Users"))
             {
-                frmUserList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmUserList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
-                frmUserList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmUserList.tsbNew.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmUserList.tsbEdit.ForeColor = System.Drawing.SystemColors.GrayText;
+                _frmUserList.tsbDelete.ForeColor = System.Drawing.SystemColors.GrayText;
             }
         }
 
         public void ShowEntry()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Users"))
-            {
-                MessageBox.Show("You don't have 'Write' Access!");
-                return;
-            }
+            if (!Function.HasWriteAccess("Users")) return;
 
-            if (frmUserList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (_frmUserList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There is No Data");
             }
@@ -76,22 +58,22 @@ namespace F21Party.Controllers
             {
                 frm_CreateUser frmCreateUser = new frm_CreateUser();
                 
-                frmCreateUser._UserID = Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value);
-                frmCreateUser.txtFullName.Text = frmUserList.dgvUserSetting.CurrentRow.Cells["FullName"].Value.ToString();
-                frmCreateUser.txtAddress.Text = frmUserList.dgvUserSetting.CurrentRow.Cells["Address"].Value.ToString();
-                frmCreateUser.txtPhone.Text = frmUserList.dgvUserSetting.CurrentRow.Cells["Phone"].Value.ToString();
-                frmCreateUser.cboPosition.DisplayMember = frmUserList.dgvUserSetting.CurrentRow.Cells["PositionID"].Value.ToString();
+                frmCreateUser.UserID = Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value);
+                frmCreateUser.txtFullName.Text = _frmUserList.dgvUserSetting.CurrentRow.Cells["FullName"].Value.ToString();
+                frmCreateUser.txtAddress.Text = _frmUserList.dgvUserSetting.CurrentRow.Cells["Address"].Value.ToString();
+                frmCreateUser.txtPhone.Text = _frmUserList.dgvUserSetting.CurrentRow.Cells["Phone"].Value.ToString();
+                frmCreateUser.cboPosition.DisplayMember = _frmUserList.dgvUserSetting.CurrentRow.Cells["PositionID"].Value.ToString();
 
-                spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "10");
+                _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "10");
                 DataTable dt = new DataTable();
-                dt = dbaConnection.SelectData(spString);
+                dt = _dbaConnection.SelectData(_spString);
 
-                if (Convert.ToInt32(dt.Rows[0]["Authority"]) == 1 && Program.UserAuthority != 1)
+                if (dt.Rows.Count > 0 && Program.UserAuthority != 1 && Convert.ToInt32(dt.Rows[0]["Authority"]) == 1)
                 {
                     frmCreateUser.txtFullName.Enabled = false;
                 }
 
-                frmCreateUser._IsEdit = true;
+                frmCreateUser.IsEdit = true;
                 frmCreateUser.btnCreate.Text = "Save";
                 frmCreateUser.ShowDialog();
                 ShowData();
@@ -99,52 +81,66 @@ namespace F21Party.Controllers
         }
         public void TsbDelete()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Users"))
-            {
-                MessageBox.Show("You don't have 'Write' Access!");
-                return;
-            }
+            if (!Function.HasWriteAccess("Users")) return;
+
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "8");
+            DataTable dt = new DataTable();
+            dt = _dbaConnection.SelectData(_spString);
+
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "11");
+            DataTable dtTeam = new DataTable();
+            dtTeam = _dbaConnection.SelectData(_spString);
+
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "12");
+            DataTable dtDonation = new DataTable();
+            dtDonation = _dbaConnection.SelectData(_spString);
+
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "13");
+            DataTable dtItemRequest = new DataTable();
+            dtItemRequest = _dbaConnection.SelectData(_spString);
 
             DbaUsers dbaUserSetting = new DbaUsers();
-            if (frmUserList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
+            if (_frmUserList.dgvUserSetting.CurrentRow.Cells[0].Value.ToString() == string.Empty)
             {
                 MessageBox.Show("There Is No Data");
+            }
+            else if (_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
+            {
+                MessageBox.Show("You cannot delete your own user!");
+            }
+            else if (dt.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the user which has the user account!");
+            }
+            else if (dtTeam.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the user which has Team! Delete this user in Team Managment first!");
+            }
+            else if (dtDonation.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the user which is in Donation! Delete this user in Donation first!");
+            }
+            else if (dtItemRequest.Rows.Count > 0)
+            {
+                MessageBox.Show("You cannont delete the user which is in Item Request! Delete this user in Item Request first!");
             }
             else
             {
                 if (MessageBox.Show("Are You Sure You Want To Delete?", "Confirm",
-                 MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value), "0", "0", "8");
-                    DataTable DT = new DataTable();
-                    DT = dbaConnection.SelectData(spString);
-
-
-                    if (frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString() == Program.UserID.ToString())
-                    {
-                        MessageBox.Show("You cannot delete your own user!");
-                    }
-                    else if (DT.Rows.Count > 0)
-                    {
-                        MessageBox.Show("You cannont delete the user which has the user account!");
-                    }
-                    else
-                    {
-                        dbaUserSetting.UID = Convert.ToInt32(frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
-                        dbaUserSetting.ACTION = 2;
-                        dbaUserSetting.SaveData();
-                        MessageBox.Show("Successfully Delete");
-                        ShowData();
-                    }  
-
-
+                    dbaUserSetting.UID = Convert.ToInt32(_frmUserList.dgvUserSetting.CurrentRow.Cells["UserID"].Value.ToString());
+                    dbaUserSetting.ACTION = 2;
+                    dbaUserSetting.SaveData();
+                    MessageBox.Show("Successfully Delete");
+                    ShowData();
                 }
             }
         }
         public void TsbSearch()
         {
-            spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", frmUserList.tstSearchWith.Text.Trim().ToString(), "0", "0", "9");
-            frmUserList.dgvUserSetting.DataSource = dbaConnection.SelectData(spString);
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", _frmUserList.tstSearchWith.Text.Trim().ToString(), "0", "0", "9");
+            _frmUserList.dgvUserSetting.DataSource = _dbaConnection.SelectData(_spString);
         }
 
         public void HoverToolTip()
@@ -155,9 +151,9 @@ namespace F21Party.Controllers
                 return;
             }
 
-            frmUserList.dgvUserSetting.ShowCellToolTips = true;
+            _frmUserList.dgvUserSetting.ShowCellToolTips = true;
 
-            foreach (DataGridViewRow row in frmUserList.dgvUserSetting.Rows)
+            foreach (DataGridViewRow row in _frmUserList.dgvUserSetting.Rows)
             {
                 if (!row.IsNewRow)
                 {
@@ -171,11 +167,7 @@ namespace F21Party.Controllers
 
         public void TsbNew()
         {
-            if (!Program.PublicArrWriteAccessPages.Contains("Users"))
-            {
-                MessageBox.Show("You don't have 'Write' Access!");
-                return;
-            }
+            if (!Function.HasWriteAccess("Users")) return;
 
             frm_CreateUser frmCreateUser = new frm_CreateUser();
             frmCreateUser.ShowDialog();

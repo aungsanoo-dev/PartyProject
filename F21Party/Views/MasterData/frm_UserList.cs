@@ -14,49 +14,47 @@ namespace F21Party.Views
 {
     public partial class frm_UserList : Form
     {
-        private CtrlFrmUserList ctrlFrmUserList; // Declare the controller
-        private AccountGridToggle accountGridToggle; // Declare new DGV
+        private readonly CtrlFrmUserList _ctrlFrmUserList; // Declare the controller
+        private readonly AccountGridToggle _accountGridToggle; // Declare new DGV
         public frm_UserList()
         {
             InitializeComponent();
-            ctrlFrmUserList = new CtrlFrmUserList(this); // Create the controller and pass itself to ctrlFrmMain()
-            accountGridToggle = new AccountGridToggle(this, dgvUserSetting);
+            _ctrlFrmUserList = new CtrlFrmUserList(this); // Create the controller and pass itself to ctrlFrmMain()
+            _accountGridToggle = new AccountGridToggle(this, dgvUserSetting);
             this.dgvUserSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvUserSetting_DataBindingComplete);
         }
 
-
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            ctrlFrmUserList.TsbNew();
+            _ctrlFrmUserList.TsbNew();
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            ctrlFrmUserList.ShowEntry();
+            _ctrlFrmUserList.ShowEntry();
         }
 
         private void dgvUserSetting_DoubleClick(object sender, EventArgs e)
         {
             //accountGridToggle.DoubleToggleExtraGrid();
-            ctrlFrmUserList.ShowEntry();
+            _ctrlFrmUserList.ShowEntry();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            ctrlFrmUserList.TsbDelete();
+            _ctrlFrmUserList.TsbDelete();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
-            ctrlFrmUserList.TsbSearch();
+            _ctrlFrmUserList.TsbSearch();
         }
 
         private void frm_AccountList_Load(object sender, EventArgs e)
         {
-            ctrlFrmUserList.ShowData();
+            _ctrlFrmUserList.ShowData();
 
         }
-
 
         private void tsbExit_Click(object sender, EventArgs e)
         {
@@ -65,12 +63,12 @@ namespace F21Party.Views
 
         private void dgvUserSetting_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            ctrlFrmUserList.HoverToolTip();
+            _ctrlFrmUserList.HoverToolTip();
         }
 
         private void tsbAccount_Click(object sender, EventArgs e)
         {
-            accountGridToggle.ToggleExtraGrid();
+            _accountGridToggle.ToggleExtraGrid();
         }
     }
 }

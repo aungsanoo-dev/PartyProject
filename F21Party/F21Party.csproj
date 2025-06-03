@@ -108,7 +108,6 @@
     <Compile Include="Controllers\Party\CtrlFrmTeamList.cs" />
     <Compile Include="Controllers\Party\CtrlFrmCreateTeamManagment.cs" />
     <Compile Include="Controllers\Party\CtrlTeamManagmentList.cs" />
-    <Compile Include="Controllers\testdel.cs" />
     <Compile Include="DBA\DbaTeamManagment.cs" />
     <Compile Include="DBA\DbaTeam.cs" />
     <Compile Include="DBA\DbaDonation.cs" />
@@ -432,8 +431,9 @@
     <Content Include="F21Party.ico" />
     <Content Include="favicon.ico" />
     <Content Include="MyNamingConvention.txt" />
-    <Content Include="NamingConvention.txt" />
     <Content Include="party.ico" />
+    <None Include="Resources\eye_slash.png" />
+    <None Include="Resources\eye.png" />
     <None Include="Resources\Partying.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

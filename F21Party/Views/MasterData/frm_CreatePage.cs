@@ -14,18 +14,18 @@ namespace F21Party.Views
     public partial class frm_CreatePage : Form
     {
 
-        private CtrlFrmCreatePage ctrlFrmCreatePage; // Declare the View
-        public int _PageID = 0;
-        public bool _IsEdit = false;
+        private readonly CtrlFrmCreatePage _ctrlFrmCreatePage; // Declare the View
+        public int PageID = 0;
+        public bool IsEdit = false;
         public frm_CreatePage()
         {
             InitializeComponent();
-            ctrlFrmCreatePage = new CtrlFrmCreatePage(this);
+            _ctrlFrmCreatePage = new CtrlFrmCreatePage(this);
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreatePage.CreateClick();
+            _ctrlFrmCreatePage.CreateClick();
         }
 
         private void btnClose_Click(object sender, EventArgs e)

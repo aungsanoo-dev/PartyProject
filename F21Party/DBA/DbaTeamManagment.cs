@@ -16,14 +16,14 @@ namespace F21Party.DBA
         public int UID { get; set; }
         public int ACTION { get; set; }
 
-        DbaConnection dbaConnection = new DbaConnection();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
 
         public void SaveData()
         {
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_insert_TeamManagment", dbaConnection.con);
+                _dbaConnection.DataBaseConn();
+                SqlCommand sql = new SqlCommand("SP_insert_TeamManagment", _dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
                 sql.Parameters.AddWithValue("@TeamManagmentID", TMID);
                 sql.Parameters.AddWithValue("@TeamID", TID);
@@ -37,7 +37,7 @@ namespace F21Party.DBA
             }
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
     }

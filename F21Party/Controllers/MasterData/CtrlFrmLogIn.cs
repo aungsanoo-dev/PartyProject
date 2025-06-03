@@ -1,6 +1,8 @@
 ﻿using F21Party.Views;
+using F21Party.Properties;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,46 +11,30 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmLogIn
     {
-        public Views.frm_LogIn frmLogIn; // Declare the View
+        private readonly frm_LogIn _frmLogIn; // Declare the View
+        private readonly Image _imageEye = new Bitmap(Properties.Resources.eye, new Size(16, 16));
+        private readonly Image _imageEyeSlash = new Bitmap(Properties.Resources.eye_slash, new Size(16, 16));
+        private bool _isPasswordVisible = false;
 
-        public CtrlFrmLogIn(Views.frm_LogIn logInForm)
+        public CtrlFrmLogIn(frm_LogIn logInForm)
         {
-            frmLogIn = logInForm; // Create the View
+            _frmLogIn = logInForm; // Create the View
+            _frmLogIn.btnEye.Image = _imageEye; // Set the initial eye icon
         }
-
-        bool isPasswordShown = false;
-
-        //public void EyeToggle()
-        //{
-        //    // Set initial icon and masking state
-        //    frmLogIn.btnEye.Text = "👁️";
-        //    frmLogIn.txtPassword.UseSystemPasswordChar = true;
-
-        //    // Attach the toggle event
-        //    frmLogIn.btnEye.Click += (s, e) =>
-        //    {
-        //        isPasswordShown = !isPasswordShown;
-
-        //        frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
-
-        //        frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
-        //    };
-        //}
 
         public void EyeToggle()
         {
-            if (frmLogIn.btnEye.Text == "👁️")
+            if (_isPasswordVisible)
             {
-                frmLogIn.txtPassword.UseSystemPasswordChar = false;
-                //frmLogIn.txtPassword.PasswordChar = '\0';
-                frmLogIn.btnEye.Text = "🚫";
+                _frmLogIn.txtPassword.UseSystemPasswordChar = true;
+                _frmLogIn.btnEye.Image = _imageEye;
             }
             else
             {
-                frmLogIn.txtPassword.UseSystemPasswordChar = true;
-                //frmLogIn.txtPassword.PasswordChar = '*';
-                frmLogIn.btnEye.Text = "👁️";
+                _frmLogIn.txtPassword.UseSystemPasswordChar = false;
+                _frmLogIn.btnEye.Image = _imageEyeSlash;
             }
+            _isPasswordVisible = !_isPasswordVisible;
         }
     }
 }

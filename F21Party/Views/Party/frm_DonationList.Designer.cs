@@ -113,14 +113,14 @@ namespace F21Party.Views
             // tsmDonationDate
             // 
             this.tsmDonationDate.Name = "tsmDonationDate";
-            this.tsmDonationDate.Size = new System.Drawing.Size(224, 26);
+            this.tsmDonationDate.Size = new System.Drawing.Size(186, 26);
             this.tsmDonationDate.Text = "DonationDate";
             this.tsmDonationDate.Click += new System.EventHandler(this.tsmDonationDate_Click);
             // 
             // tsmFullName
             // 
             this.tsmFullName.Name = "tsmFullName";
-            this.tsmFullName.Size = new System.Drawing.Size(224, 26);
+            this.tsmFullName.Size = new System.Drawing.Size(186, 26);
             this.tsmFullName.Text = "FullName";
             this.tsmFullName.Click += new System.EventHandler(this.tsmFullName_Click);
             // 
@@ -197,7 +197,6 @@ namespace F21Party.Views
 
         #endregion
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton tsbNew;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem tsmDonationDate;
         private System.Windows.Forms.ToolStripMenuItem tsmFullName;
@@ -209,5 +208,6 @@ namespace F21Party.Views
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         public System.Windows.Forms.ToolStripButton tsbDelete;
         public System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        public System.Windows.Forms.ToolStripButton tsbNew;
     }
 }

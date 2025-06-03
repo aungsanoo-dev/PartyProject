@@ -19,9 +19,9 @@ namespace F21Party.Controllers
         private readonly DbaConnection _dbaConnection = new DbaConnection();
         private readonly DbaAccess _dbaAccessSetting = new DbaAccess();
         //private bool _IsEdit;
-        private int _AccessID;
-        private int _AccessAuthorityID;
-        private int _Authority;
+        private int _accessID;
+        private int _accessAuthorityID;
+        private int _authority;
         private string _spString;
         public CtrlFrmCreateAccess(frm_CreateAccess createAccessForm)
         {
@@ -37,8 +37,7 @@ namespace F21Party.Controllers
             DataTable dtCombo = new DataTable();
             DataRow dr;
 
-            string logInAccessDisplay = "";
-            logInAccessDisplay = form.cboLogInAccess.DisplayMember;
+            string logInAccessDisplay = form.cboLogInAccess.DisplayMember;
             // Define columns
             dtCombo.Columns.Add("AccessText");
             dtCombo.Columns.Add("AccessValue");
@@ -67,16 +66,13 @@ namespace F21Party.Controllers
             form.cboLogInAccess.DataSource = dtCombo;
             
             form.cboLogInAccess.SelectedValue = logInAccessDisplay;
-           
         }
 
         public void CreateClick()
         {
             DataTable dt = new DataTable();
-            _AccessID = _frmCreateAccess.AccessID;
-            //_IsEdit = frmCreateAccessAuthority._IsEdit;
-            //_AccessAuthorityID = frmCreateAccessAuthority._AccessID;
-            _Authority = _frmCreateAccess.Authority;
+            _accessID = _frmCreateAccess.AccessID;
+            _authority = _frmCreateAccess.Authority;
 
             if (_frmCreateAccess.txtAccessLevel.Text.Trim().ToString() == string.Empty)
             {
@@ -95,7 +91,7 @@ namespace F21Party.Controllers
                 "0", "2");
 
                 dt = _dbaConnection.SelectData(_spString);
-                if (dt.Rows.Count > 0 && _AccessID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
+                if (dt.Rows.Count > 0 && _accessID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
                 {
                     MessageBox.Show("This AccessLevel is Already Exist");
                     _frmCreateAccess.txtAccessLevel.Focus();
@@ -103,10 +99,10 @@ namespace F21Party.Controllers
                 }
                 else
                 {
-                    _dbaAccessSetting.AID = Convert.ToInt32(_AccessID);
+                    _dbaAccessSetting.AID = Convert.ToInt32(_accessID);
                     _dbaAccessSetting.ALEVEL = Regex.Replace(_frmCreateAccess.txtAccessLevel.Text.Trim(), @"\s+", " ");
                     _dbaAccessSetting.LIACCESS = _frmCreateAccess.cboLogInAccess.SelectedValue.ToString();
-                    _dbaAccessSetting.AUTHORITY = Convert.ToInt32(_Authority);
+                    _dbaAccessSetting.AUTHORITY = Convert.ToInt32(_authority);
 
                     _dbaAccessSetting.ACTION = 0;
                     _dbaAccessSetting.SaveData();
@@ -153,7 +149,7 @@ namespace F21Party.Controllers
         {
             DataTable dt = new DataTable();
             //_IsEdit = frmCreateAccessAuthority._IsEdit;
-            _AccessAuthorityID = _frmCreateAccessAuthority.AccessID;
+            _accessAuthorityID = _frmCreateAccessAuthority.AccessID;
 
             if (_frmCreateAccessAuthority.txtAccessLevel.Text.Trim().ToString() == string.Empty)
             {
@@ -181,7 +177,7 @@ namespace F21Party.Controllers
                 dt = _dbaConnection.SelectData(_spString);
 
                 // For Authority
-                if (dt.Rows.Count > 0 && _AccessAuthorityID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
+                if (dt.Rows.Count > 0 && _accessAuthorityID != Convert.ToInt32(dt.Rows[0]["AccessID"]))
                 {
                     MessageBox.Show("This Authority is Already Exist");
                     _frmCreateAccessAuthority.txtAccessLevel.Focus();
@@ -189,7 +185,7 @@ namespace F21Party.Controllers
                 }
                 else
                 {
-                    _dbaAccessSetting.AID = Convert.ToInt32(_AccessAuthorityID);
+                    _dbaAccessSetting.AID = Convert.ToInt32(_accessAuthorityID);
                     _dbaAccessSetting.ALEVEL = Regex.Replace(_frmCreateAccessAuthority.txtAccessLevel.Text.Trim(), @"\s+", " ");
                     _dbaAccessSetting.LIACCESS = _frmCreateAccessAuthority.cboLogInAccess.SelectedValue.ToString();
                     _dbaAccessSetting.AUTHORITY = Convert.ToInt32(_frmCreateAccessAuthority.txtAuthority.Text.Trim());

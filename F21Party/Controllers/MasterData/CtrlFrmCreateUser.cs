@@ -1,62 +1,63 @@
-﻿using F21Party.Views;
+﻿using F21Party.DBA;
+using F21Party.Views;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using F21Party.DBA;
+using System.Data;
 //using F21Party.Views;
 using System.Data.SqlClient;
-using System.Data;
-using System.Windows.Forms;
+using System.Globalization;
+using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateUser
     {
-        public frm_CreateUser frmCreateUser;// Declare the View
+        private readonly frm_CreateUser _frmCreateUser;// Declare the View
         public CtrlFrmCreateUser(frm_CreateUser createUserForm)
         {
-            frmCreateUser = createUserForm; // Create the View
+            _frmCreateUser = createUserForm; // Create the View
         }
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaUsers dbaUserSetting = new DbaUsers();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaUsers _dbaUserSetting = new DbaUsers();
         //private int positionLevelIndex;
-        private bool _IsEdit;
-        private int _UserID;
+        private bool _isEdit;
+        private int _userID;
+        string _spString;
 
-        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value)
+        public void AddCombo(ComboBox cboCombo, string spString, string display, string value)
         {
-            DataTable DTAC = new DataTable();
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtAccessSp = new DataTable();
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
+            dtCombo.Columns.Add(display);
+            dtCombo.Columns.Add(value);
 
-            DTCombo.Columns.Add(Display);
-            DTCombo.Columns.Add(Value);
-
-            Dr = DTCombo.NewRow();
-            Dr[Display] = "---Select---";
-            Dr[Value] = 0;
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr[display] = "---Select---";
+            dr[value] = 0;
+            dtCombo.Rows.Add(dr);
 
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
-                Adpt.Fill(DTAC);
-                for (int i = 0; i < DTAC.Rows.Count; i++)
+                _dbaConnection.DataBaseConn();
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, _dbaConnection.con);
+                adpt.Fill(dtAccessSp);
+                for (int i = 0; i < dtAccessSp.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
+                    dr = dtCombo.NewRow();
                
-                    Dr[Display] = DTAC.Rows[i][Display];
-                    Dr[Value] = DTAC.Rows[i][Value];
-                    DTCombo.Rows.Add(Dr);
+                    dr[display] = dtAccessSp.Rows[i][display];
+                    dr[value] = dtAccessSp.Rows[i][value];
+                    dtCombo.Rows.Add(dr);
                 }
-                cboCombo.DisplayMember = Display;
-                cboCombo.ValueMember = Value;
-                cboCombo.DataSource = DTCombo;
+                cboCombo.DisplayMember = display;
+                cboCombo.ValueMember = value;
+                cboCombo.DataSource = dtCombo;
             }
 
             catch (Exception ex)
@@ -66,24 +67,24 @@ namespace F21Party.Controllers
 
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
 
         public void ShowCombo()
         {
-            string _PositionDisplay = "";
-            string spString;
-            _PositionDisplay = frmCreateUser.cboPosition.DisplayMember;
-            if (_PositionDisplay == string.Empty)
-                _PositionDisplay = "0";
+            //string _PositionDisplay = "";
+            //string spString;
+            string positionDisplay = _frmCreateUser.cboPosition.DisplayMember;
+            if (positionDisplay == string.Empty)
+                positionDisplay = "0";
 
             // For Position Combobox
-            spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmCreateUser.cboPosition, spString, "PositionName", "PositionID");
+            AddCombo(_frmCreateUser.cboPosition, _spString, "PositionName", "PositionID");
 
-            frmCreateUser.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
+            _frmCreateUser.cboPosition.SelectedValue = Convert.ToInt32(positionDisplay); //This is in the box value you see
             //positionLevelIndex = frmCreateUser.cboPosition.SelectedIndex;
 
         }
@@ -91,70 +92,77 @@ namespace F21Party.Controllers
         public void SaveClick()
         {
             //frmMain obj_frmMain = new frmMain();
-            DataTable DT = new DataTable();
-            string spString = "";
-            _IsEdit = frmCreateUser._IsEdit;
-            _UserID = frmCreateUser._UserID;
+            DataTable dt = new DataTable();
+            //string spString = "";
+            _isEdit = _frmCreateUser.IsEdit;
+            _userID = _frmCreateUser.UserID;
 
-            if (frmCreateUser.txtFullName.Text.Trim().ToString() == string.Empty)
+            if (_frmCreateUser.txtFullName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type FullName");
-                frmCreateUser.txtFullName.Focus();
+                _frmCreateUser.txtFullName.Focus();
             }
-            else if (frmCreateUser.txtAddress.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateUser.txtAddress.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Address");
-                frmCreateUser.txtAddress.Focus();
+                _frmCreateUser.txtAddress.Focus();
             }
-            else if (frmCreateUser.txtPhone.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateUser.txtPhone.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Phone");
-                frmCreateUser.txtPhone.Focus();
+                _frmCreateUser.txtPhone.Focus();
             }
-            else if (frmCreateUser.cboPosition.SelectedValue.ToString() == "0")
+            else if (!Regex.IsMatch(_frmCreateUser.txtPhone.Text.Trim().ToString(), @"^\d+$"))
+            {
+                MessageBox.Show("Phone number must contain digits only with no space.");
+                return;
+            }
+            else if (_frmCreateUser.cboPosition.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Position");
-                frmCreateUser.cboPosition.Focus();
+                _frmCreateUser.cboPosition.Focus();
             }
 
                 
             else
             {
                 // For Users
-                spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmCreateUser.txtFullName.Text.Trim(), @"\s+", " "),
-                Regex.Replace(frmCreateUser.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
+                _spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(_frmCreateUser.txtFullName.Text.Trim(), @"\s+", " "),
+                Regex.Replace(_frmCreateUser.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _userID != Convert.ToInt32(dt.Rows[0]["UserID"]))
                 {
                     MessageBox.Show("This User is Already Exist");
-                    frmCreateUser.txtFullName.Focus();
-                    frmCreateUser.txtFullName.SelectAll();
+                    _frmCreateUser.txtFullName.Focus();
+                    _frmCreateUser.txtFullName.SelectAll();
                 }
                 else
                 {
-                    dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                    dbaUserSetting.FNAME = Regex.Replace(frmCreateUser.txtFullName.Text.Trim(), @"\s+", " ");
-                    dbaUserSetting.ADDRESS = Regex.Replace(frmCreateUser.txtAddress.Text.Trim(), @"\s+", " ");
-                    dbaUserSetting.PHONE = Regex.Replace(frmCreateUser.txtPhone.Text.Trim(), @"\s+", " ");
-                    dbaUserSetting.PID = Convert.ToInt32(frmCreateUser.cboPosition.SelectedValue);
+                    string cleanedName = Regex.Replace(_frmCreateUser.txtFullName.Text.Trim(), @"\s+", " ");
+
+                    _dbaUserSetting.UID = Convert.ToInt32(_userID);
+                    _dbaUserSetting.FNAME = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(cleanedName.ToLower());
+                    _dbaUserSetting.ADDRESS = Regex.Replace(_frmCreateUser.txtAddress.Text.Trim(), @"\s+", " ");
+                    _dbaUserSetting.PHONE = Regex.Replace(_frmCreateUser.txtPhone.Text.Trim(), @"\s+", " ");
+                    _dbaUserSetting.PID = Convert.ToInt32(_frmCreateUser.cboPosition.SelectedValue);
 
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
-                        dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                        dbaUserSetting.ACTION = 1;
-                        dbaUserSetting.SaveData();
+                        _dbaUserSetting.UID = Convert.ToInt32(_userID);
+                        _dbaUserSetting.ACTION = 1;
+                        _dbaUserSetting.SaveData();
 
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmCreateUser.Close();
+                        _frmCreateUser.Close();
                     }
                     else
                     {
-                        dbaUserSetting.ACTION = 0;
-                        dbaUserSetting.SaveData();
+                        _dbaUserSetting.ACTION = 0;
+                        _dbaUserSetting.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreateUser.Close();
+                        _frmCreateUser.Close();
                     }
                 }
             }

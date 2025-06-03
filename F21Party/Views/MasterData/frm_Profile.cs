@@ -13,48 +13,46 @@ namespace F21Party.Views
 {
     public partial class frm_Profile : Form
     {
-        CtrlFrmProfile ctrlFrmProfile;
-        private frm_Main mainForm;
-        public int _AccountID = 0;
-        public int _UserID = 0;
-        public bool _IsEdit = false;
+        private readonly CtrlFrmProfile _ctrlFrmProfile;
+        private readonly frm_Main _mainForm;
+        public int AccountID = 0;
+        public int UserID = 0;
+        public bool IsEdit = false;
         public bool IsLogout;
         public frm_Profile()
         {
             InitializeComponent();
-            ctrlFrmProfile = new CtrlFrmProfile(this);
+            _ctrlFrmProfile = new CtrlFrmProfile(this);
             IsLogout = false;
         }
 
         public frm_Profile(frm_Main main)
             : this() // Calls the default constructor
         {
-            mainForm = main; // Store reference for later
+            _mainForm = main; // Store reference for later
 
         }
         private void frm_Profile_Load(object sender, EventArgs e)
         {
-            ctrlFrmProfile.ShowData();
-            ctrlFrmProfile.ShowCombo(_IsEdit);
-            //ctrlFrmProfile.EyeToggle();
-            
+            _ctrlFrmProfile.ShowData();
+            _ctrlFrmProfile.ShowCombo();
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
             if(btnCreate.Text == "Save")
             {
-                ctrlFrmProfile.SaveClick();
+                _ctrlFrmProfile.SaveClick();
                 if (IsLogout)
                 {
-                    mainForm.RefreshMenu();
+                    _mainForm.RefreshMenu();
                     IsLogout = false;
                     this.Close();
                 }
             }
             else
             {
-                ctrlFrmProfile.EditClick();
+                _ctrlFrmProfile.EditClick();
             }
         }
 
@@ -65,7 +63,7 @@ namespace F21Party.Views
 
         private void btnEye_Click(object sender, EventArgs e)
         {
-            ctrlFrmProfile.EyeToggle();
+            _ctrlFrmProfile.EyeToggle();
         }
     }
 }

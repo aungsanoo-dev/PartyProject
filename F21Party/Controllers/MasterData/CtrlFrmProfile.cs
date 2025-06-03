@@ -2,8 +2,10 @@
 using F21Party.Views;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
 using System.Data;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -14,266 +16,222 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmProfile
     {
-        frm_Profile frmProfile;// Declare the View
-        private bool _IsEnabled = true;
-        private bool _LocalIsEnabled;
+        private readonly frm_Profile _frmProfile;// Declare the View
+        //private bool _isEdit;
+        private int _userID;
+        private int _accountID;
+        private string _oldUserPassword;
+        private string _oldUserName;
+        private string _spString;
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private readonly DbaAccounts _dbaAccountSetting = new DbaAccounts();
+        private readonly DbaUsers _dbaUserSetting = new DbaUsers();
+        private readonly Image _imageEye = new Bitmap(Properties.Resources.eye, new Size(16, 16));
+        private readonly Image _imageEyeSlash = new Bitmap(Properties.Resources.eye_slash, new Size(16, 16));
+        private bool _isPasswordVisible = false;
+        private string _cleanedName;
 
         public CtrlFrmProfile(frm_Profile createAccountForm)
         {
-            frmProfile = createAccountForm; // Create the View
+            _frmProfile = createAccountForm; // Create the View
+            _frmProfile.btnEye.Image = _imageEye; // Set the initial eye icon
         }
-
-
-        DbaConnection dbaConnection = new DbaConnection();
-        DbaAccounts dbaAccountSetting = new DbaAccounts();
-        DbaUsers dbaUserSetting = new DbaUsers();
-
-        //private int accesslevelindex;
-        //private int positionlevelindex;
-        bool _IsEdit;
-        int _UserID;
-        int _AccountID;
-        private string _OldUserPassword;
-        private string _OldUserName;
-        //public void AccessComboChange(bool _IsEdit)
-        //{
-        //    string spString;
-        //    spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
-        //    DataTable DT = new DataTable();
-        //    DT = dbaConnection.SelectData(spString);
-        //    List<string> FalseLogIn = new List<string>();
-
-        //    for (int i = 0; i < DT.Rows.Count; i++)
-        //    {
-        //        if (DT.Rows[i]["LogInAccess"].ToString() == "False")
-        //        {
-        //            FalseLogIn.Add(DT.Rows[i]["AccessLevel"].ToString());
-        //        }
-        //    }
-        //    if (_IsEdit)
-        //    {
-        //        _LocalIsEnabled = _IsEnabled;
-        //    }
-        //    else
-        //    {
-        //        if (FalseLogIn != null)
-        //        {
-        //            if (FalseLogIn.Contains(frmProfile.cboAccessLevel.Text))
-        //            {
-        //                frmProfile.txtUserName.Enabled = false;
-        //                frmProfile.txtPassword.Enabled = false;
-        //                frmProfile.txtConfirmPassword.Enabled = false;
-        //                _IsEnabled = false;
-        //                _LocalIsEnabled = _IsEnabled;
-        //            }
-        //            else
-        //            {
-        //                frmProfile.txtUserName.Enabled = true;
-        //                frmProfile.txtPassword.Enabled = true;
-        //                frmProfile.txtConfirmPassword.Enabled = true;
-        //                _IsEnabled = true;
-        //                _LocalIsEnabled = _IsEnabled;
-        //            }
-        //        }
-        //    }
-        //    //MessageBox.Show(frmProfile.cboAccessLevel.DisplayMember);
-        //    //frmProfile.cboAccessLevel.SelectedValue = "1003";
-
-
-
-        //}
 
         public void ShowData()
         {
-           
-            string spStringAccount = "";
-            spStringAccount = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", Program.UserID, "0", "0", "6");
+
+            _spString = string.Format("SP_Select_Accounts N'{0}', N'{1}', N'{2}', N'{3}'", Program.UserID, "0", "0", "6");
             DataTable dtAccount = new DataTable();
-            dtAccount = dbaConnection.SelectData(spStringAccount);
+            dtAccount = _dbaConnection.SelectData(_spString);
 
-            frmProfile._UserID = Program.UserID;
-            frmProfile.txtUserName.Text = dtAccount.Rows[0]["UserName"].ToString();
-            frmProfile.txtPassword.Text = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
-            frmProfile.txtConfirmPassword.Text = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
-            frmProfile.cboAccessLevel.DisplayMember = dtAccount.Rows[0]["AccessID"].ToString();
-            frmProfile._AccountID = Convert.ToInt32(dtAccount.Rows[0]["AccountID"].ToString());
+            _frmProfile.UserID = Program.UserID;
+            _frmProfile.txtUserName.Text = dtAccount.Rows[0]["UserName"].ToString();
+            _frmProfile.txtPassword.Text = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
+            _frmProfile.txtConfirmPassword.Text = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
+            _frmProfile.cboAccessLevel.DisplayMember = dtAccount.Rows[0]["AccessID"].ToString();
+            _frmProfile.AccountID = Convert.ToInt32(dtAccount.Rows[0]["AccountID"].ToString());
 
-            _OldUserPassword = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
-            _OldUserName = dtAccount.Rows[0]["UserName"].ToString();
-            string spStringUser = "";
-            spStringUser = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Program.UserID, "0", "0", "6");
+            _oldUserPassword = PwEncryption.Decrypt(dtAccount.Rows[0]["Password"].ToString());
+            _oldUserName = dtAccount.Rows[0]["UserName"].ToString();
+
+            _spString = string.Format("SP_Select_Users N'{0}', N'{1}', N'{2}', N'{3}'", Program.UserID, "0", "0", "6");
             DataTable dtUser = new DataTable();
-            dtUser = dbaConnection.SelectData(spStringUser);
+            dtUser = _dbaConnection.SelectData(_spString);
 
-            frmProfile.txtFullName.Text = dtUser.Rows[0]["FullName"].ToString();
+            _frmProfile.txtFullName.Text = dtUser.Rows[0]["FullName"].ToString();
             //frmProfile.txtFullName.Enabled = false;
 
-            frmProfile.txtAddress.Text = dtUser.Rows[0]["Address"].ToString();
+            _frmProfile.txtAddress.Text = dtUser.Rows[0]["Address"].ToString();
             //frmProfile.txtAddress.Enabled = false;
 
-            frmProfile.txtPhone.Text = dtUser.Rows[0]["Phone"].ToString();
+            _frmProfile.txtPhone.Text = dtUser.Rows[0]["Phone"].ToString();
             //frmProfile.txtPhone.Enabled = false;
 
-            frmProfile.cboPosition.DisplayMember = dtUser.Rows[0]["PositionID"].ToString();
+            _frmProfile.cboPosition.DisplayMember = dtUser.Rows[0]["PositionID"].ToString();
             //frmProfile.cboPosition.Enabled = false;
 
-            //if (Program.UserAccessID == 1) // AccessID 1 is SuperAdmin
-            //{
-            //    frmProfile.cboAccessLevel.Enabled = false;
-            //}
-            frmProfile.txtFullName.Enabled = false;
-            frmProfile.txtAddress.Enabled = false;
-            frmProfile.txtPhone.Enabled = false;
-            frmProfile.txtAddress.Enabled = false;
-            frmProfile.cboPosition.Enabled = false;
-            frmProfile.txtUserName.Enabled = false;
-            frmProfile.txtPassword.Enabled = false;
-            frmProfile.cboAccessLevel.Enabled = false;
+            _frmProfile.txtFullName.Enabled = false;
+            _frmProfile.txtAddress.Enabled = false;
+            _frmProfile.txtPhone.Enabled = false;
+            _frmProfile.txtAddress.Enabled = false;
+            _frmProfile.cboPosition.Enabled = false;
+            _frmProfile.txtUserName.Enabled = false;
+            _frmProfile.txtPassword.Enabled = false;
+            _frmProfile.cboAccessLevel.Enabled = false;
 
-            frmProfile.lblConfirmPassword.Visible = false;
-            frmProfile.txtConfirmPassword.Visible = false;
+            _frmProfile.lblConfirmPassword.Visible = false;
+            _frmProfile.txtConfirmPassword.Visible = false;
 
         }
         public void EditClick()
         {
-            frmProfile.txtFullName.Enabled = true;
-            frmProfile.txtAddress.Enabled = true;
-            frmProfile.txtPhone.Enabled = true;
-            frmProfile.txtAddress.Enabled = true;
+            _frmProfile.txtFullName.Enabled = true;
+            _frmProfile.txtAddress.Enabled = true;
+            _frmProfile.txtPhone.Enabled = true;
+            _frmProfile.txtAddress.Enabled = true;
             //frmProfile.cboPosition.Enabled = false;
-            frmProfile.txtUserName.Enabled = true;
-            frmProfile.txtPassword.Enabled = true;
+            _frmProfile.txtUserName.Enabled = true;
+            _frmProfile.txtPassword.Enabled = true;
             //frmProfile.cboAccessLevel.Enabled = false;
 
-            frmProfile.lblConfirmPassword.Visible = true;
-            frmProfile.txtConfirmPassword.Visible = true;
-            frmProfile._IsEdit = true;
+            _frmProfile.lblConfirmPassword.Visible = true;
+            _frmProfile.txtConfirmPassword.Visible = true;
+            _frmProfile.IsEdit = true;
 
-            frmProfile.btnCreate.Text = "Save";
+            _frmProfile.btnCreate.Text = "Save";
         }
 
         public void SaveClick()
         {
 
-            //frmMain obj_frmMain = new frmMain();
-            DataTable DT = new DataTable();
-            string spString = "";
-            _IsEdit = frmProfile._IsEdit;
-            _AccountID = frmProfile._AccountID;
-            _UserID = frmProfile._UserID;
+            DataTable dt = new DataTable();
+            //_isEdit = _frmProfile.IsEdit;
+            _accountID = _frmProfile.AccountID;
+            _userID = _frmProfile.UserID;
 
-            if (frmProfile.txtFullName.Text.Trim().ToString() == string.Empty)
+            if (_frmProfile.txtFullName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type FullName");
-                frmProfile.txtFullName.Focus();
+                _frmProfile.txtFullName.Focus();
             }
-            else if (frmProfile.txtAddress.Text.Trim().ToString() == string.Empty)
+            else if (_frmProfile.txtAddress.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Address");
-                frmProfile.txtAddress.Focus();
+                _frmProfile.txtAddress.Focus();
             }
-            else if (frmProfile.txtPhone.Text.Trim().ToString() == string.Empty)
+            else if (_frmProfile.txtPhone.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Phone");
-                frmProfile.txtPhone.Focus();
+                _frmProfile.txtPhone.Focus();
             }
-            else if (frmProfile.cboPosition.SelectedValue.ToString() == "0")
+            else if (!Regex.IsMatch(_frmProfile.txtPhone.Text.Trim().ToString(), @"^\d+$"))
+            {
+                MessageBox.Show("Phone number must contain digits only with no space.");
+                return;
+            }
+            else if (_frmProfile.cboPosition.SelectedValue.ToString() == "0")
             {
                 MessageBox.Show("Please Choose Position");
-                frmProfile.cboPosition.Focus();
+                _frmProfile.cboPosition.Focus();
             }
-            else if (frmProfile.txtUserName.Text.Trim().ToString() == string.Empty)
+            else if (_frmProfile.txtUserName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type UserName");
-                frmProfile.txtUserName.Focus();
+                _frmProfile.txtUserName.Focus();
             }
-            else if (frmProfile.txtPassword.Text.Trim().ToString() == string.Empty)
+            else if (_frmProfile.txtUserName.Text.Contains(" "))
+            {
+                MessageBox.Show("Spaces are not allowed in UserName.");
+                return;
+            }
+            else if (_frmProfile.txtPassword.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Password");
-                frmProfile.txtPassword.Focus();
+                _frmProfile.txtPassword.Focus();
             }
-            else if (frmProfile.txtConfirmPassword.Text.Trim().ToString() == string.Empty)
+            else if (_frmProfile.txtConfirmPassword.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type ConfirmPassword");
-                frmProfile.txtConfirmPassword.Focus();
+                _frmProfile.txtConfirmPassword.Focus();
             }
-            else if (frmProfile.txtPassword.Text.Trim().ToString() != frmProfile.txtConfirmPassword.Text.Trim().ToString())
+            else if (_frmProfile.txtPassword.Text.Trim().ToString() != _frmProfile.txtConfirmPassword.Text.Trim().ToString())
             {
                 MessageBox.Show("Password And Confirm Password Should Be Same");
-                frmProfile.txtConfirmPassword.Focus();
-                frmProfile.txtConfirmPassword.SelectAll();
+                _frmProfile.txtConfirmPassword.Focus();
+                _frmProfile.txtConfirmPassword.SelectAll();
             }
             else
             {
                 // For Users
-                spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmProfile.txtFullName.Text.Trim(), @"\s+", " "),
-                Regex.Replace(frmProfile.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
+                _spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(_frmProfile.txtFullName.Text.Trim(), @"\s+", " "),
+                Regex.Replace(_frmProfile.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
 
-                DT = dbaConnection.SelectData(spString);
-                if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _userID != Convert.ToInt32(dt.Rows[0]["UserID"]))
                 {
 
                     MessageBox.Show("This User is Already Exist");
-                    frmProfile.txtFullName.Focus();
-                    frmProfile.txtFullName.SelectAll();
+                    _frmProfile.txtFullName.Focus();
+                    _frmProfile.txtFullName.SelectAll();
                 }
                 else
                 {
                     
                     // For Accounts
-                    spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmProfile.txtUserName.Text.Trim(), @"\s+", " "),
+                    _spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(_frmProfile.txtUserName.Text.Trim(), @"\s+", " "),
                     "0", "0", "4");
 
-                    DT = dbaConnection.SelectData(spString);
-                    if (DT.Rows.Count > 0 && _AccountID != Convert.ToInt32(DT.Rows[0]["AccountID"]))
+                    dt = _dbaConnection.SelectData(_spString);
+                    if (dt.Rows.Count > 0 && _accountID != Convert.ToInt32(dt.Rows[0]["AccountID"]))
                     {
 
                         MessageBox.Show("This Account is Already Exist");
-                        frmProfile.txtUserName.Focus();
-                        frmProfile.txtUserName.SelectAll();
+                        _frmProfile.txtUserName.Focus();
+                        _frmProfile.txtUserName.SelectAll();
                     }
                     else
                     {
-                        if (_OldUserPassword != frmProfile.txtPassword.Text || _OldUserName != frmProfile.txtUserName.Text)
+                        if (_oldUserPassword != _frmProfile.txtPassword.Text || _oldUserName != _frmProfile.txtUserName.Text)
                         {
                             if (MessageBox.Show("You have to Logout your account if you want to change Username or Password", "Confirm", MessageBoxButtons.YesNo) == DialogResult.Yes)
                             {
                                 // For User
-                                dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                                dbaUserSetting.FNAME = Regex.Replace(frmProfile.txtFullName.Text.Trim(), @"\s+", " ");
-                                dbaUserSetting.ADDRESS = Regex.Replace(frmProfile.txtAddress.Text.Trim(), @"\s+", " ");
-                                dbaUserSetting.PHONE = Regex.Replace(frmProfile.txtPhone.Text.Trim(), @"\s+", " ");
-                                dbaUserSetting.PID = Convert.ToInt32(frmProfile.cboPosition.SelectedValue);
+                                _cleanedName = Regex.Replace(_frmProfile.txtFullName.Text.Trim(), @"\s+", " ");
+                                _dbaUserSetting.UID = Convert.ToInt32(_userID);
+                                _dbaUserSetting.FNAME = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_cleanedName.ToLower());
+                                _dbaUserSetting.ADDRESS = Regex.Replace(_frmProfile.txtAddress.Text.Trim(), @"\s+", " ");
+                                _dbaUserSetting.PHONE = Regex.Replace(_frmProfile.txtPhone.Text.Trim(), @"\s+", " ");
+                                _dbaUserSetting.PID = Convert.ToInt32(_frmProfile.cboPosition.SelectedValue);
 
-                                dbaUserSetting.ACTION = 1;
-                                dbaUserSetting.SaveData();
+                                _dbaUserSetting.ACTION = 1;
+                                _dbaUserSetting.SaveData();
 
                                 // For Account
-                                dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_AccountID);
-                                dbaAccountSetting.USERID = Convert.ToInt32(_UserID);
-                                dbaAccountSetting.UNAME = Regex.Replace(frmProfile.txtUserName.Text.Trim(), @"\s+", " ");
-                                dbaAccountSetting.PASS = PwEncryption.Encrypt(Regex.Replace(frmProfile.txtPassword.Text.Trim(), @"\s+", " "));
-                                dbaAccountSetting.ACCESSID = Convert.ToInt32(frmProfile.cboAccessLevel.SelectedValue);
+                                _dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_accountID);
+                                _dbaAccountSetting.USERID = Convert.ToInt32(_userID);
+                                _dbaAccountSetting.UNAME = Regex.Replace(_frmProfile.txtUserName.Text.Trim(), @"\s+", " ");
+                                _dbaAccountSetting.PASS = PwEncryption.Encrypt(Regex.Replace(_frmProfile.txtPassword.Text.Trim(), @"\s+", " "));
+                                _dbaAccountSetting.ACCESSID = Convert.ToInt32(_frmProfile.cboAccessLevel.SelectedValue);
 
 
-                                dbaAccountSetting.ACTION = 1;
-                                dbaAccountSetting.SaveData();
+                                _dbaAccountSetting.ACTION = 1;
+                                _dbaAccountSetting.SaveData();
 
-                                frmProfile.txtFullName.Enabled = false;
-                                frmProfile.txtAddress.Enabled = false;
-                                frmProfile.txtPhone.Enabled = false;
-                                frmProfile.txtAddress.Enabled = false;
+                                _frmProfile.txtFullName.Enabled = false;
+                                _frmProfile.txtAddress.Enabled = false;
+                                _frmProfile.txtPhone.Enabled = false;
+                                _frmProfile.txtAddress.Enabled = false;
                                 //frmProfile.cboPosition.Enabled = false;
                                 //frmProfile.txtUserName.Enabled = false;
-                                frmProfile.txtPassword.Enabled = false;
+                                _frmProfile.txtPassword.Enabled = false;
                                 //frmProfile.cboAccessLevel.Enabled = false;
 
-                                frmProfile.lblConfirmPassword.Visible = false;
-                                frmProfile.txtConfirmPassword.Visible = false;
+                                _frmProfile.lblConfirmPassword.Visible = false;
+                                _frmProfile.txtConfirmPassword.Visible = false;
 
-                                frmProfile._IsEdit = false;
-                                frmProfile.btnCreate.Text = "Edit";
-                                frmProfile.IsLogout = true;
+                                _frmProfile.IsEdit = false;
+                                _frmProfile.btnCreate.Text = "Edit";
+                                _frmProfile.IsLogout = true;
                                 //frmProfile.Close();
                                 return;
                             }
@@ -282,129 +240,75 @@ namespace F21Party.Controllers
                                 return; 
                             }
                         }
-                        
-                        // For User
-                        dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                        dbaUserSetting.FNAME = Regex.Replace(frmProfile.txtFullName.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.ADDRESS = Regex.Replace(frmProfile.txtAddress.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.PHONE = Regex.Replace(frmProfile.txtPhone.Text.Trim(), @"\s+", " ");
-                        dbaUserSetting.PID = Convert.ToInt32(frmProfile.cboPosition.SelectedValue);
 
-                        dbaUserSetting.ACTION = 1;
-                        dbaUserSetting.SaveData();
+                        // For User
+                        _cleanedName = Regex.Replace(_frmProfile.txtFullName.Text.Trim(), @"\s+", " ");
+                        _dbaUserSetting.UID = Convert.ToInt32(_userID);
+                        _dbaUserSetting.FNAME = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(_cleanedName.ToLower());
+                        _dbaUserSetting.ADDRESS = Regex.Replace(_frmProfile.txtAddress.Text.Trim(), @"\s+", " ");
+                        _dbaUserSetting.PHONE = Regex.Replace(_frmProfile.txtPhone.Text.Trim(), @"\s+", " ");
+                        _dbaUserSetting.PID = Convert.ToInt32(_frmProfile.cboPosition.SelectedValue);
+
+                        _dbaUserSetting.ACTION = 1;
+                        _dbaUserSetting.SaveData();
 
                         // For Account
-                        dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_AccountID);
-                        dbaAccountSetting.USERID = Convert.ToInt32(_UserID);
-                        dbaAccountSetting.UNAME = Regex.Replace(frmProfile.txtUserName.Text.Trim(), @"\s+", " ");
-                        dbaAccountSetting.PASS = PwEncryption.Encrypt(Regex.Replace(frmProfile.txtPassword.Text.Trim(), @"\s+", " "));
-                        dbaAccountSetting.ACCESSID = Convert.ToInt32(frmProfile.cboAccessLevel.SelectedValue);
+                        _dbaAccountSetting.ACCOUNTID = Convert.ToInt32(_accountID);
+                        _dbaAccountSetting.USERID = Convert.ToInt32(_userID);
+                        _dbaAccountSetting.UNAME = Regex.Replace(_frmProfile.txtUserName.Text.Trim(), @"\s+", " ");
+                        _dbaAccountSetting.PASS = PwEncryption.Encrypt(Regex.Replace(_frmProfile.txtPassword.Text.Trim(), @"\s+", " "));
+                        _dbaAccountSetting.ACCESSID = Convert.ToInt32(_frmProfile.cboAccessLevel.SelectedValue);
 
 
-                        dbaAccountSetting.ACTION = 1;
-                        dbaAccountSetting.SaveData();
+                        _dbaAccountSetting.ACTION = 1;
+                        _dbaAccountSetting.SaveData();
 
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
 
-                        frmProfile._IsEdit = false;
-                        frmProfile.btnCreate.Text = "Edit";
+                        _frmProfile.IsEdit = false;
+                        _frmProfile.btnCreate.Text = "Edit";
                         ShowData();
                     }
                 }
-
-
-                // For Both Users and Accounts 
-                //if (_IsEnabled)
-                //{
-
-
-
-                //}
-                //else
-                //{
-                //    // For Users
-                //    spString = string.Format("SP_Select_Users N'{0}',N'{1}',N'{2}',N'{3}'", Regex.Replace(frmProfile.txtFullName.Text.Trim(), @"\s+", " "),
-                //    Regex.Replace(frmProfile.txtAddress.Text.Trim(), @"\s+", " "), "0", "5");
-
-                //    DT = dbaConnection.SelectData(spString);
-                //    if (DT.Rows.Count > 0 && _UserID != Convert.ToInt32(DT.Rows[0]["UserID"]))
-                //    {
-                //        MessageBox.Show("This User is Already Exist");
-                //        frmProfile.txtFullName.Focus();
-                //        frmProfile.txtFullName.SelectAll();
-                //    }
-                //    else
-                //    {
-                //        dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                //        dbaUserSetting.FNAME = Regex.Replace(frmProfile.txtFullName.Text.Trim(), @"\s+", " ");
-                //        dbaUserSetting.ADDRESS = Regex.Replace(frmProfile.txtAddress.Text.Trim(), @"\s+", " ");
-                //        dbaUserSetting.PHONE = Regex.Replace(frmProfile.txtPhone.Text.Trim(), @"\s+", " ");
-                //        dbaUserSetting.PID = Convert.ToInt32(frmProfile.cboPosition.SelectedValue);
-
-
-                //        if (_IsEdit)
-                //        {
-                //            dbaUserSetting.UID = Convert.ToInt32(_UserID);
-                //            dbaUserSetting.ACTION = 1;
-                //            dbaUserSetting.SaveData();
-
-                //            MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                //            frmProfile.Close();
-                //        }
-                //        else
-                //        {
-                //            dbaUserSetting.ACTION = 0;
-                //            dbaUserSetting.SaveData();
-                //            MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                //            frmProfile.Close();
-                //        }
-                //    }
-                //}
             }
         }
 
-        public void AddCombo(ComboBox cboCombo, string spString, string Display, string Value, bool _IsEdit)
+        public void AddCombo(ComboBox cboCombo, string spString, string display, string value)
         {
-            DataTable DTAC = new DataTable();
-            DataTable DTCombo = new DataTable();
-            DataRow Dr;
+            DataTable dtAccessSp = new DataTable();
+            DataTable dtCombo = new DataTable();
+            DataRow dr;
 
+            dtCombo.Columns.Add(display);
+            dtCombo.Columns.Add(value);
 
-            DTCombo.Columns.Add(Display);
-            DTCombo.Columns.Add(Value);
-
-            Dr = DTCombo.NewRow();
-            Dr[Display] = "---Select---";
-            Dr[Value] = 0;
-            DTCombo.Rows.Add(Dr);
+            dr = dtCombo.NewRow();
+            dr[display] = "---Select---";
+            dr[value] = 0;
+            dtCombo.Rows.Add(dr);
 
             // For Your Authority
-            string spAccess = "";
+            //string spAccess = "";
             DataTable dtAccess = new DataTable();
-            spAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID, "0", "1");
-            dtAccess = dbaConnection.SelectData(spAccess);
-
-            //if (Program.UserID != 0)
-            //{
-            //    Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
-            //}
+            _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID, "0", "1");
+            dtAccess = _dbaConnection.SelectData(_spString);
 
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlDataAdapter Adpt = new SqlDataAdapter(spString, dbaConnection.con);
-                Adpt.Fill(DTAC);
-                for (int i = 0; i < DTAC.Rows.Count; i++)
+                _dbaConnection.DataBaseConn();
+                SqlDataAdapter adpt = new SqlDataAdapter(spString, _dbaConnection.con);
+                adpt.Fill(dtAccessSp);
+                for (int i = 0; i < dtAccessSp.Rows.Count; i++)
                 {
-                    Dr = DTCombo.NewRow();
+                    dr = dtCombo.NewRow();
 
-                    Dr[Display] = DTAC.Rows[i][Display];
-                    Dr[Value] = DTAC.Rows[i][Value];
-                    DTCombo.Rows.Add(Dr);
+                    dr[display] = dtAccessSp.Rows[i][display];
+                    dr[value] = dtAccessSp.Rows[i][value];
+                    dtCombo.Rows.Add(dr);
                 }
-                cboCombo.DisplayMember = Display;
-                cboCombo.ValueMember = Value;
-                cboCombo.DataSource = DTCombo;
+                cboCombo.DisplayMember = display;
+                cboCombo.ValueMember = value;
+                cboCombo.DataSource = dtCombo;
             }
 
             catch (Exception ex)
@@ -414,77 +318,53 @@ namespace F21Party.Controllers
 
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
 
-        public void ShowCombo(bool _IsEdit)
+        public void ShowCombo()
         {
-            string spString;
+            //string spString;
 
             // For Access Combobox
-            string _AccessLevelDisplay = "";
-            _AccessLevelDisplay = frmProfile.cboAccessLevel.DisplayMember;
-            if (_AccessLevelDisplay == string.Empty)
-                _AccessLevelDisplay = "0";
+            string accessLevelDisplay = _frmProfile.cboAccessLevel.DisplayMember;
+            if (accessLevelDisplay == string.Empty)
+                accessLevelDisplay = "0";
 
-            spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmProfile.cboAccessLevel, spString, "AccessLevel", "AccessID", _IsEdit);
+            AddCombo(_frmProfile.cboAccessLevel, _spString, "AccessLevel", "AccessID");
 
-            frmProfile.cboAccessLevel.SelectedValue = Convert.ToInt32(_AccessLevelDisplay); //This is in the box value you see
-
+            _frmProfile.cboAccessLevel.SelectedValue = Convert.ToInt32(accessLevelDisplay); //This is in the box value you see
 
             // For Position Combobox
-            string _PositionDisplay = "";
-            _PositionDisplay = frmProfile.cboPosition.DisplayMember;
-            if (_PositionDisplay == string.Empty)
-                _PositionDisplay = "0";
+            string positionDisplay = _frmProfile.cboPosition.DisplayMember;
+            if (positionDisplay == string.Empty)
+                positionDisplay = "0";
 
-            spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
+            _spString = string.Format("SP_Select_Position N'{0}',N'{1}',N'{2}'", "0", "0", "0");
 
-            AddCombo(frmProfile.cboPosition, spString, "PositionName", "PositionID", _IsEdit);
+            AddCombo(_frmProfile.cboPosition, _spString, "PositionName", "PositionID");
 
-            frmProfile.cboPosition.SelectedValue = Convert.ToInt32(_PositionDisplay); //This is in the box value you see
+            _frmProfile.cboPosition.SelectedValue = Convert.ToInt32(positionDisplay); //This is in the box value you see
             //positionlevelindex = frmProfile.cboPosition.SelectedIndex;
 
 
         }
 
-        bool isPasswordShown = false;
-
-        //public void EyeToggle()
-        //{
-        //    // Set initial state
-        //    frmProfile.btnEye.Text = "👁️";
-        //    frmProfile.txtPassword.UseSystemPasswordChar = true;
-
-        //    // Attach click event
-        //    frmProfile.btnEye.Click += (s, e) =>
-        //    {
-        //        isPasswordShown = !isPasswordShown;
-
-        //        frmProfile.txtPassword.UseSystemPasswordChar = !isPasswordShown;
-
-        //        // Toggle emoji on the button
-        //        frmProfile.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
-        //    };
-        //}
-
         public void EyeToggle()
         {
-            if (frmProfile.btnEye.Text == "👁️")
+            if (_isPasswordVisible)
             {
-                frmProfile.txtPassword.UseSystemPasswordChar = false;
-                //frmProfile.txtPassword.PasswordChar = '\0';
-                frmProfile.btnEye.Text = "🚫";
+                _frmProfile.txtPassword.UseSystemPasswordChar = true;
+                _frmProfile.btnEye.Image = _imageEye;
             }
             else
             {
-                frmProfile.txtPassword.UseSystemPasswordChar = true;
-                //frmProfile.txtPassword.PasswordChar = '*';
-                frmProfile.btnEye.Text = "👁️";
+                _frmProfile.txtPassword.UseSystemPasswordChar = false;
+                _frmProfile.btnEye.Image = _imageEyeSlash;
             }
+            _isPasswordVisible = !_isPasswordVisible;
         }
     }
 }

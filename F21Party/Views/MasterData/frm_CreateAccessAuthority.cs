@@ -15,7 +15,6 @@ namespace F21Party.Views
     {
         private readonly CtrlFrmCreateAccess _ctrlFrmCreateAccess; // Declare the View
         public int AccessID = 0;
-        //public int Authority = 0;
         public bool IsEdit = false;
         public frm_CreateAccessAuthority()
         {
@@ -37,7 +36,5 @@ namespace F21Party.Views
         {
             this.Close();
         }
-
-        
     }
 }

@@ -12,96 +12,94 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreatePartyItem
     {
-        public frm_CreatePartyItem frmPartyItem;
-
+        private readonly frm_CreatePartyItem _frmPartyItem;
+        private readonly DbaPartyItem _dbaPartyItem = new DbaPartyItem();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private bool _isEdit;
+        private int _itemID;
+        private string _spString;
         public CtrlFrmCreatePartyItem(frm_CreatePartyItem partyItemForm) 
         {
-            frmPartyItem = partyItemForm;
+            _frmPartyItem = partyItemForm;
         }
 
-        DbaPartyItem dbaPartyItem = new DbaPartyItem();
-        DbaConnection dbaConnection = new DbaConnection();
-
-        private bool _IsEdit;
-        private int _ItemID;
 
         public void CreateClick()
         {
             DataTable dt = new DataTable();
-            string spString = "";
-            _ItemID = frmPartyItem.ItemID;
-            _IsEdit = frmPartyItem.IsEdit;
+            _itemID = _frmPartyItem.ItemID;
+            _isEdit = _frmPartyItem.IsEdit;
 
             int Ok;
-            if (frmPartyItem.txtItemName.Text.Trim().ToString() == string.Empty)
+            if (_frmPartyItem.txtItemName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type ItemName");
-                frmPartyItem.txtItemName.Focus();
+                _frmPartyItem.txtItemName.Focus();
             }
-            else if (frmPartyItem.txtQty.Text.Trim().ToString() == string.Empty)
+            else if (_frmPartyItem.txtQty.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Qty");
-                frmPartyItem.txtQty.Focus();
+                _frmPartyItem.txtQty.Focus();
             }
-            else if (int.TryParse(frmPartyItem.txtQty.Text, out Ok) == false)
+            else if (int.TryParse(_frmPartyItem.txtQty.Text, out Ok) == false)
             {
                 MessageBox.Show("Qty Should Be Number");
-                frmPartyItem.txtQty.Focus();
-                frmPartyItem.txtQty.SelectAll();
+                _frmPartyItem.txtQty.Focus();
+                _frmPartyItem.txtQty.SelectAll();
             }
-            else if (!_IsEdit && (Convert.ToInt32(frmPartyItem.txtQty.Text) <= 0 || Convert.ToInt32(frmPartyItem.txtQty.Text) > 100))
+            else if (!_isEdit && (Convert.ToInt32(_frmPartyItem.txtQty.Text) <= 0 || Convert.ToInt32(_frmPartyItem.txtQty.Text) > 100))
             {
                 MessageBox.Show("Qty Should Be Between 0 and 100");
-                frmPartyItem.txtQty.Focus();
-                frmPartyItem.txtQty.SelectAll();
+                _frmPartyItem.txtQty.Focus();
+                _frmPartyItem.txtQty.SelectAll();
             }
-            else if (frmPartyItem.txtPrice.Text.Trim().ToString() == string.Empty)
+            else if (_frmPartyItem.txtPrice.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Price");
-                frmPartyItem.txtPrice.Focus();
+                _frmPartyItem.txtPrice.Focus();
             }
-            else if (int.TryParse(frmPartyItem.txtPrice.Text, out Ok) == false)
+            else if (int.TryParse(_frmPartyItem.txtPrice.Text, out Ok) == false)
             {
                 MessageBox.Show("Price Should Be Number");
-                frmPartyItem.txtPrice.Focus();
-                frmPartyItem.txtPrice.SelectAll();
+                _frmPartyItem.txtPrice.Focus();
+                _frmPartyItem.txtPrice.SelectAll();
             }
-            else if (Convert.ToInt32(frmPartyItem.txtPrice.Text) <= 0 || Convert.ToInt32(frmPartyItem.txtPrice.Text) > 1000000)
+            else if (Convert.ToInt32(_frmPartyItem.txtPrice.Text) <= 0 || Convert.ToInt32(_frmPartyItem.txtPrice.Text) > 1000000)
             {
                 MessageBox.Show("Price Should Be Between 1 Thousand and 10 Lakh Or 0 Price");
-                frmPartyItem.txtPrice.Focus();
-                frmPartyItem.txtPrice.SelectAll();
+                _frmPartyItem.txtPrice.Focus();
+                _frmPartyItem.txtPrice.SelectAll();
             }
             else
             {
 
-                spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", frmPartyItem.txtItemName.Text.Trim().ToString(), "0", "1");
-                dt = dbaConnection.SelectData(spString);
-                if (dt.Rows.Count > 0 && _ItemID != Convert.ToInt32(dt.Rows[0]["ItemID"]))
+                _spString = string.Format("SP_Select_PartyItem N'{0}',N'{1}',N'{2}'", _frmPartyItem.txtItemName.Text.Trim().ToString(), "0", "1");
+                dt = _dbaConnection.SelectData(_spString);
+                if (dt.Rows.Count > 0 && _itemID != Convert.ToInt32(dt.Rows[0]["ItemID"]))
                 {
                     MessageBox.Show("This Item is Already Exist");
-                    frmPartyItem.txtItemName.Focus();
-                    frmPartyItem.txtItemName.SelectAll();
+                    _frmPartyItem.txtItemName.Focus();
+                    _frmPartyItem.txtItemName.SelectAll();
                 }
                 else
                 {
-                    dbaPartyItem.ITEMID = _ItemID;
-                    dbaPartyItem.ITEMNAME = frmPartyItem.txtItemName.Text;
-                    dbaPartyItem.QTY = Convert.ToInt32(frmPartyItem.txtQty.Text);
-                    dbaPartyItem.PRICE = Convert.ToInt32(frmPartyItem.txtPrice.Text);
-                    if (_IsEdit)
+                    _dbaPartyItem.ITEMID = _itemID;
+                    _dbaPartyItem.ITEMNAME = _frmPartyItem.txtItemName.Text;
+                    _dbaPartyItem.QTY = Convert.ToInt32(_frmPartyItem.txtQty.Text);
+                    _dbaPartyItem.PRICE = Convert.ToInt32(_frmPartyItem.txtPrice.Text);
+                    if (_isEdit)
                     {
-                        dbaPartyItem.ACTION = 1;
-                        dbaPartyItem.SaveData();
+                        _dbaPartyItem.ACTION = 1;
+                        _dbaPartyItem.SaveData();
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmPartyItem.Close();
+                        _frmPartyItem.Close();
                     }
                     else
                     {
-                        dbaPartyItem.ACTION = 0;
-                        dbaPartyItem.SaveData();
+                        _dbaPartyItem.ACTION = 0;
+                        _dbaPartyItem.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmPartyItem.Close();
+                        _frmPartyItem.Close();
                     }
                 }
             }
@@ -109,11 +107,11 @@ namespace F21Party.Controllers
 
         public void ItemLoad()
         {
-            if (!frmPartyItem.IsEdit)
+            if (!_frmPartyItem.IsEdit)
             {
-                frmPartyItem.txtQty.Text = "0";
-                frmPartyItem.txtPrice.Text = "0";
-                frmPartyItem.txtItemName.Focus();
+                _frmPartyItem.txtQty.Text = "0";
+                _frmPartyItem.txtPrice.Text = "0";
+                _frmPartyItem.txtItemName.Focus();
             }
         }
     }

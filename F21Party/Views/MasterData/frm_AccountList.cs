@@ -24,7 +24,6 @@ namespace F21Party.Views
             this.dgvAccountSetting.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvAccountSetting_DataBindingComplete);
         }
 
-
         private void tsbNew_Click(object sender, EventArgs e)
         {
             _ctrlFrmAccountList.TsbNew();

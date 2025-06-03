@@ -18,14 +18,14 @@ namespace F21Party.DBA
         public string PNAME { get; set; }
         public int ACTION { get; set; }
 
-        DbaConnection dbaConnection = new DbaConnection();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
 
         public void SaveData()
         {
             try
             {
-                dbaConnection.DataBaseConn();
-                SqlCommand sql = new SqlCommand("SP_Insert_Position", dbaConnection.con);
+                _dbaConnection.DataBaseConn();
+                SqlCommand sql = new SqlCommand("SP_Insert_Position", _dbaConnection.con);
                 sql.CommandType = CommandType.StoredProcedure;
                 sql.Parameters.AddWithValue("@PositionID", PID);
                 sql.Parameters.AddWithValue("@PositionName", PNAME);
@@ -38,7 +38,7 @@ namespace F21Party.DBA
             }
             finally
             {
-                dbaConnection.con.Close();
+                _dbaConnection.con.Close();
             }
         }
     }

@@ -14,95 +14,94 @@ namespace F21Party.Controllers
 {
     internal class CtrlFrmCreateTeam
     {
-        public frm_CreateTeam frmCreateTeam;
+        private readonly frm_CreateTeam _frmCreateTeam;
 
         public CtrlFrmCreateTeam(frm_CreateTeam teamForm) 
         { 
-            frmCreateTeam = teamForm;
+            _frmCreateTeam = teamForm;
         }
 
-        DbaTeam dbaTeam = new DbaTeam();
-        DbaConnection dbaConnection = new DbaConnection();
-
-        DataTable dt = new DataTable();
-        public int _TeamID = 0;
-        public bool _IsEdit = false;
-        private int _TotalPlayer = 0;
+        private readonly DbaTeam _dbaTeam = new DbaTeam();
+        private readonly DbaConnection _dbaConnection = new DbaConnection();
+        private DataTable _dt = new DataTable();
+        private int _teamID = 0;
+        private bool _isEdit = false;
+        private int _totalPlayer = 0;
         //public string _EditDate = "";
 
-        string spString = "";
+        private string _spString = "";
 
         public void SaveClick()
         {
-            _TeamID = frmCreateTeam.TeamID;
-            _IsEdit = frmCreateTeam.IsEdit;
-            _TotalPlayer = frmCreateTeam.TotalPlayer;
+            _teamID = _frmCreateTeam.TeamID;
+            _isEdit = _frmCreateTeam.IsEdit;
+            _totalPlayer = _frmCreateTeam.TotalPlayer;
             int Ok = 0;
-            if (frmCreateTeam.txtTeamName.Text.Trim().ToString() == string.Empty)
+            if (_frmCreateTeam.txtTeamName.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type TeamName");
-                frmCreateTeam.txtTeamName.Focus();
+                _frmCreateTeam.txtTeamName.Focus();
             }
-            else if (frmCreateTeam.txtPhone.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateTeam.txtPhone.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type Phone");
-                frmCreateTeam.txtPhone.Focus();
+                _frmCreateTeam.txtPhone.Focus();
             }
-            else if (frmCreateTeam.txtMaxPlayer.Text.Trim().ToString() == string.Empty)
+            else if (_frmCreateTeam.txtMaxPlayer.Text.Trim().ToString() == string.Empty)
             {
                 MessageBox.Show("Please Type MaxPlayer");
-                frmCreateTeam.txtMaxPlayer.Focus();
+                _frmCreateTeam.txtMaxPlayer.Focus();
             }
-            else if (int.TryParse(frmCreateTeam.txtMaxPlayer.Text, out Ok) == false)
+            else if (int.TryParse(_frmCreateTeam.txtMaxPlayer.Text, out Ok) == false)
             {
                 MessageBox.Show("MaxPlayer Should Be Number");
             }
-            else if (Convert.ToInt32(frmCreateTeam.txtMaxPlayer.Text) < _TotalPlayer)
+            else if (Convert.ToInt32(_frmCreateTeam.txtMaxPlayer.Text) < _totalPlayer)
             {
                 MessageBox.Show("MaxPlayer Should Not Be Lower Than Total Player.");
             }
-            else if (Convert.ToInt32(frmCreateTeam.txtMaxPlayer.Text.Trim().ToString()) < 1 ||
-                Convert.ToInt32(frmCreateTeam.txtMaxPlayer.Text.Trim().ToString()) > 10000)
+            else if (Convert.ToInt32(_frmCreateTeam.txtMaxPlayer.Text.Trim().ToString()) < 1 ||
+                Convert.ToInt32(_frmCreateTeam.txtMaxPlayer.Text.Trim().ToString()) > 10000)
             {
                 MessageBox.Show("MaxPlayer Should Be Between 1 And 1000");
             }
             else
             {
-                spString = string.Format("SP_Select_Team N'{0}',N'{1}',N'{2}'", frmCreateTeam.txtTeamName.Text.Trim().ToString(), "0", "1");
-                dt = dbaConnection.SelectData(spString);
-                if (dt.Rows.Count > 0 && _TeamID != Convert.ToInt32(dt.Rows[0]["TeamID"]))
+                _spString = string.Format("SP_Select_Team N'{0}',N'{1}',N'{2}'", _frmCreateTeam.txtTeamName.Text.Trim().ToString(), "0", "1");
+                _dt = _dbaConnection.SelectData(_spString);
+                if (_dt.Rows.Count > 0 && _teamID != Convert.ToInt32(_dt.Rows[0]["TeamID"]))
                 {
                     MessageBox.Show("This Team is Already Exist");
-                    frmCreateTeam.txtTeamName.Focus();
-                    frmCreateTeam.txtTeamName.SelectAll();
+                    _frmCreateTeam.txtTeamName.Focus();
+                    _frmCreateTeam.txtTeamName.SelectAll();
                 }
                 else
                 {
-                    dbaTeam.TID = _TeamID;
-                    dbaTeam.TNAME = frmCreateTeam.txtTeamName.Text;
-                    dbaTeam.PHONE = frmCreateTeam.txtPhone.Text;
-                    dbaTeam.TOTALPLAYER = _TotalPlayer;
+                    _dbaTeam.TID = _teamID;
+                    _dbaTeam.TNAME = _frmCreateTeam.txtTeamName.Text;
+                    _dbaTeam.PHONE = _frmCreateTeam.txtPhone.Text;
+                    _dbaTeam.TOTALPLAYER = _totalPlayer;
 
                     //dbaTeam.OPENDATE = dtpDate.Text;
 
-                    dbaTeam.MAXPLAYER = Convert.ToInt32(frmCreateTeam.txtMaxPlayer.Text);
+                    _dbaTeam.MAXPLAYER = Convert.ToInt32(_frmCreateTeam.txtMaxPlayer.Text);
                     //dbaTeam.TOTALPLAYER = 0;
 
-                    if (_IsEdit)
+                    if (_isEdit)
                     {
                         //dbaTeam.OPENDATE = _EditDate;
-                        dbaTeam.ACTION = 1;
-                        dbaTeam.SaveData();
+                        _dbaTeam.ACTION = 1;
+                        _dbaTeam.SaveData();
                         MessageBox.Show("Successfully Edit", "Successfully", MessageBoxButtons.OK);
-                        frmCreateTeam.Close();
+                        _frmCreateTeam.Close();
                     }
                     else
                     {
                         //dbaTeam.OPENDATE = dtpDate.Text;
-                        dbaTeam.ACTION = 0;
-                        dbaTeam.SaveData();
+                        _dbaTeam.ACTION = 0;
+                        _dbaTeam.SaveData();
                         MessageBox.Show("Successfully Save", "Successfully", MessageBoxButtons.OK);
-                        frmCreateTeam.Close();
+                        _frmCreateTeam.Close();
                     }
                 }
             }

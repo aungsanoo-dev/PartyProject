@@ -48,6 +48,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.lblConfirmPassword = new System.Windows.Forms.Label();
             this.btnEye = new System.Windows.Forms.Button();
+            this.txtMaskAddress = new System.Windows.Forms.TextBox();
+            this.cboMaskedPosition = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -168,7 +170,7 @@
             this.txtPassword.Location = new System.Drawing.Point(269, 366);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(264, 22);
+            this.txtPassword.Size = new System.Drawing.Size(262, 22);
             this.txtPassword.TabIndex = 37;
             this.txtPassword.UseSystemPasswordChar = true;
             // 
@@ -218,20 +220,46 @@
             // 
             // btnEye
             // 
-            this.btnEye.Location = new System.Drawing.Point(533, 364);
+            this.btnEye.Location = new System.Drawing.Point(531, 364);
             this.btnEye.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEye.Name = "btnEye";
-            this.btnEye.Size = new System.Drawing.Size(28, 28);
+            this.btnEye.Size = new System.Drawing.Size(32, 28);
             this.btnEye.TabIndex = 42;
-            this.btnEye.Text = "👁️";
             this.btnEye.UseVisualStyleBackColor = true;
             this.btnEye.Click += new System.EventHandler(this.btnEye_Click);
+            // 
+            // txtMaskAddress
+            // 
+            this.txtMaskAddress.Enabled = false;
+            this.txtMaskAddress.Location = new System.Drawing.Point(269, 70);
+            this.txtMaskAddress.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtMaskAddress.Multiline = true;
+            this.txtMaskAddress.Name = "txtMaskAddress";
+            this.txtMaskAddress.Size = new System.Drawing.Size(293, 90);
+            this.txtMaskAddress.TabIndex = 43;
+            this.txtMaskAddress.Text = "●●●●●●●●●●●●●";
+            this.txtMaskAddress.Visible = false;
+            // 
+            // cboMaskedPosition
+            // 
+            this.cboMaskedPosition.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cboMaskedPosition.Enabled = false;
+            this.cboMaskedPosition.FormattingEnabled = true;
+            this.cboMaskedPosition.Items.AddRange(new object[] {
+            "●●●●●●●●●●"});
+            this.cboMaskedPosition.Location = new System.Drawing.Point(270, 228);
+            this.cboMaskedPosition.Name = "cboMaskedPosition";
+            this.cboMaskedPosition.Size = new System.Drawing.Size(292, 24);
+            this.cboMaskedPosition.TabIndex = 44;
+            this.cboMaskedPosition.Visible = false;
             // 
             // frm_CreateAccount
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(689, 510);
+            this.Controls.Add(this.cboMaskedPosition);
+            this.Controls.Add(this.txtMaskAddress);
             this.Controls.Add(this.btnEye);
             this.Controls.Add(this.lblConfirmPassword);
             this.Controls.Add(this.label6);
@@ -284,5 +312,7 @@
         private System.Windows.Forms.Label label7;
         public System.Windows.Forms.Button btnEye;
         public System.Windows.Forms.Label lblConfirmPassword;
+        public System.Windows.Forms.TextBox txtMaskAddress;
+        public System.Windows.Forms.ComboBox cboMaskedPosition;
     }
 }

@@ -16,7 +16,7 @@ namespace F21Party.Controllers
     internal class CtrlFrmMain
     {
         private readonly frm_Main _frmMain; // Declare the View
-        
+        private string _spString;
         public CtrlFrmMain(frm_Main mainForm)
         {
             _frmMain = mainForm; // Create the View
@@ -41,24 +41,10 @@ namespace F21Party.Controllers
                             break;
                         }
                     }
-
-
-                 
                 }
             }
-            
         }
-        //public void LoginAccount(string Logout)
-        //{
-        //    frmMain.mnuLogIn.Text = "LogIn";
-        //    Program.UserID = 0;
-        //    Program.UserAccessID = 0;
-        //    Program.UserAccessLevel = "";
-        //    Program.UserAuthority = 0;
-        //    Program.PublicArrWriteAccessPages = Array.Empty<string>();
-        //    Program.PublicArrReadAccessPages = Array.Empty<string>();
-        //    ShowMenu("");
-        //}
+
         public void LoginAccount()
         {
             if (_frmMain.mnuLogIn.Text == "Logout" || _frmMain.btnLogIn.Text == "Logout")
@@ -127,10 +113,10 @@ namespace F21Party.Controllers
                     continue;
                 }
 
-                string spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
+                _spString = string.Format("SP_Select_Accounts N'{0}',N'{1}',N'{2}',N'{3}'",
                     userName, password, "", "1");
 
-                dt = dbaConnection.SelectData(spString);
+                dt = dbaConnection.SelectData(_spString);
 
                 if (dt.Rows.Count == 0)
                 {
@@ -143,9 +129,9 @@ namespace F21Party.Controllers
                 Program.UserAccessID = Convert.ToInt32(dt.Rows[0]["AccessID"]);
 
                 // For AccessLevel
-                string spAccess = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
+                _spString = string.Format("SP_Select_Access N'{0}',N'{1}',N'{2}'", Program.UserAccessID,
                     "", 1);
-                dtAccess = dbaConnection.SelectData(spAccess);
+                dtAccess = dbaConnection.SelectData(_spString);
 
                 Program.UserAuthority = Convert.ToInt32(dtAccess.Rows[0]["Authority"]);
 
@@ -162,9 +148,9 @@ namespace F21Party.Controllers
                 Program.UserID = Convert.ToInt32(dt.Rows[0]["UserID"]);
 
                 // For Pages
-                string spPage = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
+                _spString = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", Program.UserAccessID, "", "", 1);
                 //string SPpage = string.Format("SP_Select_Page N'{0}',N'{1}',N'{2}'", "", "", 1);
-                dtPage = dbaConnection.SelectData(spPage);
+                dtPage = dbaConnection.SelectData(_spString);
 
                 // To Check Read and Write Value
                 List<string> readWrite = new List<string>();
@@ -188,10 +174,10 @@ namespace F21Party.Controllers
                 List<string> writeAccessPages = new List<string>();
                 foreach (DataRow row in dtPage.Rows)
                 {
-                    string spLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", 
+                    _spString = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'", 
                         Program.UserAccessID, row["PageName"].ToString(), "Write", 3);
 
-                    dtAccessPage = dbaConnection.SelectData(spLevel);
+                    dtAccessPage = dbaConnection.SelectData(_spString);
                     if (dtAccessPage == null || dtAccessPage.Rows.Count == 0)
                     {
                         continue;
@@ -208,10 +194,10 @@ namespace F21Party.Controllers
                 List<string> readAccessPages = new List<string>();
                 foreach (DataRow row in dtPage.Rows)
                 {
-                    string spLevel = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'",
+                    _spString = string.Format("SP_Select_View_AccessPage N'{0}',N'{1}',N'{2}',N'{3}'",
                         Program.UserAccessID, row["PageName"].ToString(), "Read", 3);
 
-                    dtAccessPage = dbaConnection.SelectData(spLevel);
+                    dtAccessPage = dbaConnection.SelectData(_spString);
                     if (dtAccessPage == null || dtAccessPage.Rows.Count == 0)
                     {
                         continue;
@@ -233,30 +219,5 @@ namespace F21Party.Controllers
                 break;
             }
         }
-
-        //bool isPasswordShown = false;
-
-        //public void EyeToggle()
-        //{
-        //    frm_LogIn frmLogIn = new frm_LogIn();
-
-        //    // Set initial icon and masking state
-        //    frmLogIn.btnEye.Text = "👁️";
-        //    frmLogIn.txtPassword.UseSystemPasswordChar = true;
-
-        //    // Attach the toggle event
-        //    frmLogIn.btnEye.Click += (s, e) =>
-        //    {
-        //        isPasswordShown = !isPasswordShown;
-
-        //        frmLogIn.txtPassword.UseSystemPasswordChar = !isPasswordShown;
-
-        //        frmLogIn.btnEye.Text = isPasswordShown ? "🚫" : "👁️";
-        //    };
-        //}
-
-
-
-
     }
 }

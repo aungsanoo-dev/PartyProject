@@ -21,7 +21,6 @@ namespace F21Party.Views
         {
             InitializeComponent();
             _ctrlFrmMain = new CtrlFrmMain(this); // Create the controller and pass itself to ctrlFrmMain()
-            //ctrlFrmPermissionList = new CtrlFrmPermissionList(this);
         }
         public void RefreshMenu()
         {

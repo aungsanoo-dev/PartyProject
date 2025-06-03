@@ -14,14 +14,14 @@ namespace F21Party.Views
 {
     public partial class frm_CreateTeam : Form
     {
-        private CtrlFrmCreateTeam ctrlFrmCreateTeam;
+        private readonly CtrlFrmCreateTeam _ctrlFrmCreateTeam;
         public int TeamID;
         public bool IsEdit = false;
         public int TotalPlayer = 0;
         public frm_CreateTeam()
         {
             InitializeComponent();
-            ctrlFrmCreateTeam = new CtrlFrmCreateTeam(this);
+            _ctrlFrmCreateTeam = new CtrlFrmCreateTeam(this);
         }
 
         private void frm_CreateTeam_Load(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace F21Party.Views
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateTeam.SaveClick();
+            _ctrlFrmCreateTeam.SaveClick();
         }
     }
 }

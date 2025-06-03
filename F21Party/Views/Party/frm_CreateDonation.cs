@@ -14,45 +14,45 @@ namespace F21Party.Views
 {
     public partial class frm_CreateDonation : Form
     {
-        private CtrlFrmCreateDonation ctrlFrmCreateDonation;
+        private readonly CtrlFrmCreateDonation _ctrlFrmCreateDonation;
         public int DonationID = 0;
         public bool IsEdit = false;
         
         public frm_CreateDonation()
         {
             InitializeComponent();
-            ctrlFrmCreateDonation = new CtrlFrmCreateDonation(this);
+            _ctrlFrmCreateDonation = new CtrlFrmCreateDonation(this);
         }
 
         private void frm_Donation_Load(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.CreateTable();
-            ctrlFrmCreateDonation.ShowData();
+            _ctrlFrmCreateDonation.CreateTable();
+            _ctrlFrmCreateDonation.ShowData();
         }
 
         private void cboItem_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.ItemSelectedChanged();
+            _ctrlFrmCreateDonation.ItemSelectedChanged();
         }
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.AddClick();
+            _ctrlFrmCreateDonation.AddClick();
         }
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.RemoveClick();
+            _ctrlFrmCreateDonation.RemoveClick();
         }
 
         private void dtpDate_ValueChanged(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.DtpDateValueChanged();
+            _ctrlFrmCreateDonation.DtpDateValueChanged();
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            ctrlFrmCreateDonation.SaveClick();
+            _ctrlFrmCreateDonation.SaveClick();
         }
     }
 }

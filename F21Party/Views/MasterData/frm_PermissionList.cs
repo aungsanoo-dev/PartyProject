@@ -14,42 +14,42 @@ namespace F21Party.Views
     public partial class frm_PermissionList : Form
     {
         
-        private CtrlFrmPermissionList ctrlFrmPermissionList; // Declare the controller
-        private frm_Main mainForm;
+        private readonly CtrlFrmPermissionList _ctrlFrmPermissionList; // Declare the controller
+        private readonly frm_Main _mainForm;
         public bool IsLogout;
 
         public frm_PermissionList()
         {
             InitializeComponent();
-            ctrlFrmPermissionList = new CtrlFrmPermissionList(this); // Create the controller and pass itself
+            _ctrlFrmPermissionList = new CtrlFrmPermissionList(this); // Create the controller and pass itself
             IsLogout = false;
         }
         
         public frm_PermissionList(frm_Main main)
             : this() // Calls the default constructor
         {
-            mainForm = main; // Store reference for later
+            _mainForm = main; // Store reference for later
             
         }
 
         private void frm_PermissionList_Load(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.ShowData();
+            _ctrlFrmPermissionList.ShowData();
         }
 
         private void tsbEdit_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.ShowEntry();
+            _ctrlFrmPermissionList.ShowEntry();
             if (IsLogout)
             {
-                mainForm.RefreshMenu();
+                _mainForm.RefreshMenu();
                 this.Close();
             }
         }
 
         private void tsbNew_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TsbNew();
+            _ctrlFrmPermissionList.TsbNew();
         }
 
         private void tsbExit_Click(object sender, EventArgs e)
@@ -59,27 +59,27 @@ namespace F21Party.Views
 
         private void tsmiAccessLevel_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TsmiAccessLevelClick();
+            _ctrlFrmPermissionList.TsmiAccessLevelClick();
         }
 
         private void tsmiPageName_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TsmiPageNameClick();
+            _ctrlFrmPermissionList.TsmiPageNameClick();
         }
 
         private void tsmiPermissionName_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TsmiPermissionNameClick();
+            _ctrlFrmPermissionList.TsmiPermissionNameClick();
         }
 
         private void tstSearchWith_TextChanged(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TstSearchWithTextChanged();
+            _ctrlFrmPermissionList.TstSearchWithTextChanged();
         }
 
         private void tsbDelete_Click(object sender, EventArgs e)
         {
-            ctrlFrmPermissionList.TsbDelete();
+            _ctrlFrmPermissionList.TsbDelete();
         }
     }
 }

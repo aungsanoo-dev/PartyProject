@@ -52,12 +52,11 @@
             // 
             // btnEye
             // 
-            this.btnEye.Location = new System.Drawing.Point(556, 400);
+            this.btnEye.Location = new System.Drawing.Point(554, 400);
             this.btnEye.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEye.Name = "btnEye";
-            this.btnEye.Size = new System.Drawing.Size(28, 28);
+            this.btnEye.Size = new System.Drawing.Size(32, 28);
             this.btnEye.TabIndex = 61;
-            this.btnEye.Text = "👁️";
             this.btnEye.UseVisualStyleBackColor = true;
             this.btnEye.Click += new System.EventHandler(this.btnEye_Click);
             // 
@@ -102,7 +101,7 @@
             this.txtPassword.Location = new System.Drawing.Point(292, 401);
             this.txtPassword.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPassword.Name = "txtPassword";
-            this.txtPassword.Size = new System.Drawing.Size(264, 22);
+            this.txtPassword.Size = new System.Drawing.Size(262, 22);
             this.txtPassword.TabIndex = 56;
             this.txtPassword.UseSystemPasswordChar = true;
             // 

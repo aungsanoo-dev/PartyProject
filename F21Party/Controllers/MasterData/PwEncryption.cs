@@ -10,9 +10,9 @@ namespace F21Party.Controllers
 {
     internal class PwEncryption
     {
-        private static readonly byte[] iv = new byte[16]; // 16-byte IV (Initialization Vector)
-        private static readonly string myKey = "123"; 
-        private static readonly byte[] aesKey = GetAesKeyFromString(myKey); // AES key derived from the simple key
+        private static readonly byte[] _iv = new byte[16]; // 16-byte IV (Initialization Vector)
+        private static readonly string _myKey = "123"; 
+        private static readonly byte[] _aesKey = GetAesKeyFromString(_myKey); // AES key derived from the simple key
 
         // Convert simple key into a valid AES key (using SHA256)
         private static byte[] GetAesKeyFromString(string key)
@@ -31,8 +31,8 @@ namespace F21Party.Controllers
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = aesKey; // Use the derived AES key
-                aes.IV = iv; // IV is fixed (for simplicity, but typically random)
+                aes.Key = _aesKey; // Use the derived AES key
+                aes.IV = _iv; // IV is fixed (for simplicity, but typically random)
 
                 ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
 
@@ -58,8 +58,8 @@ namespace F21Party.Controllers
 
             using (Aes aes = Aes.Create())
             {
-                aes.Key = aesKey; // Use the derived AES key
-                aes.IV = iv;
+                aes.Key = _aesKey; // Use the derived AES key
+                aes.IV = _iv;
 
                 ICryptoTransform decryptor = aes.CreateDecryptor(aes.Key, aes.IV);
 
